@@ -43,7 +43,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		camera.setToOrtho(false, width / 2, height / 2);
 
 		world = new World(new Vector2(0, -9.8f), false);
-       		player = createBox(20,60,32, 32, false);
+       		player = createBox(20,60,30, 30, false);
         	platform = createBox(0,-20,256,32,true);
 		b2dr = new Box2DDebugRenderer();
 
