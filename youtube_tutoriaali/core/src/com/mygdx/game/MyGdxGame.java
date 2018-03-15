@@ -36,7 +36,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	//private TiledMapTileSet tileset;
 
 
-    float width;
+    	float width;
 	float height;
 	@Override
 	public void create () {
@@ -46,8 +46,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		camera.setToOrtho(false, width / 2, height / 2);
 
 		world = new World(new Vector2(0, -9.8f), false);
-        player = createBox(20,60,32, 32, false);
-        platform = createBox(0,-20,256,32,true);
+       		player = createBox(20,60,32, 32, false);
+        	platform = createBox(0,-20,256,32,true);
 		b2dr = new Box2DDebugRenderer();
 
 		map = new TmxMapLoader().load("tutorial_map.tmx");
@@ -60,7 +60,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		//map2.getTileSets().addTileSet(tileset);
 
 
-        TiledUtil.parseTiledObjectLayer(world, map.getLayers().get("object_layer").getObjects());
+        	TiledUtil.parseTiledObjectLayer(world, map.getLayers().get("object_layer").getObjects());
 	}
 
 	@Override
@@ -68,8 +68,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		update(Gdx.graphics.getDeltaTime());
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        tiledMapRenderer.render();
-        tiledMapRenderer2.render();
+        	tiledMapRenderer.render();
+        	tiledMapRenderer2.render();
 		b2dr.render(world, camera.combined.scl(PPM));
 	}
 	
@@ -90,7 +90,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	public void update(float delta){
 		world.step(1 / 30f, 6, 2);
-        inputUpdate(delta);
+        	inputUpdate(delta);
 		cameraUpdate(delta);
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer2.setView(camera);
@@ -98,47 +98,51 @@ public class MyGdxGame extends ApplicationAdapter {
 	}
 
 	public void inputUpdate(float delta){
-	    int movementSpeed = 0;
-	    if(Gdx.input.isTouched()){
-            if(Gdx.input.getX() > width / 2){
-                movementSpeed = 1;
-            }
-            else if(Gdx.input.getX() < width / 2){
-                movementSpeed = -1;
-            }
-        }
-        player.setLinearVelocity(movementSpeed,player.getLinearVelocity().y);
-    }
+		int movementSpeed = 0;
+		if(Gdx.input.isTouched()){
+			if(Gdx.input.getX() > width / 2){
+			movementSpeed = 1;
+			}else if(Gdx.input.getX() < width / 2){
+			movementSpeed = -1;
+			}
+		}
+		player.setLinearVelocity(movementSpeed,player.getLinearVelocity().y);
+    	}
 
 	public void cameraUpdate(float delta){
-        Vector3 pos = camera.position;
-        pos.x = player.getPosition().x * PPM;
-        pos.y = player.getPosition().y * PPM;
-        camera.position.set(pos);
-        camera.update();
-    }
+		Vector3 position = camera.position;
+		//Linear interpolation = a + (b - a) * lerp
+		// a = current camera position
+		// b = target
+		// lerp = interpolation factor
+		position.x = camera.position.x + (player.getPosition().x * PPM - camera.position.x) * .1f;
+		position.y = camera.position.y + (player.getPosition().y * PPM - camera.position.y) * .1f;
+
+		camera.position.set(position);
+		camera.update();
+	}
 
 
-    public Body createBox(int x, int y, int w, int h, boolean isStatic){
-        Body pBody;
-        BodyDef def = new BodyDef();
+    	public Body createBox(int x, int y, int w, int h, boolean isStatic){
+        	Body pBody;
+        	BodyDef def = new BodyDef();
 
-        if(isStatic){
-            def.type = BodyDef.BodyType.StaticBody;
-        }
-        else{
-            def.type = BodyDef.BodyType.DynamicBody;
-        }
+		if(isStatic){
+		    def.type = BodyDef.BodyType.StaticBody;
+		}
+		else{
+		    def.type = BodyDef.BodyType.DynamicBody;
+		}
 
-        def.position.set(x / PPM, y / PPM);
-        def.fixedRotation = true;
+		def.position.set(x / PPM, y / PPM);
+		def.fixedRotation = true;
 
-        pBody = world.createBody(def);
+		pBody = world.createBody(def);
 
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(w / 2 / PPM,h / 2 / PPM);
-        pBody.createFixture(shape, 1.0f);
-        shape.dispose();
-        return pBody;
-    }
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(w / 2 / PPM,h / 2 / PPM);
+		pBody.createFixture(shape, 1.0f);
+		shape.dispose();
+		return pBody;
+	    }
 }
