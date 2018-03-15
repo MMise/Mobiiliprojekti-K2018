@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -27,17 +26,15 @@ public class MyGdxGame extends ApplicationAdapter {
 	private Box2DDebugRenderer b2dr;
 	private World world;
 	private Body player;
-	private Body platform;
 
 	private OrthogonalTiledMapRenderer tiledMapRenderer;
-	private OrthogonalTiledMapRenderer tiledMapRenderer2;
 	private TiledMap map;
-	private TiledMap map2;
-	//private TiledMapTileSet tileset;
 
-
+	private Controller controller;
+	
     	float width;
 	float height;
+	
 	@Override
 	public void create () {
 		width = Gdx.graphics.getWidth();
@@ -51,26 +48,24 @@ public class MyGdxGame extends ApplicationAdapter {
 		b2dr = new Box2DDebugRenderer();
 
 		map = new TmxMapLoader().load("tutorial_map.tmx");
-		map2 = new TmxMapLoader().load("tutorial_map.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(map);
-		tiledMapRenderer2 = new OrthogonalTiledMapRenderer(map2);
-
-		//tileset = new TiledMapTileSet();
-		//map.getTileSets().addTileSet(tileset);
-		//map2.getTileSets().addTileSet(tileset);
-
 
         	TiledUtil.parseTiledObjectLayer(world, map.getLayers().get("object_layer").getObjects());
+		
+		controller = new Controller(width, height);
 	}
 
 	@Override
 	public void render () {
 		update(Gdx.graphics.getDeltaTime());
+		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
         	tiledMapRenderer.render();
-        	tiledMapRenderer2.render();
 		b2dr.render(world, camera.combined.scl(PPM));
+		
+		controller.draw();
 	}
 	
 	@Override
@@ -121,6 +116,22 @@ public class MyGdxGame extends ApplicationAdapter {
 		camera.position.set(position);
 		camera.update();
 	}
+	
+	public void inputHandler(){
+	    	if(controller.isLeftPressed()){
+	        	player.setLinearVelocity(new Vector2(-1, player.getLinearVelocity().y));
+        	}
+		else if(controller.isRightPressed()){
+			player.setLinearVelocity(new Vector2(1, player.getLinearVelocity().y));
+		}
+		else{
+		    player.setLinearVelocity(new Vector2(0, player.getLinearVelocity().y));
+		}
+		if(controller.isUpPressed()){
+			player.applyLinearImpulse(new Vector2(0,5f),player.getWorldCenter(), true);
+		}
+    	}
+	
 
 
     	public Body createBox(int x, int y, int w, int h, boolean isStatic){
