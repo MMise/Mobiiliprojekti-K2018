@@ -2,8 +2,13 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -16,16 +21,18 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.utils.TiledUtil;
 
+import javax.naming.spi.Resolver;
+
 import static com.mygdx.game.utils.Constants.PPM;
 
 public class MyGdxGame extends ApplicationAdapter {
-	private boolean DEBUG = false;
-
 	private OrthographicCamera camera;
 
 	private Box2DDebugRenderer b2dr;
 	private World world;
 	private Body player;
+	private SpriteBatch sprite;
+	private Texture tex;
 
 	private OrthogonalTiledMapRenderer tiledMapRenderer;
 	private TiledMap map;
@@ -37,23 +44,42 @@ public class MyGdxGame extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+
+		//Tarvittavien oletusresurssien siirtäminen lokaliin
+		Gdx.files.internal("tilesetti.png").copyTo(Gdx.files.local("tilesetti.png"));
+		Gdx.files.internal("tilesetti.tsx").copyTo(Gdx.files.local("tilesetti.tsx"));
+
+		//Tällä hetkellä luodaan amalgamaatio kolmesta kasuaaleille suunnatuista harjoituskentistä
+		MapEncoder test = new MapEncoder();
+		test.decode("casual");
+		test.decode("casual2");
+		test.decode("casual3");
+		test.encode();
+
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, width / 2, height / 2);
 
+		sprite = new SpriteBatch();
+
 		world = new World(new Vector2(0, -9.8f), false);
-       		player = createBox(20,60,30, 30, false);
-        	//platform = createBox(0,-20,256,32,true);
+       		player = createBox(48,48,30, 30, false);
 		b2dr = new Box2DDebugRenderer();
 
-		map = new TmxMapLoader().load("hell.tmx");
+		tex = new Texture("kappa32.png");
+		map = new TmxMapLoader(new LocalFileHandleResolver()).load("temp.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(map);
 
-        	TiledUtil.parseTiledObjectLayer(world, map.getLayers().get("Object_layer").getObjects());
+		TiledUtil.parseTiledObjectLayer(world, map.getLayers().get("Object_layer").getObjects());
 		
 		controller = new Controller(width, height);
+
 	}
+
+	public OrthographicCamera getCamera() { return camera;}
+
+	public SpriteBatch getBatch() { return sprite; }
 
 	@Override
 	public void render () {
@@ -61,9 +87,13 @@ public class MyGdxGame extends ApplicationAdapter {
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-        	tiledMapRenderer.render();
-		b2dr.render(world, camera.combined.scl(PPM));
+		tiledMapRenderer.render();
+
+		sprite.begin();
+		sprite.draw(tex, player.getPosition().x * PPM - tex.getWidth() / 2, player.getPosition().y * PPM - tex.getHeight() / 2);
+		sprite.end();
+
+		//b2dr.render(world, camera.combined.scl(PPM)); //HITBOX
 		
 		controller.draw();
 	}
@@ -74,8 +104,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		b2dr.dispose();
 		map.dispose();
 		tiledMapRenderer.dispose();
-		//map2.dispose();
-		//tiledMapRenderer2.dispose();
 	}
 
 	@Override
@@ -85,23 +113,13 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	public void update(float delta){
 		world.step(1 / 30f, 6, 2);
-        	inputUpdate(delta);
+		inputUpdate(delta);
 		cameraUpdate(delta);
 		tiledMapRenderer.setView(camera);
-		//tiledMapRenderer2.setView(camera);
-
+		sprite.setProjectionMatrix(camera.combined);
 	}
 
 	public void inputUpdate(float delta){
-		/*int movementSpeed = 0;
-		if(Gdx.input.isTouched()){
-			if(Gdx.input.getX() > width / 2){
-			movementSpeed = 1;
-			}else if(Gdx.input.getX() < width / 2){
-			movementSpeed = -1;
-			}
-		}
-		player.setLinearVelocity(movementSpeed,player.getLinearVelocity().y);*/
 		inputHandler();
     	}
 
@@ -129,7 +147,7 @@ public class MyGdxGame extends ApplicationAdapter {
 			}
 
 			if(controller.isUpPressed()){
-				if(player.getLinearVelocity().y == 0f)
+				if(player.getLinearVelocity().y == 0f) //Voi hypätä vain, jos pystysuuntainen nopeus on 0
 					player.setLinearVelocity(new Vector2(player.getLinearVelocity().x, 5f));
 			}
     	}
@@ -140,22 +158,22 @@ public class MyGdxGame extends ApplicationAdapter {
         	Body pBody;
         	BodyDef def = new BodyDef();
 
-		if(isStatic){
-		    def.type = BodyDef.BodyType.StaticBody;
-		}
-		else{
-		    def.type = BodyDef.BodyType.DynamicBody;
-		}
+			if(isStatic){
+				def.type = BodyDef.BodyType.StaticBody;
+			}
+			else{
+				def.type = BodyDef.BodyType.DynamicBody;
+			}
 
-		def.position.set(x / PPM, y / PPM);
-		def.fixedRotation = true;
+			def.position.set(x / PPM, y / PPM);
+			def.fixedRotation = true;
 
-		pBody = world.createBody(def);
+			pBody = world.createBody(def);
 
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(w / 2 / PPM,h / 2 / PPM);
-		pBody.createFixture(shape, 1.0f);
-		shape.dispose();
-		return pBody;
+			PolygonShape shape = new PolygonShape();
+			shape.setAsBox(w / 2 / PPM,h / 2 / PPM);
+			pBody.createFixture(shape, 1.0f);
+			shape.dispose();
+			return pBody;
 	    }
 }
