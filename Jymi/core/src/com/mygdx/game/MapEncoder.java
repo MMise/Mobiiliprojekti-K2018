@@ -157,7 +157,7 @@ public class MapEncoder {
         try { //tiedoston tallentamisen kannalta oleellinen jargoni
             TransformerFactory transfac = TransformerFactory.newInstance();
             Transformer trans = transfac.newTransformer();
-            trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
             trans.setOutputProperty(OutputKeys.INDENT, "yes");
 
             StringWriter sw = new StringWriter();
