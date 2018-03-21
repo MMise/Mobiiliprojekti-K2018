@@ -1,6 +1,5 @@
 package pather.game.Sprites;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -78,7 +77,7 @@ public class Goomba extends Enemy {
         shape.setRadius(6 / Pather.PPM);
         fdef.filter.categoryBits = Pather.ENEMY_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
-                                Pather.COIN_BIT |
+                                Pather.DANGER_ZONE_BIT |
                                 Pather.BRICK_BIT |
                                 Pather.ENEMY_BIT |
                                 Pather.OBJECT_BIT |

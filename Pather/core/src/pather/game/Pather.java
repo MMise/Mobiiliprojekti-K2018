@@ -10,8 +10,8 @@ import pather.game.Screens.PlayScreen;
 
 public class Pather extends Game {
 	//Parameters for view dimensions and pixel per meter
-	public static final int V_WIDTH = 400;
-	public static final int V_HEIGHT = 208;
+	public static final int V_WIDTH = 1080;
+	public static final int V_HEIGHT = 640;
 	public static final float PPM = 100f;
 
 	//Bits to detect collisions, delete and add new ones as needed. The bits need to be n^2 numbers
@@ -19,11 +19,11 @@ public class Pather extends Game {
 	public static final short GROUND_BIT = 1;
 	public static final short PLAYER_BIT = 2;
 	public static final short BRICK_BIT = 4;
-	public static final short COIN_BIT = 8;
+	public static final short DANGER_ZONE_BIT = 8;
 	public static final short DESTROYED_BIT = 16;
 	public static final short OBJECT_BIT = 32;
 	public static final short ENEMY_BIT = 64;
-	public static final short ENEMY_HEAD_BIT= 128;
+	public static final short ENEMY_HEAD_BIT = 128;
 	public static final short ITEM_BIT = 256;
 	public static final short MARIO_HEAD_BIT = 512;
 
@@ -35,6 +35,7 @@ public class Pather extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		manager = new AssetManager();
+		manager.load("audio/sounds/playerIsKill.wav", Sound.class);
 		//This is how you load sound files into memory
 		/*
 		manager.load("path/to/music.ogg", Music.class);

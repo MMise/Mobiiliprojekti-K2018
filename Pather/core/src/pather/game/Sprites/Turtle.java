@@ -62,7 +62,7 @@ public class Turtle extends Enemy {
         shape.setRadius(6 / Pather.PPM);
         fdef.filter.categoryBits = Pather.ENEMY_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
-                Pather.COIN_BIT |
+                Pather.DANGER_ZONE_BIT |
                 Pather.BRICK_BIT |
                 Pather.ENEMY_BIT |
                 Pather.OBJECT_BIT |

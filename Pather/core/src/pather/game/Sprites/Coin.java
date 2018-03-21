@@ -1,6 +1,5 @@
 package pather.game.Sprites;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.math.Vector2;
@@ -24,7 +23,7 @@ public class Coin extends InteractiveTileObject {
         //Change this to reflect our tileset
         tileSet = map.getTileSets().getTileSet("tileset_gutter");
         fixture.setUserData(this);
-        setCategoryFilter(Pather.COIN_BIT);
+        setCategoryFilter(Pather.DANGER_ZONE_BIT);
     }
 
     @Override

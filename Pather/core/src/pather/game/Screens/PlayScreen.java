@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -72,17 +73,19 @@ public class PlayScreen implements Screen {
         //load the map and setup map renderer.
         //TODO: Jylkkä plz work your level building magic here
         maploader = new TmxMapLoader();
-        map = maploader.load("level1.tmx");
+        map = maploader.load("module1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Pather.PPM);
 
-        //set gamecam to correct position in the beginning of the game
-        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
 
         //Box2D variables
         world = new World(new Vector2(0, -10), true); //This creates a world where gravity works like on Earth
         b2dr = new Box2DDebugRenderer();
         creator = new B2WorldCreator(this);
         player = new Player(this);
+
+        //set gamecam to correct position in the beginning of the game
+        gamecam.position.set(player.b2body.getPosition().x, gamePort.getWorldHeight() / 2, 0);
 
         world.setContactListener(new WorldContactListener());
 
@@ -135,6 +138,14 @@ public class PlayScreen implements Screen {
             }
         }
 
+    //This adds slight linear interpolation to camera movement
+    public void cameraUpdate(float dt){
+        Vector3 position = gamecam.position;
+        position.x = gamecam.position.x + (player.b2body.getPosition().x - gamecam.position.x) * .2f;
+        gamecam.position.set(position);
+        gamecam.update();
+    }
+
     public void update(float dt){
         //Handle user input first
         handleInput(dt);
@@ -155,12 +166,12 @@ public class PlayScreen implements Screen {
             item.update(dt);
         }
         hud.update(dt);
-        //attach gamecam to our player's x coordinate. Freeze the cam if the player dies
+
+        //update camera location
         if(player.currentState != Player.State.DEAD){
-            //TODO: Add interpolation for smoother camera movement
-            gamecam.position.x = player.b2body.getPosition().x;
+            cameraUpdate(dt);
         }
-        gamecam.update();
+
         //tell our renderer to draw only what can be seen on the screen
         renderer.setView(gamecam);
     }

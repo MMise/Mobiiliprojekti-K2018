@@ -1,6 +1,5 @@
 package pather.game.Sprites;
 
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -39,10 +38,11 @@ public class Player extends Sprite {
 
     //Texture regions and animations of the player.
     //TODO: Refactor variable and method names to reflect our game
-    private TextureRegion marioStand;
-    private Animation<TextureRegion> marioRun;
-    private TextureRegion marioJump;
-    private TextureRegion marioDead;
+    private TextureRegion characterStand;
+    private Animation<TextureRegion> characterRun;
+    private TextureRegion characterJump;
+    private TextureRegion characterDead;
+
     private TextureRegion bigMarioStand;
     private TextureRegion bigMarioJump;
     private Animation<TextureRegion> bigMarioRun;
@@ -64,6 +64,7 @@ public class Player extends Sprite {
         stateTimer = 0;
         runningRight = true;
 
+
         //get run animation frames
         //All of our Texture Region definitions must be changed to reflect our character regions and sizes
         Array<TextureRegion> frames = new Array<TextureRegion>();
@@ -71,7 +72,7 @@ public class Player extends Sprite {
             // i * x, where i equals the amount of our run frames and x equals the width of a single run frame
             frames.add(new TextureRegion(screen.getAtlas().findRegion("little_mario"), i * 16, 0, 16, 16));
         }
-        marioRun = new Animation<TextureRegion>(0.1f, frames);
+        characterRun = new Animation<TextureRegion>(0.1f, frames);
         //clear frames for next animation sequence
         frames.clear();
         for(int i = 1; i < 4; i++){
@@ -87,25 +88,25 @@ public class Player extends Sprite {
         frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0, 0, 16, 32));
         growMario = new Animation<TextureRegion>(0.2f, frames);
 
-        marioJump = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 80, 0, 16, 16);
-        marioDead = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 96, 0, 16, 16);
+        characterJump = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 80, 0, 16, 16);
+        characterDead = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 96, 0, 16, 16);
         bigMarioJump = new TextureRegion(screen.getAtlas().findRegion("big_mario"), 80, 0, 16, 32);
 
         //create texture regions for Player standing
-        marioStand = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 0,0, 16, 16);
+        characterStand = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 0,0, 16, 16);
         bigMarioStand = new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0, 0, 16, 32);
 
         //define mario in box2d
         defineMario();
         //set initial values for mario's location, width and height
         setBounds(0, 0, 16 / Pather.PPM, 16 / Pather.PPM);
-        setRegion(marioStand);
+        setRegion(characterStand);
     }
 
     public void update(float dt){
         if(marioIsBig){
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 - 6 / Pather.PPM);
-        }else {
+        }else{
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         }
         setRegion(getFrame(dt));
@@ -123,7 +124,7 @@ public class Player extends Sprite {
         TextureRegion region;
         switch(currentState){
             case DEAD:
-                region = marioDead;
+                region = characterDead;
                 break;
             case GROWING:
                 region = growMario.getKeyFrame(stateTimer);
@@ -132,15 +133,15 @@ public class Player extends Sprite {
                 }
                 break;
             case JUMPING:
-                region = marioIsBig ? bigMarioJump : marioJump;
+                region = marioIsBig ? bigMarioJump : characterJump;
                 break;
             case RUNNING:
-                region = marioIsBig ? bigMarioRun.getKeyFrame(stateTimer, true) : marioRun.getKeyFrame(stateTimer, true);
+                region = marioIsBig ? bigMarioRun.getKeyFrame(stateTimer, true) : characterRun.getKeyFrame(stateTimer, true);
                 break;
             case FALLING:
             case STANDING:
             default:
-                region = marioIsBig ? bigMarioStand : marioStand;
+                region = marioIsBig ? bigMarioStand : characterStand;
                 break;
         }
 
@@ -186,6 +187,17 @@ public class Player extends Sprite {
         }
     }
 
+    public void killPlayer(){
+        Pather.manager.get("audio/sounds/playerIsKill.wav", Sound.class).play();
+        marioIsDead = true;
+        Filter filter = new Filter();
+        filter.maskBits = Pather.NOTHING_BIT;
+        for (Fixture fixture : b2body.getFixtureList()) {
+            fixture.setFilterData(filter);
+        }
+        b2body.applyLinearImpulse(new Vector2(10f, 10f), b2body.getWorldCenter(), true);
+    }
+
     public boolean isBig(){
         return marioIsBig;
     }
@@ -210,14 +222,8 @@ public class Player extends Sprite {
                 //Pather.manager.get("audio/sounds/powerdown.wav", Sound.class).play();
             } else {
                 //Pather.manager.get("audio/music/mario_music.ogg", Music.class).stop();
-                //Pather.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
-                marioIsDead = true;
-                Filter filter = new Filter();
-                filter.maskBits = Pather.NOTHING_BIT;
-                for (Fixture fixture : b2body.getFixtureList()) {
-                    fixture.setFilterData(filter);
-                }
-                b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+                //
+                killPlayer();
             }
         }
     }
@@ -237,7 +243,7 @@ public class Player extends Sprite {
         shape.setRadius(6 / Pather.PPM);
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
-                Pather.COIN_BIT |
+                Pather.DANGER_ZONE_BIT |
                 Pather.BRICK_BIT |
                 Pather.ENEMY_BIT |
                 Pather.OBJECT_BIT |
@@ -272,7 +278,7 @@ public class Player extends Sprite {
         shape.setRadius(6 / Pather.PPM);
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
-                Pather.COIN_BIT |
+                Pather.DANGER_ZONE_BIT |
                 Pather.BRICK_BIT |
                 Pather.ENEMY_BIT |
                 Pather.OBJECT_BIT |
@@ -306,7 +312,7 @@ public class Player extends Sprite {
         shape.setRadius(6 / Pather.PPM);
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
-                                Pather.COIN_BIT |
+                                Pather.DANGER_ZONE_BIT |
                                 Pather.BRICK_BIT |
                                 Pather.ENEMY_BIT |
                                 Pather.OBJECT_BIT |
