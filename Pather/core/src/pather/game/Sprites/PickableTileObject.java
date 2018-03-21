@@ -1,9 +1,9 @@
-package mario.bros.Sprites;
+package pather.game.Sprites;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 
-import mario.bros.MainApp;
-import mario.bros.Screens.PlayScreen;
+import pather.game.Pather;
+import pather.game.Screens.PlayScreen;
 
 
 
