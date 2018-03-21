@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="31">
+ <tileset firstgid="1" name="sci-fi-platformer-tiles-32x32-extension" tilewidth="32" tileheight="32" tilecount="1760" columns="16">
+  <image source="sci-fi-platformer-tiles-32x32-extension.png" width="512" height="3520"/>
+ </tileset>
+ <tileset firstgid="1761" name="sheet1" tilewidth="32" tileheight="32" tilecount="64" columns="8">
+  <image source="sheet1.png" width="256" height="256"/>
+ </tileset>
+ <layer name="Background Layer" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJz7yszA8HUUj+IBxI/YUPFAu2cg/IwvDEjlk2ofJf54yYYfD3Q4D1V/kBsvg80fFPj/AD48wG4b8PAZxSM7buhdf9DC3TCxoV5WDSV/EFPvDwV/DIX4wBbW5LS7BtofQzE+aNmnoJU/sJXjACH2yIw=
+  </data>
+ </layer>
+ <layer name="Useless Layer for Indexing purposes" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20MH6AAAACAtwEPoAAB
+  </data>
+ </layer>
+ <objectgroup name="Ground Layer">
+  <object id="1" x="0" y="608" width="128" height="32"/>
+  <object id="2" x="704" y="384" width="256" height="32"/>
+  <object id="3" x="736" y="416" width="192" height="224"/>
+  <object id="7" x="704" y="128" width="256" height="160"/>
+  <object id="10" x="1440" y="608" width="160" height="32"/>
+  <object id="11" x="0" y="160" width="224" height="32"/>
+ </objectgroup>
+ <objectgroup name="Object Layer">
+  <object id="12" x="160" y="544" width="96" height="32"/>
+  <object id="14" x="320" y="544" width="96" height="32"/>
+  <object id="15" x="448" y="480" width="96" height="32"/>
+  <object id="16" x="576" y="416" width="96" height="32"/>
+  <object id="17" x="448" y="352" width="32" height="32"/>
+  <object id="18" x="352" y="288" width="32" height="32"/>
+  <object id="19" x="256" y="224" width="32" height="32"/>
+  <object id="20" x="352" y="96" width="128" height="32"/>
+  <object id="21" x="1056" y="384" width="32" height="32"/>
+  <object id="22" x="1184" y="384" width="32" height="32"/>
+  <object id="23" x="1312" y="384" width="32" height="32"/>
+  <object id="24" x="1312" y="128" width="32" height="32"/>
+  <object id="25" x="1184" y="128" width="32" height="32"/>
+  <object id="26" x="1056" y="128" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="Danger Zone Layer"/>
+ <objectgroup name="Empty Layer"/>
+ <objectgroup name="EnemyType1 Layer">
+  <object id="28" x="192" y="512" width="32" height="32"/>
+  <object id="29" x="352" y="512" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="EnemyType2 Layer"/>
+</map>
