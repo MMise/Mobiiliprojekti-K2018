@@ -34,12 +34,12 @@ public class WorldContactListener implements ContactListener {
             to our desired object class.
          */
         switch(cDef){
-            case Pather.MARIO_HEAD_BIT | Pather.BRICK_BIT:
-            case Pather.MARIO_HEAD_BIT | Pather.COIN_BIT:
-                if(fixA.getFilterData().categoryBits == Pather.MARIO_HEAD_BIT) {
-                    ((InteractiveTileObject) fixB.getUserData()).onHeadHit((Player) fixA.getUserData());
-                }else {
-                    ((InteractiveTileObject) fixA.getUserData()).onHeadHit((Player) fixB.getUserData());
+            //case Pather.MARIO_HEAD_BIT | Pather.BRICK_BIT:
+            case Pather.PLAYER_BIT | Pather.DANGER_ZONE_BIT:
+                if(fixA.getFilterData().categoryBits == Pather.PLAYER_BIT) {
+                    ((Player) fixA.getUserData()).killPlayer();
+                }else{
+                    ((Player) fixB.getUserData()).killPlayer();
                 }
                 break;
             case Pather.ENEMY_HEAD_BIT | Pather.PLAYER_BIT:
