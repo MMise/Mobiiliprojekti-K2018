@@ -41,10 +41,9 @@
   <object id="26" x="1056" y="128" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="Danger Zone Layer"/>
- <objectgroup name="Empty Layer"/>
+ <objectgroup name="Powerup Layer"/>
  <objectgroup name="EnemyType1 Layer">
   <object id="28" x="192" y="512" width="32" height="32"/>
   <object id="29" x="352" y="512" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="EnemyType2 Layer"/>
 </map>

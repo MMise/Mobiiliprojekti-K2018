@@ -44,7 +44,6 @@
   <object id="74" x="864" y="608" width="256" height="32"/>
   <object id="75" x="1184" y="608" width="256" height="32"/>
  </objectgroup>
- <objectgroup name="Empty Layer"/>
+ <objectgroup name="Powerup Layer"/>
  <objectgroup name="EnemyType1 Layer"/>
- <objectgroup name="EnemyType2 Layer"/>
 </map>
