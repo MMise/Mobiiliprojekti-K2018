@@ -1,5 +1,6 @@
 package pather.game;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -10,10 +11,10 @@ import pather.game.Screens.PlayScreen;
 
 public class Pather extends Game {
 	//Parameters for view dimensions and pixel per meter
-	public static final int V_WIDTH = 1080;
-	public static final int V_HEIGHT = 640;
-	public static final float PPM = 100f;
-
+	public static final int V_WIDTH = 640;
+	public static final int V_HEIGHT = 480;
+	public static final float PPM = 32; //32 pixels in the game world equal to one meter in real world for physics simulation purposes
+	public static final float SCALE = 2.0f;
 	//Bits to detect collisions, delete and add new ones as needed. The bits need to be n^2 numbers
 	public static final short NOTHING_BIT = 0; //
 	public static final short GROUND_BIT = 1;
@@ -26,10 +27,12 @@ public class Pather extends Game {
 	public static final short ENEMY_HEAD_BIT = 128;
 	public static final short ITEM_BIT = 256;
 	public static final short MARIO_HEAD_BIT = 512;
+	public static final short TRIGGER_BIT = 1024;
 
 
 	public SpriteBatch batch;
 	public static AssetManager manager;
+	//private GameStateManager gsm;
 
 	@Override
 	public void create () {
