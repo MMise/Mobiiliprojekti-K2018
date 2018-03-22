@@ -16,7 +16,7 @@ import pather.game.Screens.PlayScreen;
 import pather.game.Sprites.Brick;
 import pather.game.Sprites.Coin;
 import pather.game.Sprites.Enemy;
-import pather.game.Sprites.Goomba;
+import pather.game.Sprites.NotGoomba;
 import pather.game.Sprites.Turtle;
 
 import static pather.game.Pather.PPM;
@@ -26,7 +26,7 @@ import static pather.game.Pather.PPM;
 
 public class B2WorldCreator {
 
-    private Array<Goomba> goombas;
+    private Array<NotGoomba> goombas;
     private Array<Turtle> turtles;
 
     public B2WorldCreator(PlayScreen screen){
@@ -47,6 +47,7 @@ public class B2WorldCreator {
 
             shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
             fdef.shape = shape;
+            fdef.friction = 5;
             body.createFixture(fdef);
         }
         //create pipe bodies/fixtures
@@ -73,23 +74,16 @@ public class B2WorldCreator {
         }
 
         //create all goombas
-        goombas = new Array<Goomba>();
+        goombas = new Array<NotGoomba>();
         for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            goombas.add(new Goomba(screen, rect.getX() / PPM, rect.getY() / Pather.PPM));
-        }
-
-        turtles = new Array<Turtle>();
-        for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            turtles.add(new Turtle(screen, rect.getX() / PPM, rect.getY() / Pather.PPM));
+            goombas.add(new NotGoomba(screen, rect.getX() / PPM, rect.getY() / Pather.PPM));
         }
     }
 
     public Array<Enemy> getEnemies(){
         Array<Enemy> enemies = new Array<Enemy>();
         enemies.addAll(goombas);
-        enemies.addAll(turtles);
         return enemies;
     }
 }
