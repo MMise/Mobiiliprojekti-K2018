@@ -28,6 +28,8 @@ import pather.game.Sprites.Player;
 import pather.game.Tools.B2WorldCreator;
 import pather.game.Tools.WorldContactListener;
 
+import static pather.game.Sprites.Player.State.JUMPING;
+
 //This is our main play screen where all the game functionality happens
 
 public class PlayScreen implements Screen {
@@ -81,7 +83,7 @@ public class PlayScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Pather.PPM);
 
         //Box2D variables
-        world = new World(new Vector2(0, -10), true); //This creates a world where gravity works like on Earth
+        world = new World(new Vector2(0, -20), true); //This creates a world where gravity works like on Earth
         b2dr = new Box2DDebugRenderer();
         creator = new B2WorldCreator(this);
         player = new Player(this);
@@ -127,9 +129,9 @@ public class PlayScreen implements Screen {
         //TODO: Change this to reflect our touch screen controls in future
 
          if(player.currentState != Player.State.DEAD){
-                if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.getState() != JUMPING) {
                     //This makes jumping work like in the game Flappy Bird
-                    player.b2body.setLinearVelocity(new Vector2(player.b2body.getLinearVelocity().x, 10f));
+                    player.b2body.setLinearVelocity(new Vector2(player.b2body.getLinearVelocity().x, 12f));
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 7) {
                     player.b2body.setLinearVelocity(new Vector2(7f, player.b2body.getLinearVelocity().y));
