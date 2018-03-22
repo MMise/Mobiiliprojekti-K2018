@@ -16,12 +16,18 @@ public class PickableTileObject extends InteractiveTileObject {
         tileSet = map.getTileSets().getTileSet("fantasy-tileset"); //Change tileset name
         fixture.setUserData(this);
         fixture.setSensor(true);
-        setCategoryFilter(MainApp.TRIGGER_BIT); //Add this short to main class
+        setCategoryFilter(Pather.TRIGGER_BIT); //Add this short to main class
     }
 
+    @Override
+    public void onHeadHit(Player player) {
+
+    }
+
+    /*
     @Override
     public void onHit(Player player) {
         getCell().setTile(tileSet.getTile(tileIndex));
         //doStuff
-    }
+    }*/
 }

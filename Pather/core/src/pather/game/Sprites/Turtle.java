@@ -16,7 +16,7 @@ import pather.game.Pather;
 import pather.game.Screens.PlayScreen;
 
 //Another enemy example this time with more functionality, based on the Koopa from Super Mario Brothers by Brent Aureli
-//Delete if unused, see the Goomba class for more detailed comments
+//Delete if unused, see the NotGoomba class for more detailed comments
 
 public class Turtle extends Enemy {
     public static final int KICK_LEFT_SPEED = -2;

@@ -99,7 +99,7 @@ public class Player extends Sprite {
         //define mario in box2d
         defineMario();
         //set initial values for mario's location, width and height
-        setBounds(0, 0, 16 / Pather.PPM, 16 / Pather.PPM);
+        setBounds(0, 0, 32 / Pather.PPM, 32 / Pather.PPM);
         setRegion(characterStand);
     }
 
@@ -309,7 +309,7 @@ public class Player extends Sprite {
         //collision definitions
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6 / Pather.PPM);
+        shape.setRadius(16 / Pather.PPM);
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
                                 Pather.DANGER_ZONE_BIT |
@@ -320,6 +320,8 @@ public class Player extends Sprite {
                                 Pather.ITEM_BIT;
 
         fdef.shape = shape;
+        //fdef.density = 2f;
+        fdef.friction = 1f;
         b2body.createFixture(fdef).setUserData(this);
 
         //Our character has a small line above head so that it can hit objects with it's head
