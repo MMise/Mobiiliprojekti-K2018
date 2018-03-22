@@ -16,6 +16,7 @@ import pather.game.Screens.PlayScreen;
 import pather.game.Sprites.Brick;
 import pather.game.Sprites.Coin;
 import pather.game.Sprites.Enemy;
+import pather.game.Sprites.GroundTile;
 import pather.game.Sprites.NotGoomba;
 import pather.game.Sprites.Turtle;
 
@@ -39,16 +40,7 @@ public class B2WorldCreator {
         //the .get(x) -method finds the object layer in index x in the tiled filed.
         //create ground bodies/fixtures
         for(MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / PPM, (rect.getY() + rect.getHeight() / 2) / PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
-            fdef.shape = shape;
-            fdef.friction = 5;
-            body.createFixture(fdef);
+            new GroundTile(screen, object);
         }
         //create pipe bodies/fixtures
         for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){

@@ -34,7 +34,9 @@ public class WorldContactListener implements ContactListener {
             to our desired object class.
          */
         switch(cDef){
-            //case Pather.MARIO_HEAD_BIT | Pather.BRICK_BIT:
+            case Pather.PLAYER_BIT | Pather.WIN_BIT:
+                System.out.println("Winner is you!");
+                break;
             case Pather.PLAYER_BIT | Pather.DANGER_ZONE_BIT:
                 if(fixA.getFilterData().categoryBits == Pather.PLAYER_BIT) {
                     ((Player) fixA.getUserData()).killPlayer();
