@@ -1,4 +1,4 @@
-package mario.bros.Screens;
+package pather.game.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
