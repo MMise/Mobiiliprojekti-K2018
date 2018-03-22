@@ -244,7 +244,7 @@ public class Player extends Sprite {
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
                 Pather.DANGER_ZONE_BIT |
-                Pather.BRICK_BIT |
+                Pather.WIN_BIT |
                 Pather.ENEMY_BIT |
                 Pather.OBJECT_BIT |
                 Pather.ENEMY_HEAD_BIT |
@@ -279,7 +279,7 @@ public class Player extends Sprite {
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
                 Pather.DANGER_ZONE_BIT |
-                Pather.BRICK_BIT |
+                Pather.WIN_BIT |
                 Pather.ENEMY_BIT |
                 Pather.OBJECT_BIT |
                 Pather.ENEMY_HEAD_BIT |
@@ -313,7 +313,7 @@ public class Player extends Sprite {
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
                                 Pather.DANGER_ZONE_BIT |
-                                Pather.BRICK_BIT |
+                                Pather.WIN_BIT |
                                 Pather.ENEMY_BIT |
                                 Pather.OBJECT_BIT |
                                 Pather.ENEMY_HEAD_BIT |

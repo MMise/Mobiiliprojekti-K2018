@@ -48,6 +48,7 @@ public abstract class InteractiveTileObject {
 
         shape.setAsBox(bounds.getWidth() / 2 / Pather.PPM, bounds.getHeight() / 2 / Pather.PPM);
         fdef.shape = shape;
+        fdef.friction = 5f;
         fixture = body.createFixture(fdef);
     }
 

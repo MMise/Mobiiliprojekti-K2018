@@ -1,6 +1,5 @@
 package pather.game.Sprites;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.MapObject;
 
 import pather.game.Pather;
@@ -18,7 +17,7 @@ public class Brick extends InteractiveTileObject {
     public Brick(PlayScreen screen, MapObject object) {
         super(screen, object);
         fixture.setUserData(this);
-        setCategoryFilter(Pather.BRICK_BIT);
+        setCategoryFilter(Pather.WIN_BIT);
     }
 
     @Override

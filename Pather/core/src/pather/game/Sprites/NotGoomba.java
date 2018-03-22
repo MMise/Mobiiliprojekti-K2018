@@ -36,7 +36,7 @@ public class NotGoomba extends Enemy {
         setBounds(getX(), getY(), 32 / Pather.PPM, 32 / Pather.PPM);
         setToDestroy = false;
         destroyed = false;
-        this.velocity = new Vector2(0f, 10f);
+        this.velocity = new Vector2(0f, 13f);
     }
 
     public void update(float dt){
@@ -86,7 +86,7 @@ public class NotGoomba extends Enemy {
         fdef.filter.categoryBits = Pather.ENEMY_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
                                 Pather.DANGER_ZONE_BIT |
-                                Pather.BRICK_BIT |
+                                Pather.WIN_BIT |
                                 Pather.ENEMY_BIT |
                                 Pather.OBJECT_BIT |
                                 Pather.PLAYER_BIT;
