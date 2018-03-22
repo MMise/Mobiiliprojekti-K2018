@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="3" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="2">
+<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="3" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="3">
  <tileset firstgid="1" name="winzone_tileset" tilewidth="32" tileheight="32" tilecount="2" columns="2">
   <image source="winzone_tileset.png" width="64" height="32"/>
  </tileset>
@@ -17,7 +17,11 @@
   </data>
  </layer>
  <objectgroup name="Ground Layer">
-  <object id="1" x="0" y="608" width="96" height="32"/>
+  <object id="1" x="0" y="608" width="96" height="32">
+   <properties>
+    <property name="win" value=""/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="Object Layer"/>
  <objectgroup name="Danger Zone Layer"/>
