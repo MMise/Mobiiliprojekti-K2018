@@ -56,13 +56,17 @@ public class PlayScreen implements Screen {
 
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
+    float w, h;
 
     public PlayScreen(Pather game){
         atlas = new TextureAtlas("Mario_and_Enemies.pack"); //Pack all of our sprites into a single file
         this.game = game;
 
+        w = (float) Gdx.graphics.getWidth();
+        h = (float) Gdx.graphics.getHeight();
         //create cam to follow player through the world
         gamecam = new OrthographicCamera();
+        //gamecam.setToOrtho(false, w / Pather.SCALE, h / Pather.SCALE);
 
         //fitviewport maintains aspect ratio despite screen size
         gamePort = new FitViewport(Pather.V_WIDTH / Pather.PPM, Pather.V_HEIGHT / Pather.PPM, gamecam);
@@ -75,8 +79,6 @@ public class PlayScreen implements Screen {
         maploader = new TmxMapLoader();
         map = maploader.load("module1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Pather.PPM);
-
-
 
         //Box2D variables
         world = new World(new Vector2(0, -10), true); //This creates a world where gravity works like on Earth
@@ -127,13 +129,13 @@ public class PlayScreen implements Screen {
          if(player.currentState != Player.State.DEAD){
                 if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
                     //This makes jumping work like in the game Flappy Bird
-                    player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
+                    player.b2body.setLinearVelocity(new Vector2(player.b2body.getLinearVelocity().x, 10f));
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2) {
-                    player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 7) {
+                    player.b2body.setLinearVelocity(new Vector2(7f, player.b2body.getLinearVelocity().y));
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2) {
-                    player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+                if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -7) {
+                    player.b2body.setLinearVelocity(new Vector2(-7f, player.b2body.getLinearVelocity().y));
                 }
             }
         }
@@ -142,6 +144,7 @@ public class PlayScreen implements Screen {
     public void cameraUpdate(float dt){
         Vector3 position = gamecam.position;
         position.x = gamecam.position.x + (player.b2body.getPosition().x - gamecam.position.x) * .2f;
+        position.y = gamecam.position.y + (player.b2body.getPosition().y - gamecam.position.y) * .2f;
         gamecam.position.set(position);
         gamecam.update();
     }
@@ -157,7 +160,7 @@ public class PlayScreen implements Screen {
         //Set enemies active only if we come near enough
         for(Enemy enemy : creator.getEnemies()){
             enemy.update(dt);
-            if(enemy.getX() < player.getX() + 224 / Pather.PPM){
+            if(enemy.getX() < player.getX() + 576 / Pather.PPM){
                 enemy.b2body.setActive(true);
             }
         }
