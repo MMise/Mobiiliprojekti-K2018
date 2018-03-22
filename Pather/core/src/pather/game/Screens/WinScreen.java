@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import mario.bros.MainApp;
+import pather.game.Pather;
 
 /**
  * Created by Mikko on 22.3.2018.
