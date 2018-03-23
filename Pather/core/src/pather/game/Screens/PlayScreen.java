@@ -1,5 +1,6 @@
 package pather.game.Screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -39,6 +40,8 @@ import static pather.game.Sprites.Player.State.JUMPING;
 //This is our main play screen where all the game functionality happens
 
 public class PlayScreen implements Screen {
+
+    //TODO: pressing the back button should take you back to the menu
 
     private Pather game;
     private TextureAtlas atlas; //this contains all of our game sprites
@@ -211,6 +214,10 @@ public class PlayScreen implements Screen {
 
         //tell our renderer to draw only what can be seen on the screen
         renderer.setView(gamecam);
+
+        if(Gdx.input.isButtonPressed(Input.Keys.BACK)){
+            game.setScreen(new MainMenuScreen(game));
+        }
     }
 
     @Override
@@ -242,7 +249,6 @@ public class PlayScreen implements Screen {
         hud.stage.draw();
 
         controller.draw();
-
         if(gameOver()){
             game.setScreen(new GameOverScreen(game));
             dispose();

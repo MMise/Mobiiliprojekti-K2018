@@ -11,11 +11,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Controller {
-    Viewport viewport;
-    Stage stage;
-    boolean leftPressed = false, rightPressed = false, upPressed = false, upHeld = false;
-    OrthographicCamera camera;
-    final float scale = 2f;
+    private Viewport viewport;
+    private Stage stage;
+    private boolean leftPressed = false, rightPressed = false, upPressed = false, upHeld = false;
+    private OrthographicCamera camera;
+    private final float scale = 2f;
 
     public Controller(float screenWidth, float screenHeight){
         camera = new OrthographicCamera();

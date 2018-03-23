@@ -27,8 +27,8 @@ public class WinScreen implements Screen {
     public WinScreen(Game game){
         this.game = game;
 
-        viewport = new FitViewport(MainApp.V_WIDTH, MainApp.V_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, ((MainApp) game).batch);
+        viewport = new FitViewport(Pather.V_WIDTH, Pather.V_HEIGHT, new OrthographicCamera());
+        stage = new Stage(viewport, ((Pather) game).batch);
 
         Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), com.badlogic.gdx.graphics.Color.WHITE);
 
@@ -53,7 +53,7 @@ public class WinScreen implements Screen {
     @Override
     public void render(float delta) {
         if(Gdx.input.isTouched()){
-            game.setScreen(new PlayScreen((MainApp) game));
+            game.setScreen(new PlayScreen((Pather) game));
             dispose();
         }
         Gdx.gl.glClearColor(0,0,0,1);
