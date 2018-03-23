@@ -3,10 +3,10 @@ package pather.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import pather.game.Screens.PlayScreen;
+
+import pather.game.Screens.MainMenuScreen;
 
 
 public class Pather extends Game {
@@ -33,6 +33,7 @@ public class Pather extends Game {
 
 	public SpriteBatch batch;
 	public static AssetManager manager;
+	public MainMenuScreen mainMenuScreen;
 
 	@Override
 	public void create () {
@@ -47,7 +48,8 @@ public class Pather extends Game {
 		manager.load("path/to/audio.wav", Sound.class);
 		*/
 		manager.finishLoading();
-		setScreen(new PlayScreen(this));
+		mainMenuScreen = new MainMenuScreen(this);
+		setScreen(mainMenuScreen);
 	}
 
 	@Override
