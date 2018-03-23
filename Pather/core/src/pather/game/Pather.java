@@ -1,7 +1,7 @@
 package pather.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -11,16 +11,17 @@ import pather.game.Screens.PlayScreen;
 
 public class Pather extends Game {
 	//Parameters for view dimensions and pixel per meter
-	public static final int V_WIDTH = 640;
-	public static final int V_HEIGHT = 480;
-	public static final float PPM = 32; //32 pixels in the game world equal to one meter in real world for physics simulation purposes
-	public static final float SCALE = 2.0f;
+	public static final int V_WIDTH = 768;
+	public static final int V_HEIGHT = 432;
+	public static final float PPM = 32f;
+	public static final float SCALE = 2f;
+
 	//Bits to detect collisions, delete and add new ones as needed. The bits need to be n^2 numbers
 	public static final short NOTHING_BIT = 0; //
 	public static final short GROUND_BIT = 1;
 	public static final short PLAYER_BIT = 2;
 	public static final short WIN_BIT = 4;
-	public static final short DANGER_ZONE_BIT = 8;
+	public static final short DANGERZONE_BIT = 8;
 	public static final short DESTROYED_BIT = 16;
 	public static final short OBJECT_BIT = 32;
 	public static final short ENEMY_BIT = 64;
@@ -32,10 +33,11 @@ public class Pather extends Game {
 
 	public SpriteBatch batch;
 	public static AssetManager manager;
-	//private GameStateManager gsm;
 
 	@Override
 	public void create () {
+		if(Gdx.files.local("temp.tmx").exists()) Gdx.files.local("temp.tmx").delete();
+
 		batch = new SpriteBatch();
 		manager = new AssetManager();
 		manager.load("audio/sounds/playerIsKill.wav", Sound.class);

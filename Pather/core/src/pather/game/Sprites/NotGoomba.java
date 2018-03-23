@@ -85,7 +85,7 @@ public class NotGoomba extends Enemy {
         shape.setRadius(16 / Pather.PPM);
         fdef.filter.categoryBits = Pather.ENEMY_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
-                                Pather.DANGER_ZONE_BIT |
+                                Pather.DANGERZONE_BIT |
                                 Pather.WIN_BIT |
                                 Pather.ENEMY_BIT |
                                 Pather.OBJECT_BIT |

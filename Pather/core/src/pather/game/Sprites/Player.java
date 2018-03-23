@@ -42,7 +42,6 @@ public class Player extends Sprite {
     private Animation<TextureRegion> characterRun;
     private TextureRegion characterJump;
     private TextureRegion characterDead;
-
     private TextureRegion bigMarioStand;
     private TextureRegion bigMarioJump;
     private Animation<TextureRegion> bigMarioRun;
@@ -63,7 +62,6 @@ public class Player extends Sprite {
         previousState = State.STANDING;
         stateTimer = 0;
         runningRight = true;
-
 
         //get run animation frames
         //All of our Texture Region definitions must be changed to reflect our character regions and sizes
@@ -106,7 +104,7 @@ public class Player extends Sprite {
     public void update(float dt){
         if(marioIsBig){
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 - 6 / Pather.PPM);
-        }else{
+        }else {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         }
         setRegion(getFrame(dt));
@@ -115,6 +113,10 @@ public class Player extends Sprite {
         }
         if(timeToRedefineMario){
             redefineMario();
+        }
+        if(b2body.getPosition().y < 0 && !marioIsDead) { //You die if you fall off the map
+            b2body.setLinearVelocity(b2body.getLinearVelocity().x, 0);
+            kill();
         }
     }
 
@@ -187,17 +189,6 @@ public class Player extends Sprite {
         }
     }
 
-    public void killPlayer(){
-        Pather.manager.get("audio/sounds/playerIsKill.wav", Sound.class).play();
-        marioIsDead = true;
-        Filter filter = new Filter();
-        filter.maskBits = Pather.NOTHING_BIT;
-        for (Fixture fixture : b2body.getFixtureList()) {
-            fixture.setFilterData(filter);
-        }
-        b2body.applyLinearImpulse(new Vector2(10f, 10f), b2body.getWorldCenter(), true);
-    }
-
     public boolean isBig(){
         return marioIsBig;
     }
@@ -221,11 +212,20 @@ public class Player extends Sprite {
                 setBounds(getX(), getY(), getWidth(), getHeight() / 2);
                 //Pather.manager.get("audio/sounds/powerdown.wav", Sound.class).play();
             } else {
-                //Pather.manager.get("audio/music/mario_music.ogg", Music.class).stop();
-                //
-                killPlayer();
+                kill();
             }
         }
+    }
+
+    public void kill() {
+        //Pather.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
+        marioIsDead = true;
+        Filter filter = new Filter();
+        filter.maskBits = Pather.NOTHING_BIT;
+        for (Fixture fixture : b2body.getFixtureList()) {
+            fixture.setFilterData(filter);
+        }
+        b2body.applyLinearImpulse(new Vector2(10f, 10f), b2body.getWorldCenter(), true);
     }
 
     //following two methods probably aren't needed
@@ -240,10 +240,10 @@ public class Player extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6 / Pather.PPM);
+        shape.setRadius(16 / Pather.PPM);
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
-                Pather.DANGER_ZONE_BIT |
+                Pather.DANGERZONE_BIT |
                 Pather.WIN_BIT |
                 Pather.ENEMY_BIT |
                 Pather.OBJECT_BIT |
@@ -254,6 +254,21 @@ public class Player extends Sprite {
         b2body.createFixture(fdef).setUserData(this);
         shape.setPosition(new Vector2(0, -14 / Pather.PPM));
         b2body.createFixture(fdef).setUserData(this);
+
+        //TODO attempting to mutate mario by giving him feet
+        EdgeShape feet = new EdgeShape();
+        feet.set(new Vector2(-16 / Pather.PPM, -20 / Pather.PPM), new Vector2(16 / Pather.PPM, -20 / Pather.PPM));
+        fdef.filter.categoryBits = Pather.PLAYER_BIT;
+        fdef.filter.maskBits =  Pather.GROUND_BIT |
+                Pather.DANGERZONE_BIT |
+                Pather.WIN_BIT |
+                Pather.OBJECT_BIT |
+                Pather.ITEM_BIT;
+
+        fdef.shape = feet;
+
+        b2body.createFixture(fdef).setUserData(this);
+        // /TODO
 
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-2 / Pather.PPM, 6 / Pather.PPM), new Vector2(2 / Pather.PPM, 6 / Pather.PPM));
@@ -275,10 +290,10 @@ public class Player extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6 / Pather.PPM);
+        shape.setRadius(16 / Pather.PPM);
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
-                Pather.DANGER_ZONE_BIT |
+                Pather.DANGERZONE_BIT |
                 Pather.WIN_BIT |
                 Pather.ENEMY_BIT |
                 Pather.OBJECT_BIT |
@@ -287,6 +302,21 @@ public class Player extends Sprite {
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
+
+        //TODO attempting to mutate mario by giving him feet
+        EdgeShape feet = new EdgeShape();
+        feet.set(new Vector2(-16 / Pather.PPM, -16 / Pather.PPM), new Vector2(16 / Pather.PPM, -16 / Pather.PPM));
+        fdef.filter.categoryBits = Pather.PLAYER_BIT;
+        fdef.filter.maskBits =  Pather.GROUND_BIT |
+                Pather.DANGERZONE_BIT |
+                Pather.WIN_BIT |
+                Pather.OBJECT_BIT |
+                Pather.ITEM_BIT;
+
+        fdef.shape = feet;
+
+        b2body.createFixture(fdef).setUserData(this);
+        // /TODO
 
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-2 / Pather.PPM, 6 / Pather.PPM), new Vector2(2 / Pather.PPM, 6 / Pather.PPM));
@@ -312,7 +342,7 @@ public class Player extends Sprite {
         shape.setRadius(16 / Pather.PPM);
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
-                                Pather.DANGER_ZONE_BIT |
+                                Pather.DANGERZONE_BIT |
                                 Pather.WIN_BIT |
                                 Pather.ENEMY_BIT |
                                 Pather.OBJECT_BIT |
@@ -320,11 +350,25 @@ public class Player extends Sprite {
                                 Pather.ITEM_BIT;
 
         fdef.shape = shape;
-        //fdef.density = 2f;
-        fdef.friction = 1f;
+
         b2body.createFixture(fdef).setUserData(this);
 
-        //Our character has a small line above head so that it can hit objects with it's head
+        //TODO attempting to mutate mario by giving him feet
+        EdgeShape feet = new EdgeShape();
+        feet.set(new Vector2(-16 / Pather.PPM, -16 / Pather.PPM), new Vector2(16 / Pather.PPM, -16 / Pather.PPM));
+        fdef.filter.categoryBits = Pather.PLAYER_BIT;
+        fdef.filter.maskBits =  Pather.GROUND_BIT |
+                Pather.WIN_BIT |
+                Pather.OBJECT_BIT |
+                Pather.ITEM_BIT;
+
+        fdef.shape = feet;
+        fdef.friction = 0.1f;
+
+        b2body.createFixture(fdef).setUserData(this);
+        // /TODO
+
+        //Our character has a small line above head so that it can hit objects with its head
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-2 / Pather.PPM, 6 / Pather.PPM), new Vector2(2 / Pather.PPM, 6 / Pather.PPM));
         fdef.filter.categoryBits = Pather.MARIO_HEAD_BIT;

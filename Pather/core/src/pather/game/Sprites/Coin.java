@@ -23,7 +23,7 @@ public class Coin extends InteractiveTileObject {
         //Change this to reflect our tileset
         tileSet = map.getTileSets().getTileSet("tileset_gutter");
         fixture.setUserData(this);
-        setCategoryFilter(Pather.DANGER_ZONE_BIT);
+        setCategoryFilter(Pather.DANGERZONE_BIT);
     }
 
     @Override
@@ -40,8 +40,8 @@ public class Coin extends InteractiveTileObject {
             }else{
                 //Pather.manager.get("audio/sounds/coin.wav", Sound.class).play();
             }
+            getCell().setTile(tileSet.getTile(BLANK_COIN));
+            Hud.addScore(100);
         }
-        getCell().setTile(tileSet.getTile(BLANK_COIN));
-        Hud.addScore(100);
     }
 }

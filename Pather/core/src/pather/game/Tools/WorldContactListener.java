@@ -37,11 +37,11 @@ public class WorldContactListener implements ContactListener {
             case Pather.PLAYER_BIT | Pather.WIN_BIT:
                 System.out.println("Winner is you!");
                 break;
-            case Pather.PLAYER_BIT | Pather.DANGER_ZONE_BIT:
+            case Pather.PLAYER_BIT | Pather.DANGERZONE_BIT:
                 if(fixA.getFilterData().categoryBits == Pather.PLAYER_BIT) {
-                    ((Player) fixA.getUserData()).killPlayer();
+                    ((Player) fixA.getUserData()).kill();
                 }else{
-                    ((Player) fixB.getUserData()).killPlayer();
+                    ((Player) fixB.getUserData()).kill();
                 }
                 break;
             case Pather.ENEMY_HEAD_BIT | Pather.PLAYER_BIT:

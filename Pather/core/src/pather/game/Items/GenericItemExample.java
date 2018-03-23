@@ -34,7 +34,7 @@ public class GenericItemExample extends Item {
                                 Pather.OBJECT_BIT |
                                 Pather.GROUND_BIT |
                                 Pather.WIN_BIT |
-                                Pather.DANGER_ZONE_BIT;
+                                Pather.DANGERZONE_BIT;
         //Above object are what the item can collide with
 
         fdef.shape = shape;

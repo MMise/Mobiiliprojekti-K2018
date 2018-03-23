@@ -3,6 +3,7 @@ package pather.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,14 +11,18 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Path;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import pather.game.Controller;
 import pather.game.Items.GenericItemExample;
 import pather.game.Items.Item;
 import pather.game.Items.ItemDef;
@@ -26,6 +31,7 @@ import pather.game.Scenes.Hud;
 import pather.game.Sprites.Enemy;
 import pather.game.Sprites.Player;
 import pather.game.Tools.B2WorldCreator;
+import pather.game.Tools.MapEncoder;
 import pather.game.Tools.WorldContactListener;
 
 import static pather.game.Sprites.Player.State.JUMPING;
@@ -58,28 +64,47 @@ public class PlayScreen implements Screen {
 
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
-    float w, h;
+    private float w, h;
+
+    private Controller controller;
 
     public PlayScreen(Pather game){
+        //Tilesetit on oltava saatavilla lokaalissa
+        Gdx.files.internal("tileset_gutter.png").copyTo(Gdx.files.local("tileset_gutter.png"));
+        Gdx.files.internal("sci-fi-platformer-tiles-32x32-extension.png").copyTo(Gdx.files.local("sci-fi-platformer-tiles-32x32-extension.png"));
+        Gdx.files.internal("steampunk_tiles.png").copyTo(Gdx.files.local("steampunk_tiles.png"));
+        Gdx.files.internal("sheet1.png").copyTo(Gdx.files.local("sheet1.png"));
+        Gdx.files.internal("winzone_tileset.png").copyTo(Gdx.files.local("winzone_tileset.png"));
+
         atlas = new TextureAtlas("Mario_and_Enemies.pack"); //Pack all of our sprites into a single file
         this.game = game;
 
         w = (float) Gdx.graphics.getWidth();
         h = (float) Gdx.graphics.getHeight();
+
         //create cam to follow player through the world
         gamecam = new OrthographicCamera();
-        //gamecam.setToOrtho(false, w / Pather.SCALE, h / Pather.SCALE);
 
         //fitviewport maintains aspect ratio despite screen size
-        gamePort = new FitViewport(Pather.V_WIDTH / Pather.PPM, Pather.V_HEIGHT / Pather.PPM, gamecam);
+        gamePort = new StretchViewport(Pather.V_WIDTH / Pather.PPM, Pather.V_HEIGHT / Pather.PPM, gamecam);
 
         //create hud for score, timer etc
         hud = new Hud(game.batch);
 
         //load the map and setup map renderer.
-        //TODO: Jylkkä plz work your level building magic here
-        maploader = new TmxMapLoader();
-        map = maploader.load("module1.tmx");
+        maploader = new TmxMapLoader(new LocalFileHandleResolver()); //Levels are generated in local memory
+        //maploader = new TmxMapLoader();
+        if(!Gdx.files.local("temp.tmx").exists()) {
+            MapEncoder encoder = new MapEncoder();
+
+            //TODO modules to be loaded
+            encoder.decode("module1");
+            encoder.decode("module2");
+            encoder.decode("module3");
+
+            encoder.encode();
+        }
+        map = maploader.load("temp.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Pather.PPM);
 
         //Box2D variables
@@ -99,6 +124,8 @@ public class PlayScreen implements Screen {
 
         items = new Array<Item>();
         itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
+
+        controller = new Controller(w, h); //Create touchscreen controls
     }
 
     public void spawnItem(ItemDef idef){
@@ -126,24 +153,29 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float dt) {
 
-        //TODO: Change this to reflect our touch screen controls in future
+        //TODO: Jumping is now allowed when vertical velocity is 0.
+        //This can lead to exploits, implement a method to check for ground in the future
 
          if(player.currentState != Player.State.DEAD){
-                if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.getState() != JUMPING) {
-                    //This makes jumping work like in the game Flappy Bird
+                if (    Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.b2body.getLinearVelocity().y == 0 ||
+                        controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 ) {
                     player.b2body.setLinearVelocity(new Vector2(player.b2body.getLinearVelocity().x, 12f));
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 7) {
-                    player.b2body.setLinearVelocity(new Vector2(7f, player.b2body.getLinearVelocity().y));
+                if (    Gdx.input.isKeyPressed(Input.Keys.RIGHT) ||
+                        controller.isRightPressed() ) {
+                    player.b2body.applyLinearImpulse(new Vector2(1f, 0), player.b2body.getWorldCenter(), true);
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -7) {
-                    player.b2body.setLinearVelocity(new Vector2(-7f, player.b2body.getLinearVelocity().y));
+                if (    Gdx.input.isKeyPressed(Input.Keys.LEFT) ||
+                        controller.isLeftPressed() ) {
+                    player.b2body.applyLinearImpulse(new Vector2(-1f, 0), player.b2body.getWorldCenter(), true);
                 }
-            }
-        }
+                float speed = player.b2body.getLinearVelocity().x;
+                player.b2body.setLinearVelocity(Math.min(Math.abs(speed), 6f)*(speed == 0f ? 1 : Math.abs(speed)/speed), player.b2body.getLinearVelocity().y);
+         }
+    }
 
     //This adds slight linear interpolation to camera movement
-    public void cameraUpdate(float dt){
+    public void cameraUpdate(float dt) {
         Vector3 position = gamecam.position;
         position.x = gamecam.position.x + (player.b2body.getPosition().x - gamecam.position.x) * .2f;
         position.y = gamecam.position.y + (player.b2body.getPosition().y - gamecam.position.y) * .2f;
@@ -208,6 +240,9 @@ public class PlayScreen implements Screen {
         game.batch.end();
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+
+        controller.draw();
+
         if(gameOver()){
             game.setScreen(new GameOverScreen(game));
             dispose();
