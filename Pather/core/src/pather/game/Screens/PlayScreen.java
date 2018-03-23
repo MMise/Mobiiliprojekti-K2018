@@ -249,6 +249,10 @@ public class PlayScreen implements Screen {
         hud.stage.draw();
 
         controller.draw();
+        if(gameOver()){
+            game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
     }
 
     //The game over screen appears after three seconds of dying
