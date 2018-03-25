@@ -19,9 +19,6 @@ public class MainActivity extends AppCompatActivity{
     private Handler handler;
     private Runnable runnable;
 
-    Thread applicationThread = null;
-    boolean threadRunning = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
