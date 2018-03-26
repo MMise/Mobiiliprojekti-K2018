@@ -64,7 +64,9 @@ public class Player extends Sprite {
         }
         characterRun = new Animation<TextureRegion>(0.1f, frames);
 
-        //create texture regions for Player standing
+	characterJump = new TextureRegion(screen.getAtlas().findRegion("character_running), 320, 0, 64, 64);
+        characterDead = new TextureRegion(screen.getAtlas().findRegion("character_running), 384, 0, 64, 64);
+    	//create texture regions for Player standing
         characterStand = new TextureRegion(screen.getAtlas().findRegion("character_stand"), 0,0, 64, 64);
 
         //define player in box2d
@@ -146,7 +148,7 @@ public class Player extends Sprite {
         if(enemy instanceof Turtle && ((Turtle) enemy).getCurrentState() == Turtle.State.STANDING_SHELL){
             ((Turtle) enemy).kick(this.getX() <= enemy.getX() ? Turtle.KICK_RIGHT_SPEED : Turtle.KICK_LEFT_SPEED);
         }else{
-			kill();
+	    kill();
         }
     }
 
@@ -167,7 +169,7 @@ public class Player extends Sprite {
 
 
     //This is needed
-    public void defineMario(){
+    public void definePlayer(){
         //body definitions
         BodyDef bdef = new BodyDef();
         bdef.position.set(64 / Pather.PPM, 96 / Pather.PPM);
@@ -177,11 +179,10 @@ public class Player extends Sprite {
         //collision definitions
         FixtureDef fdef = new FixtureDef();
         
-		PolygonShape shape = new PolygonShape();
-		//creates a character hitbox that is 2 tiles high and 1 tile wide (64x32 px)
-		shape.setAsBox(32 / 2 / Pather.PPM, 64 / 2 / Pather.PPM);
-		
-		fdef.filter.categoryBits = Pather.PLAYER_BIT;
+	PolygonShape shape = new PolygonShape();
+	//creates a character hitbox that is 2 tiles high and 1 tile wide (64x32 px)
+	shape.setAsBox(32 / 2 / Pather.PPM, 64 / 2 / Pather.PPM);
+	fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
                 Pather.DANGERZONE_BIT |
                 Pather.WIN_BIT |
@@ -190,30 +191,30 @@ public class Player extends Sprite {
                 Pather.ENEMY_HEAD_BIT |
                 Pather.ITEM_BIT;
 		
-		fdef.shape = shape;
-		b2body.createFixture(fdef).setUserData(this);
+	fdef.shape = shape;
+	b2body.createFixture(fdef).setUserData(this);
 		
         //TODO attempting to mutate mario by giving him feet
         EdgeShape feet = new EdgeShape();
         feet.set(new Vector2(-16 / Pather.PPM, -16 / Pather.PPM), new Vector2(16 / Pather.PPM, -16 / Pather.PPM));
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
-		fdef.filer.maskBits = Pather.GROUND_BIT |
+	fdef.filer.maskBits = Pather.GROUND_BIT |
 			Pather.WIN_BIT |
 			Pather.OBJECT_BIT |
 			Pather.ITEM_BIT;
 			
         fdef.shape = feet;
-		fdef.friction = 0.1f;
+	fdef.friction = 0.1f;
 
         b2body.createFixture(fdef).setUserData(this);
 		
-		//Our character has a small line above head so that it can hit objects with its head
-		EdgeShape head = new EdgeShape();
-		head.set(new Vector2(-2 / Pather.PPM, 6 / Pather.PPM), new Vector2(2 / Pather.PPM, 6 / Pather.PPM));
-		fdef.filter.categoryBits = Pather.MARIO_HEAD_BIT;
-		fdef.shape = head;
-		fdef.isSensor = true;
+	//Our character has a small line above head so that it can hit objects with its head
+	EdgeShape head = new EdgeShape();
+	head.set(new Vector2(-2 / Pather.PPM, 6 / Pather.PPM), new Vector2(2 / Pather.PPM, 6 / Pather.PPM));
+	fdef.filter.categoryBits = Pather.MARIO_HEAD_BIT;
+	fdef.shape = head;
+	fdef.isSensor = true;
 
-		b2body.createFixture(fdef).setUserData(this);
+	b2body.createFixture(fdef).setUserData(this);
     }
 }
