@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="31">
+<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="48">
  <tileset firstgid="1" name="sheet1" tilewidth="32" tileheight="32" tilecount="64" columns="8">
   <image source="sheet1.png" width="256" height="256"/>
  </tileset>
@@ -61,27 +61,23 @@
   <object id="7" x="704" y="128" width="256" height="160"/>
   <object id="10" x="1440" y="608" width="160" height="32"/>
   <object id="11" x="0" y="160" width="224" height="32"/>
+  <object id="34" x="352" y="96" width="128" height="32"/>
+  <object id="35" x="256" y="224" width="32" height="32"/>
+  <object id="36" x="352" y="288" width="32" height="32"/>
+  <object id="37" x="448" y="352" width="32" height="32"/>
+  <object id="38" x="576" y="416" width="96" height="32"/>
+  <object id="39" x="448" y="480" width="96" height="32"/>
+  <object id="40" x="320" y="544" width="96" height="32"/>
+  <object id="41" x="160" y="544" width="96" height="32"/>
+  <object id="42" x="1056" y="384" width="32" height="32"/>
+  <object id="43" x="1184" y="384" width="32" height="32"/>
+  <object id="44" x="1312" y="384" width="32" height="32"/>
+  <object id="45" x="1056" y="128" width="32" height="32"/>
+  <object id="46" x="1184" y="128" width="32" height="32"/>
+  <object id="47" x="1312" y="128" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="Object Layer">
-  <object id="12" x="160" y="544" width="96" height="32"/>
-  <object id="14" x="320" y="544" width="96" height="32"/>
-  <object id="15" x="448" y="480" width="96" height="32"/>
-  <object id="16" x="576" y="416" width="96" height="32"/>
-  <object id="17" x="448" y="352" width="32" height="32"/>
-  <object id="18" x="352" y="288" width="32" height="32"/>
-  <object id="19" x="256" y="224" width="32" height="32"/>
-  <object id="20" x="352" y="96" width="128" height="32"/>
-  <object id="21" x="1056" y="384" width="32" height="32"/>
-  <object id="22" x="1184" y="384" width="32" height="32"/>
-  <object id="23" x="1312" y="384" width="32" height="32"/>
-  <object id="24" x="1312" y="128" width="32" height="32"/>
-  <object id="25" x="1184" y="128" width="32" height="32"/>
-  <object id="26" x="1056" y="128" width="32" height="32"/>
- </objectgroup>
+ <objectgroup name="Object Layer"/>
  <objectgroup name="Danger Zone Layer"/>
  <objectgroup name="Powerup Layer"/>
- <objectgroup name="EnemyType1 Layer">
-  <object id="28" x="192" y="512" width="32" height="32"/>
-  <object id="29" x="352" y="512" width="32" height="32"/>
- </objectgroup>
+ <objectgroup name="EnemyType1 Layer"/>
 </map>
