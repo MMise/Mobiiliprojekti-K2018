@@ -23,7 +23,7 @@ import pather.game.Sprites.Turtle;
 
 import static pather.game.Pather.PPM;
 
-//This is a tool to create our levels from Tiled files, built open Brent Aureli's example
+//This is a tool to create our levels from Tiled files, built upon Brent Aureli's example
 //TODO: Integrate Jylkkä's dynamic world builder
 
 public class B2WorldCreator {
@@ -52,6 +52,7 @@ public class B2WorldCreator {
             body = world.createBody(bdef);
 
             shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
+            fdef.friction = 5f;
             fdef.shape = shape;
             fdef.filter.categoryBits = Pather.OBJECT_BIT;
             body.createFixture(fdef);
