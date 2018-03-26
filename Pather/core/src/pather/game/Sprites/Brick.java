@@ -6,6 +6,10 @@ import pather.game.Pather;
 import pather.game.Scenes.Hud;
 import pather.game.Screens.PlayScreen;
 
+/**
+ * Created by OMISTAJ on 16.3.2018.
+ */
+
 //Example on the breakable brick object in Super Mario Bros. Originally by Brent Aureli
 
 public class Brick extends InteractiveTileObject {
@@ -17,7 +21,7 @@ public class Brick extends InteractiveTileObject {
     }
 
     @Override
-    public void onHeadHit(Player player) {
+    public void onHit(Player player) {
 
     }
 }

@@ -27,7 +27,7 @@ public class Coin extends InteractiveTileObject {
     }
 
     @Override
-    public void onHeadHit(Player player) {
+    public void onHit(Player player) {
         if(getCell().getTile().getId() == BLANK_COIN){
             //This happens if the player hits a ?-brick again
             //Pather.manager.get("audio/sounds/bump.wav", Sound.class).play();

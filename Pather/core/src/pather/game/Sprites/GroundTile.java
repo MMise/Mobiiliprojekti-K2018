@@ -29,7 +29,7 @@ public class GroundTile extends InteractiveTileObject {
     }
 
     @Override
-    public void onHeadHit(Player player) {
+    public void onHit(Player player) {
 
     }
 }

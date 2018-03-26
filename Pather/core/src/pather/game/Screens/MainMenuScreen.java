@@ -29,6 +29,8 @@ public class MainMenuScreen implements Screen {
     private final Image shopButton;
     private final Image exitButton;
 
+    private PlayScreen playScreen;
+
     public MainMenuScreen(final Game game){
         this.game = game;
 
@@ -55,12 +57,12 @@ public class MainMenuScreen implements Screen {
         playButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                game.setScreen(new PlayScreen((Pather) game));
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                setPlayScreen();
             }
         });
 
@@ -72,26 +74,31 @@ public class MainMenuScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                Gdx.app.exit();
             }
         });
 
         shopButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                showShop();
-                shopButton.setVisible(false);
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-
+                showShop();
+                shopButton.setVisible(false);
             }
         });
 
         stage.addActor(playButton);
         stage.addActor(exitButton);
         stage.addActor(shopButton);
+    }
+
+    public void setPlayScreen(){
+        playScreen = new PlayScreen((Pather) game);
+        game.setScreen(playScreen);
     }
 
     @Override
@@ -153,6 +160,6 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }

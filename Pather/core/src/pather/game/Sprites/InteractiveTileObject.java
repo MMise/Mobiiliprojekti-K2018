@@ -53,7 +53,7 @@ public abstract class InteractiveTileObject {
     }
 
     //this happens when the player hits our object from below
-    public abstract void onHeadHit(Player player);
+    public abstract void onHit(Player player);
 
     //this is used to set the object's category bits = what kind of collidable object this is
     public void setCategoryFilter(short filterBit){

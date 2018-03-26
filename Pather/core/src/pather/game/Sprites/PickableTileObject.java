@@ -20,7 +20,7 @@ public class PickableTileObject extends InteractiveTileObject {
     }
 
     @Override
-    public void onHeadHit(Player player) {
+    public void onHit(Player player) {
 
     }
 
