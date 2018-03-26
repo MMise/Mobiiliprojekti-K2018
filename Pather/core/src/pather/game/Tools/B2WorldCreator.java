@@ -54,10 +54,11 @@ public class B2WorldCreator {
 
             shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
             fdef.shape = shape;
+			fdef.friction = 5f
             fdef.filter.categoryBits = Pather.OBJECT_BIT;
             body.createFixture(fdef);
         }
-        //create brick bodies/fixtures
+        //create powerups
         for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
             new PickableTileObject(screen, object);
         }
