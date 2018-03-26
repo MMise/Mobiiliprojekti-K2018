@@ -25,6 +25,7 @@ public class Controller {
         viewport = new FitViewport(screenWidth, screenHeight, camera);
         stage = new Stage(viewport);
         input.setInputProcessor(stage);
+        input.setCatchBackKey(true);
 
         final Image input_jump = new Image(new Texture(Gdx.files.internal("jump.png")));
         final Image input_arrows = new Image(new Texture(Gdx.files.internal("arrows.png")));

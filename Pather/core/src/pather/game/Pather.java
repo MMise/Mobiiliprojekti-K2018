@@ -44,7 +44,7 @@ public class Pather extends Game {
 		manager.load("audio/sounds/playerIsKill.wav", Sound.class);
 		//This is how you load sound files into memory
 
-		manager.load("audio/music/africa.wav", Music.class);
+		//manager.load("audio/music/africa.wav", Music.class);
 		//manager.load("path/to/audio.wav", Sound.class);
 
 		manager.finishLoading();
@@ -55,7 +55,6 @@ public class Pather extends Game {
 	@Override
 	public void render () {
 		super.render();
-
 	}
 
 	@Override

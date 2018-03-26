@@ -163,6 +163,7 @@ public class PlayScreen implements Screen {
         //This can lead to exploits, implement a method to check for ground in the future
         if(Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
             game.setScreen(new MainMenuScreen(game));
+            Gdx.app.log("PlayScreen", "BACK PRESSED");
         }
 
         if(player.currentState != Player.State.DEAD){
@@ -220,10 +221,6 @@ public class PlayScreen implements Screen {
 
         //tell our renderer to draw only what can be seen on the screen
         renderer.setView(gamecam);
-
-        if(Gdx.input.isButtonPressed(Input.Keys.BACK)){
-            game.setScreen(new MainMenuScreen(game));
-        }
     }
 
     @Override

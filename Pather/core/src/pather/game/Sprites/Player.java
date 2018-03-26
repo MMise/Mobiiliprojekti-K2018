@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
@@ -64,10 +65,10 @@ public class Player extends Sprite {
         }
         characterRun = new Animation<TextureRegion>(0.1f, frames);
 
-	characterJump = new TextureRegion(screen.getAtlas().findRegion("character_running), 320, 0, 64, 64);
-        characterDead = new TextureRegion(screen.getAtlas().findRegion("character_running), 384, 0, 64, 64);
-    	//create texture regions for Player standing
-        characterStand = new TextureRegion(screen.getAtlas().findRegion("character_stand"), 0,0, 64, 64);
+        characterJump = new TextureRegion(screen.getAtlas().findRegion("character_running"), 320, 0, 64, 64);
+        characterDead = new TextureRegion(screen.getAtlas().findRegion("character_running"), 384, 0, 64, 64);
+        //create texture regions for Player standing
+        characterStand = new TextureRegion(screen.getAtlas().findRegion("character_standing"), 0,0, 64, 64);
 
         //define player in box2d
         definePlayer();
@@ -154,7 +155,7 @@ public class Player extends Sprite {
 
     public void kill() {
         Pather.manager.get("audio/sounds/playerIsKill.wav", Sound.class).play();
-        playaerIsDead = true;
+        playerIsDead = true;
         Filter filter = new Filter();
         filter.maskBits = Pather.NOTHING_BIT;
         for (Fixture fixture : b2body.getFixtureList()) {
@@ -198,7 +199,7 @@ public class Player extends Sprite {
         EdgeShape feet = new EdgeShape();
         feet.set(new Vector2(-16 / Pather.PPM, -16 / Pather.PPM), new Vector2(16 / Pather.PPM, -16 / Pather.PPM));
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
-	fdef.filer.maskBits = Pather.GROUND_BIT |
+	fdef.filter.maskBits = Pather.GROUND_BIT |
 			Pather.WIN_BIT |
 			Pather.OBJECT_BIT |
 			Pather.ITEM_BIT;

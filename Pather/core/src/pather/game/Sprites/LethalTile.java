@@ -23,7 +23,7 @@ public class LethalTile extends InteractiveTileObject {
     }
 
     @Override
-    public void onHeadHit(Player player) {
+    public void onHit(Player player) {
 
     }
 }
