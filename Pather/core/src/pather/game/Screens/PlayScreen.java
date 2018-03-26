@@ -66,6 +66,7 @@ public class PlayScreen implements Screen {
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
     private float w, h;
+    private float gravity = -20;
 
     private Controller controller;
 
@@ -77,7 +78,7 @@ public class PlayScreen implements Screen {
         Gdx.files.internal("sheet1.png").copyTo(Gdx.files.local("sheet1.png"));
         Gdx.files.internal("winzone_tileset.png").copyTo(Gdx.files.local("winzone_tileset.png"));
 
-        atlas = new TextureAtlas("packed_gfx.pack"); //Pack all of our sprites into a single file
+        atlas = new TextureAtlas("Mario_and_Enemies.pack"); //Pack all of our sprites into a single file
         this.game = game;
 
         w = (float) Gdx.graphics.getWidth();
@@ -109,7 +110,7 @@ public class PlayScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Pather.PPM);
 
         //Box2D variables
-        world = new World(new Vector2(0, -20), true); //This creates a world where gravity works like on Earth
+        world = new World(new Vector2(0, gravity), true); //This creates a world where gravity works like on Earth
         b2dr = new Box2DDebugRenderer();
         creator = new B2WorldCreator(this);
         player = new Player(this);
@@ -266,6 +267,10 @@ public class PlayScreen implements Screen {
             return true;
         }
         return false;
+    }
+
+    public void setGravity(float value){
+        gravity = value;
     }
 
     @Override

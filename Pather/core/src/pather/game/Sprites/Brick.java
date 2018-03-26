@@ -22,6 +22,13 @@ public class Brick extends InteractiveTileObject {
 
     @Override
     public void onHit(Player player) {
-
+        if(player.isBig()) {
+            setCategoryFilter(Pather.DESTROYED_BIT);
+            getCell().setTile(null);
+            Hud.addScore(200);
+            //Pather.manager.get("audio/sounds/breakblock.wav", Sound.class).play();
+        }else{
+            //Pather.manager.get("audio/sounds/bump.wav", Sound.class).play();
+        }
     }
 }

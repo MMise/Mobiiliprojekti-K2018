@@ -44,7 +44,7 @@ public class GenericItemExample extends Item {
     @Override
     public void use(Player player) {
         destroy();
-        System.out.println("Power up was picked up");
+        player.grow(); //Change these to reflect the items effects
     }
 
     @Override
