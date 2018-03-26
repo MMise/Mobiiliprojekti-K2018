@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import static com.badlogic.gdx.Gdx.input;
+
 public class Controller {
     private Viewport viewport;
     private Stage stage;
@@ -22,7 +24,8 @@ public class Controller {
 
         viewport = new FitViewport(screenWidth, screenHeight, camera);
         stage = new Stage(viewport);
-        Gdx.input.setInputProcessor(stage);
+        input.setInputProcessor(stage);
+        input.setCatchBackKey(true);
 
         final Image input_jump = new Image(new Texture(Gdx.files.internal("jump.png")));
         final Image input_arrows = new Image(new Texture(Gdx.files.internal("arrows.png")));
