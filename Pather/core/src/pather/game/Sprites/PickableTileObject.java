@@ -1,5 +1,4 @@
 package pather.game.Sprites;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 
@@ -10,20 +9,25 @@ import pather.game.Screens.PlayScreen;
 
 public class PickableTileObject extends InteractiveTileObject {
     private static TiledMapTileSet tileSet;
-    private final int tileIndex = 49; //Tiled tileset ID + 1
-    private boolean used = false;
+    private final int tileIndex = 83; //Tiled tileset ID + 1
 
     public PickableTileObject(PlayScreen screen, MapObject object) {
         super(screen, object);
-        tileSet = map.getTileSets().getTileSet("sheet1"); //Change tileset name
+        tileSet = map.getTileSets().getTileSet("fantasy-tileset"); //Change tileset name
         fixture.setUserData(this);
         fixture.setSensor(true);
-        setCategoryFilter(Pather.ITEM_BIT); //Add this short to main class
+        setCategoryFilter(Pather.TRIGGER_BIT); //Add this short to main class
     }
 
     @Override
-    public void onHit(Player player) {
-        getCell().setTile(null);
-        player.useItem();
+    public void onHeadHit(Player player) {
+
     }
+
+    /*
+    @Override
+    public void onHit(Player player) {
+        getCell().setTile(tileSet.getTile(tileIndex));
+        //doStuff
+    }*/
 }

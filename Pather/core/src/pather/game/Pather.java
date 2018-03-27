@@ -3,7 +3,6 @@ package pather.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -31,6 +30,7 @@ public class Pather extends Game {
 	public static final short MARIO_HEAD_BIT = 512;
 	public static final short TRIGGER_BIT = 1024;
 
+
 	public SpriteBatch batch;
 	public static AssetManager manager;
 	public MainMenuScreen mainMenuScreen;
@@ -43,10 +43,10 @@ public class Pather extends Game {
 		manager = new AssetManager();
 		manager.load("audio/sounds/playerIsKill.wav", Sound.class);
 		//This is how you load sound files into memory
-
-		//manager.load("audio/music/africa.wav", Music.class);
-		//manager.load("path/to/audio.wav", Sound.class);
-
+		/*
+		manager.load("path/to/music.ogg", Music.class);
+		manager.load("path/to/audio.wav", Sound.class);
+		*/
 		manager.finishLoading();
 		mainMenuScreen = new MainMenuScreen(this);
 		setScreen(mainMenuScreen);
@@ -55,6 +55,7 @@ public class Pather extends Game {
 	@Override
 	public void render () {
 		super.render();
+
 	}
 
 	@Override

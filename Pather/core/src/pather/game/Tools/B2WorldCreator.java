@@ -19,7 +19,6 @@ import pather.game.Sprites.Enemy;
 import pather.game.Sprites.Goomba;
 import pather.game.Sprites.GroundTile;
 import pather.game.Sprites.NotGoomba;
-import pather.game.Sprites.PickableTileObject;
 import pather.game.Sprites.Turtle;
 
 import static pather.game.Pather.PPM;
@@ -54,16 +53,16 @@ public class B2WorldCreator {
 
             shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
             fdef.shape = shape;
-			fdef.friction = 5f;
             fdef.filter.categoryBits = Pather.OBJECT_BIT;
             body.createFixture(fdef);
         }
-        //create powerups
+        //create brick bodies/fixtures
         for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
-            new PickableTileObject(screen, object);
+            new Brick(screen, object);
         }
         //create coin bodies/fixtures
         for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
+
             new Coin(screen, object);
         }
 
