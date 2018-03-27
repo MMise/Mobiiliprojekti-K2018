@@ -4,9 +4,12 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.Path;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Filter;
@@ -78,7 +81,7 @@ public class Player extends Sprite {
     }
 
     public void update(float dt){
-        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + 2 / Pather.PPM);
         setRegion(getFrame(dt));
         if(b2body.getPosition().y < 0 && !playerIsDead) { //You die if you fall off the map
             b2body.setLinearVelocity(b2body.getLinearVelocity().x, 0);
@@ -161,6 +164,7 @@ public class Player extends Sprite {
         for (Fixture fixture : b2body.getFixtureList()) {
             fixture.setFilterData(filter);
         }
+        b2body.setLinearVelocity(b2body.getLinearVelocity().x, 0f);
         b2body.applyLinearImpulse(new Vector2(b2body.getLinearVelocity().x, 10f), b2body.getWorldCenter(), true);
     }
 
@@ -173,17 +177,19 @@ public class Player extends Sprite {
     public void definePlayer(){
         //body definitions
         BodyDef bdef = new BodyDef();
-        bdef.position.set(64 / Pather.PPM, 96 / Pather.PPM);
+        bdef.position.set(64 / Pather.PPM, 64 / Pather.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
         //collision definitions
         FixtureDef fdef = new FixtureDef();
-        
-	PolygonShape shape = new PolygonShape();
-	//creates a character hitbox that is 2 tiles high and 1 tile wide (64x32 px)
-	shape.setAsBox(32 / 2 / Pather.PPM, 64 / 2 / Pather.PPM);
-	fdef.filter.categoryBits = Pather.PLAYER_BIT;
+
+        CircleShape shape = new CircleShape();
+        shape.setRadius(14 / Pather.PPM);
+        shape.setPosition(new Vector2(0, -16 / Pather.PPM));
+
+
+        fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
                 Pather.DANGERZONE_BIT |
                 Pather.WIN_BIT |
@@ -192,30 +198,33 @@ public class Player extends Sprite {
                 Pather.ENEMY_HEAD_BIT |
                 Pather.ITEM_BIT;
 		
-	fdef.shape = shape;
-	b2body.createFixture(fdef).setUserData(this);
-		
-        //TODO attempting to mutate player by giving him feet
-        EdgeShape feet = new EdgeShape();
-        feet.set(new Vector2(-16 / Pather.PPM, -16 / Pather.PPM), new Vector2(16 / Pather.PPM, -16 / Pather.PPM));
-        fdef.filter.categoryBits = Pather.PLAYER_BIT;
-	fdef.filter.maskBits = Pather.GROUND_BIT |
-			Pather.WIN_BIT |
-			Pather.OBJECT_BIT |
-			Pather.ITEM_BIT;
-			
-        fdef.shape = feet;
-	fdef.friction = 0.1f;
+        fdef.shape = shape;
+        fdef.friction = 0.05f;
+        b2body.createFixture(fdef).setUserData(this);
+        shape.setPosition(new Vector2(0, 16 / Pather.PPM));
+        b2body.createFixture(fdef).setUserData(this);
+
+            //Give the player feet
+            EdgeShape feet = new EdgeShape();
+            feet.set(new Vector2(-14 / Pather.PPM, -30 / Pather.PPM), new Vector2(14 / Pather.PPM, -30 / Pather.PPM));
+            fdef.filter.categoryBits = Pather.PLAYER_BIT;
+        fdef.filter.maskBits = Pather.GROUND_BIT |
+                Pather.WIN_BIT |
+                Pather.OBJECT_BIT |
+                Pather.ITEM_BIT;
+
+            fdef.shape = feet;
+        fdef.friction = 0.1f;
+
+            b2body.createFixture(fdef).setUserData(this);
+
+        //Our character has a small line above head so that it can hit objects with its head
+        EdgeShape head = new EdgeShape();
+        head.set(new Vector2(-2 / Pather.PPM, 6 / Pather.PPM), new Vector2(2 / Pather.PPM, 6 / Pather.PPM));
+        fdef.filter.categoryBits = Pather.MARIO_HEAD_BIT;
+        fdef.shape = head;
+        fdef.isSensor = true;
 
         b2body.createFixture(fdef).setUserData(this);
-		
-	//Our character has a small line above head so that it can hit objects with its head
-	EdgeShape head = new EdgeShape();
-	head.set(new Vector2(-2 / Pather.PPM, 6 / Pather.PPM), new Vector2(2 / Pather.PPM, 6 / Pather.PPM));
-	fdef.filter.categoryBits = Pather.MARIO_HEAD_BIT;
-	fdef.shape = head;
-	fdef.isSensor = true;
-
-	b2body.createFixture(fdef).setUserData(this);
     }
 }

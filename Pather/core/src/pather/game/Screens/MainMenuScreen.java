@@ -29,7 +29,7 @@ public class MainMenuScreen implements Screen {
     private final Image shopButton;
     private final Image exitButton;
 
-    private PlayScreen playScreen;
+    private LoadingScreen loadingScreen;
 
     public MainMenuScreen(final Game game){
         this.game = game;
@@ -62,7 +62,7 @@ public class MainMenuScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-                setPlayScreen();
+                play();
             }
         });
 
@@ -96,9 +96,9 @@ public class MainMenuScreen implements Screen {
         stage.addActor(shopButton);
     }
 
-    public void setPlayScreen(){
-        playScreen = new PlayScreen((Pather) game);
-        game.setScreen(playScreen);
+    public void play(){
+        loadingScreen = new LoadingScreen((Pather) game, new String[] {"module1", "module2", "module3"});
+        game.setScreen(loadingScreen);
     }
 
     @Override

@@ -95,17 +95,6 @@ public class PlayScreen implements Screen {
 
         //load the map and setup map renderer.
         maploader = new TmxMapLoader(new LocalFileHandleResolver()); //Levels are generated in local memory
-        //maploader = new TmxMapLoader();
-        if (!Gdx.files.local("temp.tmx").exists()) {
-            MapEncoder encoder = new MapEncoder();
-
-            //TODO modules to be loaded
-            encoder.decode("module1");
-            encoder.decode("module2");
-            encoder.decode("module3");
-
-            encoder.encode();
-        }
         map = maploader.load("temp.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Pather.PPM);
 
@@ -167,17 +156,18 @@ public class PlayScreen implements Screen {
         }
 
         if(player.currentState != Player.State.DEAD){
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.b2body.getLinearVelocity().y == 0 ||
+            if (    Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.b2body.getLinearVelocity().y == 0 ||
                     controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 ) {
                 player.b2body.setLinearVelocity(new Vector2(player.b2body.getLinearVelocity().x, 12f));
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) ||
+            if (    Gdx.input.isKeyPressed(Input.Keys.RIGHT) ||
                     controller.isRightPressed() ) {
                 player.b2body.applyLinearImpulse(new Vector2(1f, 0), player.b2body.getWorldCenter(), true);
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) ||
+            } else if (    Gdx.input.isKeyPressed(Input.Keys.LEFT) ||
                     controller.isLeftPressed() ) {
                 player.b2body.applyLinearImpulse(new Vector2(-1f, 0), player.b2body.getWorldCenter(), true);
+            } else { //reduce speed when not running
+                player.b2body.setLinearVelocity(player.b2body.getLinearVelocity().x * 0.95f, player.b2body.getLinearVelocity().y);
             }
             float speed = player.b2body.getLinearVelocity().x;
             player.b2body.setLinearVelocity(Math.min(Math.abs(speed), 6f)*(speed == 0f ? 1 : Math.abs(speed)/speed), player.b2body.getLinearVelocity().y);
@@ -235,8 +225,8 @@ public class PlayScreen implements Screen {
         //render the game map
         renderer.render();
 
-        //render our debug lines
-        b2dr.render(world, gamecam.combined);
+        //TODO render our debug lines
+        //b2dr.render(world, gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
