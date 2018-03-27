@@ -1,8 +1,10 @@
 package pather.game.Screens;
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
@@ -12,13 +14,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Path;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -35,7 +35,6 @@ import pather.game.Tools.B2WorldCreator;
 import pather.game.Tools.MapEncoder;
 import pather.game.Tools.WorldContactListener;
 
-import static pather.game.Sprites.Player.State.JUMPING;
 
 //This is our main play screen where all the game functionality happens
 
@@ -62,16 +61,16 @@ public class PlayScreen implements Screen {
     private B2WorldCreator creator;
     //sprites
     private Player player;
-
-    //private Music music;
+    private Music music;
 
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
     private float w, h;
+    private float gravity = -20;
 
     private Controller controller;
 
-    public PlayScreen(Pather game){
+    public PlayScreen(Pather game) {
         //Tilesetit on oltava saatavilla lokaalissa
         Gdx.files.internal("tileset_gutter.png").copyTo(Gdx.files.local("tileset_gutter.png"));
         Gdx.files.internal("sci-fi-platformer-tiles-32x32-extension.png").copyTo(Gdx.files.local("sci-fi-platformer-tiles-32x32-extension.png"));
@@ -79,7 +78,7 @@ public class PlayScreen implements Screen {
         Gdx.files.internal("sheet1.png").copyTo(Gdx.files.local("sheet1.png"));
         Gdx.files.internal("winzone_tileset.png").copyTo(Gdx.files.local("winzone_tileset.png"));
 
-        atlas = new TextureAtlas("Mario_and_Enemies.pack"); //Pack all of our sprites into a single file
+        atlas = new TextureAtlas("packed_gfx.pack"); //Pack all of our sprites into a single file
         this.game = game;
 
         w = (float) Gdx.graphics.getWidth();
@@ -97,7 +96,7 @@ public class PlayScreen implements Screen {
         //load the map and setup map renderer.
         maploader = new TmxMapLoader(new LocalFileHandleResolver()); //Levels are generated in local memory
         //maploader = new TmxMapLoader();
-        /*if(!Gdx.files.local("temp.tmx").exists()) { //Level is not generated if it already exists (it would be really painful)
+        if (!Gdx.files.local("temp.tmx").exists()) {
             MapEncoder encoder = new MapEncoder();
 
             //TODO modules to be loaded
@@ -106,12 +105,12 @@ public class PlayScreen implements Screen {
             encoder.decode("module3");
 
             encoder.encode();
-        }*/
+        }
         map = maploader.load("temp.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Pather.PPM);
 
         //Box2D variables
-        world = new World(new Vector2(0, -20), true); //This creates a world where gravity works like on Earth
+        world = new World(new Vector2(0, gravity), true); //This creates a world where gravity works like on Earth
         b2dr = new Box2DDebugRenderer();
         creator = new B2WorldCreator(this);
         player = new Player(this);
@@ -121,9 +120,13 @@ public class PlayScreen implements Screen {
 
         world.setContactListener(new WorldContactListener());
 
-        //music = Pather.manager.get("audio/music/mario_music.ogg", Music.class);
-        //music.setLooping(true);
-        //music.play();
+        /*TODO: Uncomment this to bless the rains
+
+        music = Pather.manager.get("audio/music/africa.wav", Music.class);
+        music.setLooping(true);
+        music.play();
+
+        */
 
         items = new Array<Item>();
         itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
@@ -158,24 +161,27 @@ public class PlayScreen implements Screen {
 
         //TODO: Jumping is now allowed when vertical velocity is 0.
         //This can lead to exploits, implement a method to check for ground in the future
+        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
+            game.setScreen(new MainMenuScreen(game));
+            Gdx.app.log("PlayScreen", "BACK PRESSED");
+        }
 
-         if(player.currentState != Player.State.DEAD){
-                if (    Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.b2body.getLinearVelocity().y == 0 ||
-                        controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 ) {
-                    player.b2body.setLinearVelocity(new Vector2(player.b2body.getLinearVelocity().x, 12f));
-                }
-                if (    Gdx.input.isKeyPressed(Input.Keys.RIGHT) ||
-                        controller.isRightPressed() ) {
-                    player.b2body.applyLinearImpulse(new Vector2(1f, 0), player.b2body.getWorldCenter(), true);
-                } else if (    Gdx.input.isKeyPressed(Input.Keys.LEFT) ||
-                        controller.isLeftPressed() ) {
-                    player.b2body.applyLinearImpulse(new Vector2(-1f, 0), player.b2body.getWorldCenter(), true);
-                } else {
-                    player.b2body.setLinearVelocity(player.b2body.getLinearVelocity().x * 0.95f, player.b2body.getLinearVelocity().y); //reduce speed when not running
-                }
-                float speed = player.b2body.getLinearVelocity().x;
-                player.b2body.setLinearVelocity(Math.min(Math.abs(speed), 6f)*(speed == 0f ? 1 : Math.abs(speed)/speed), player.b2body.getLinearVelocity().y);
-         }
+        if(player.currentState != Player.State.DEAD){
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.b2body.getLinearVelocity().y == 0 ||
+                    controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 ) {
+                player.b2body.setLinearVelocity(new Vector2(player.b2body.getLinearVelocity().x, 12f));
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) ||
+                    controller.isRightPressed() ) {
+                player.b2body.applyLinearImpulse(new Vector2(1f, 0), player.b2body.getWorldCenter(), true);
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) ||
+                    controller.isLeftPressed() ) {
+                player.b2body.applyLinearImpulse(new Vector2(-1f, 0), player.b2body.getWorldCenter(), true);
+            }
+            float speed = player.b2body.getLinearVelocity().x;
+            player.b2body.setLinearVelocity(Math.min(Math.abs(speed), 6f)*(speed == 0f ? 1 : Math.abs(speed)/speed), player.b2body.getLinearVelocity().y);
+        }
     }
 
     //This adds slight linear interpolation to camera movement
@@ -200,7 +206,7 @@ public class PlayScreen implements Screen {
             enemy.update(dt);
             if(enemy.getX() < player.getX() + 576 / Pather.PPM){
                 enemy.b2body.setActive(true);
-            } else enemy.b2body.setActive(false);
+            }
         }
 
         for(Item item : items){
@@ -215,10 +221,6 @@ public class PlayScreen implements Screen {
 
         //tell our renderer to draw only what can be seen on the screen
         renderer.setView(gamecam);
-
-        if(Gdx.input.isButtonPressed(Input.Keys.BACK)){
-            game.setScreen(new MainMenuScreen(game));
-        }
     }
 
     @Override
@@ -262,6 +264,10 @@ public class PlayScreen implements Screen {
             return true;
         }
         return false;
+    }
+
+    public void setGravity(float value){
+        gravity = value;
     }
 
     @Override

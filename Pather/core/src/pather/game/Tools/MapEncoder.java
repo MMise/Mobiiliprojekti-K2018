@@ -64,14 +64,10 @@ public class MapEncoder {
     private int height = 20;
     private InputStream io = new ByteArrayInputStream(skeleton.getBytes());
     private Document dom;
-    private Element  map, temp;
+    private Element  map;
     private NodeList data, layers, objects;
     private DocumentBuilder builder;
     private DocumentBuilderFactory factory;
-    private String[] str = new String[] { "", "" };
-    private int mapIndex, tileIndex, layerIndex, length;
-    private long tile;
-    private int progress = 0, pointer = 0;
 
     public MapEncoder() {
         try { //rungon kääntäminen XML muotoon
@@ -126,36 +122,43 @@ public class MapEncoder {
 
             tiledata.add(array);
             documents.add(ddom);
+
+
     }
 
     public void encode() { //luo kerätyistä taulukoista kenttä tiedostoon temp.tmx (local)
 
-        if(progress == 0) {
-            length = tiledata.size();
-            if(length == 0) return; //Ei luotavia kenttiä, peruuta operaatio
-            temp = (Element)documents.get(0).getElementsByTagName("map").item(0);
-            setHeight(Integer.parseInt(temp.getAttribute("height")));
-            setWidth(Integer.parseInt(temp.getAttribute("width"))*length);
-            array = new long[width*height]; //valmistele taulukko kentälle
-            //määritä kentän parametrit
-        }
+        //määritä kentän parametrit
+        int length = tiledata.size();
+        if(length == 0) return; //Ei luotavia kenttiä, peruuta operaatio
 
-        for(; pointer < height*width*2; pointer++) {
+        //Taulukkoa käytetään, jos tulevaisuudessa yhdistettävien kenttien leveys vaihtelee keskenään
+        /*int[] widths = new int[length];
+        for(int i = 0; i < length; i++) {
+            Element iterable = (Element)documents.get(0).getElementsByTagName("map").item(0);
+            widths[i] = Integer.parseInt(iterable.getAttribute("width"));
+        }*/
+
+        Element temp = (Element)documents.get(0).getElementsByTagName("map").item(0);
+
+        setHeight(Integer.parseInt(temp.getAttribute("height")));
+        setWidth(Integer.parseInt(temp.getAttribute("width"))*length);
+
+        array = new long[length*width*height]; //valmistele taulukko kentälle
+
+        String[] str = new String[] { "", "" };
+        int mapIndex, tileIndex, layerIndex;
+        long tile;
+        for(int i = 0; i < height*width*2; i++) {
 
             //jokaisen kentän jokaisen tason jokaisen tiilen iteroimisen logiikka
-            mapIndex = (int) Math.floor(pointer/(width/length))%length;
-            layerIndex = (int) Math.floor(pointer/(width*height));
-            tileIndex = (int) Math.floor(pointer/width)*(width/length)+pointer%(width/length);
+            mapIndex = (int) Math.floor(i/(width/length))%length;
+            layerIndex = (int) Math.floor(i/(width*height));
+            tileIndex = (int) Math.floor(i/width)*(width/length)+i%(width/length);
             tile = tiledata.get(mapIndex)[tileIndex];
 
             //tiili lisätään merkkijonoon
             str[layerIndex] += String.valueOf(tile)+",";
-
-            if(pointer != 0 && pointer % ((width/length)*height) == 0) { //enkoodauksen pätkiminen
-                progress++;
-                pointer++;
-                return;
-            }
 
             //VANHENTUNUT: peliobjektien luominen tiilistä
             /*if(tile == 0) continue;
@@ -172,8 +175,6 @@ public class MapEncoder {
             e.appendChild(ee);
             obj.appendChild(e);*/
         }
-        pointer = 0;
-        progress++;
 
         //Tiilien siirtäminen paikalleen
         for(int i = 0; i < 2; i++) {
@@ -199,12 +200,10 @@ public class MapEncoder {
 
             //tunnuksien indeksointi, X-koordinaattien laskenta
             Element currentmap = (Element) documents.get(i).getElementsByTagName("map").item(0);
-            index +=    Integer.parseInt((currentmap).getAttribute("nextobjectid")) - 1;
+            index +=    Integer.parseInt((currentmap).getAttribute("nextobjectid"));
             xIndex +=   Integer.parseInt((currentmap).getAttribute("width")) *
                         Integer.parseInt((currentmap).getAttribute("tilewidth"));
         }
-
-        map.setAttribute("nextobjectid", String.valueOf(index));
 
         try { //tiedoston tallentamisen kannalta oleellinen jargoni
             TransformerFactory transfac = TransformerFactory.newInstance();
@@ -223,8 +222,6 @@ public class MapEncoder {
             file.writeString(xmlString, false); //kenttä tallennetaan lokaaliin
         } catch (Exception e) { System.out.println("ERROR ENCODING"); return; }
     }
-
-    public int getProgress() { return progress; }
 
     public void setWidth(int w) {
         width = w;

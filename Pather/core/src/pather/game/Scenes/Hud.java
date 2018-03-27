@@ -11,8 +11,6 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.text.DecimalFormat;
-
 import pather.game.Pather;
 
 //This is an example on how to build a HUD that appears on the top of the screen
@@ -21,7 +19,8 @@ public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewport;
 
-    private float time;
+    private Integer worldTimer;
+    private float timeCount;
     private static Integer score;
 
     //TODO: Change these to reflect our game's HUD
@@ -33,7 +32,8 @@ public class Hud implements Disposable {
     Label marioLabel;
 
     public Hud(SpriteBatch sb){
-        time = 0;
+        worldTimer = 300;
+        timeCount = 0;
         score = 0;
 
         viewport = new FitViewport(Pather.V_WIDTH, Pather.V_HEIGHT, new OrthographicCamera());
@@ -44,13 +44,13 @@ public class Hud implements Disposable {
         table.setFillParent(true);
 
         //Labels with dynamic numeric information
-        countdownLabel = new Label(String.format("%3.2f", time), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         //Labels with pure text information
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        marioLabel = new Label("SCORE", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        marioLabel = new Label("MARIO", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         //First row
         table.add(marioLabel).expandX().padTop(10);
@@ -66,8 +66,12 @@ public class Hud implements Disposable {
     }
 
     public void update(float dt){
-        time += dt;
-        countdownLabel.setText(new DecimalFormat("000.00").format(time));
+        timeCount += dt;
+        if(timeCount >= 1){
+            worldTimer--;
+            countdownLabel.setText(String.format("%03d", worldTimer));
+            timeCount = 0;
+        }
     }
 
     public static void addScore(int value){

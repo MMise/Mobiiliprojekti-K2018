@@ -10,6 +10,7 @@ import pather.game.Items.Item;
 import pather.game.Pather;
 import pather.game.Sprites.Enemy;
 import pather.game.Sprites.InteractiveTileObject;
+import pather.game.Sprites.PickableTileObject;
 import pather.game.Sprites.Player;
 
 //This is the class that handles our collisions, built upon an example by Brent Aureli
@@ -78,9 +79,9 @@ public class WorldContactListener implements ContactListener {
                 break;
             case Pather.ITEM_BIT | Pather.PLAYER_BIT:
                 if(fixA.getFilterData().categoryBits == Pather.ITEM_BIT){
-                    ((Item)fixA.getUserData()).use((Player) fixB.getUserData());
+                    ((PickableTileObject)fixA.getUserData()).onHit((Player) fixB.getUserData());
                 }else{
-                    ((Item)fixB.getUserData()).use((Player) fixA.getUserData());                }
+                    ((PickableTileObject)fixB.getUserData()).onHit((Player) fixA.getUserData());                }
                 break;
         }
     }
