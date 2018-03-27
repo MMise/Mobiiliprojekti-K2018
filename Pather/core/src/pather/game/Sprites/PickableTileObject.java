@@ -23,7 +23,6 @@ public class PickableTileObject extends InteractiveTileObject {
 
     @Override
     public void onHit(Player player) {
-        Gdx.app.log("tileobject", "jee! osuma havaittu!");
         getCell().setTile(null);
         player.useItem();
     }

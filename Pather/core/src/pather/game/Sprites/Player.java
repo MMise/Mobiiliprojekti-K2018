@@ -195,7 +195,7 @@ public class Player extends Sprite {
 	fdef.shape = shape;
 	b2body.createFixture(fdef).setUserData(this);
 		
-        //TODO attempting to mutate mario by giving him feet
+        //TODO attempting to mutate player by giving him feet
         EdgeShape feet = new EdgeShape();
         feet.set(new Vector2(-16 / Pather.PPM, -16 / Pather.PPM), new Vector2(16 / Pather.PPM, -16 / Pather.PPM));
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
