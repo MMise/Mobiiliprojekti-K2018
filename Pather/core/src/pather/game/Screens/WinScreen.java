@@ -12,8 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.text.DecimalFormat;
-
 import pather.game.Pather;
 
 /**
@@ -25,9 +23,8 @@ public class WinScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
     private final Game game;
-    private float timer;
 
-    public WinScreen(Game game, float time){
+    public WinScreen(Game game){
         this.game = game;
 
         viewport = new FitViewport(Pather.V_WIDTH, Pather.V_HEIGHT, new OrthographicCamera());
@@ -39,7 +36,7 @@ public class WinScreen implements Screen {
         table.center();
         table.setFillParent(true);
 
-        Label gameOverLabel = new Label("YOU WIN! Time: "+ String.format("%.2f", time), font);
+        Label gameOverLabel = new Label("YOU WIN", font);
         Label playAgain = new Label("TAP TO PLAY AGAIN", font);
         table.add(gameOverLabel).expandX();
         table.row();
@@ -55,8 +52,7 @@ public class WinScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        timer+=delta;
-        if(Gdx.input.isTouched() && timer >= 3f){
+        if(Gdx.input.isTouched()){
             game.setScreen(new PlayScreen((Pather) game));
             dispose();
         }

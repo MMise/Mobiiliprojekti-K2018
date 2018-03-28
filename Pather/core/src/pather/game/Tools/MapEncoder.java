@@ -32,13 +32,10 @@ public class MapEncoder {
     private final String skeleton =     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                         "<map version=\"1.0\" tiledversion=\"1.1.3\" orientation=\"orthogonal\" renderorder=\"right-down\" width=\"50\" height=\"20\" tilewidth=\"32\" tileheight=\"32\" infinite=\"0\" nextobjectid=\"1\">\n" +
                                             "<tileset firstgid=\"1\" name=\"sheet1\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"64\" columns=\"8\">\n" +
-                                                "<image source=\"sheet1.png\" width=\"256\" height=\"256\"/>\n" +
+                                            "<image source=\"sheet1.png\" width=\"256\" height=\"256\"/>\n" +
                                             "</tileset>\n" +
                                             "<tileset firstgid=\"65\" name=\"sci-fi-platformer-tiles-32x32-extension\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"1760\" columns=\"16\">\n" +
-                                                "<image source=\"sci-fi-platformer-tiles-32x32-extension.png\" width=\"512\" height=\"3520\"/>\n" +
-                                            "</tileset>" +
-                                            "<tileset firstgid=\"1825\" name=\"winzone_tileset\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"2\" columns=\"2\">\n" +
-                                                "<image source=\"winzone_tileset.png\" width=\"64\" height=\"32\"/>\n" +
+                                            "<image source=\"sci-fi-platformer-tiles-32x32-extension.png\" width=\"512\" height=\"3520\"/>\n" +
                                             "</tileset>" +
                                             "<layer name=\"Background Layer\" width=\"50\" height=\"20\">\n" +
                                                 "<data encoding=\"csv\">\n" +
@@ -154,13 +151,6 @@ public class MapEncoder {
             //tiili lisätään merkkijonoon
             str[layerIndex] += String.valueOf(tile)+",";
 
-            //todo winzone
-            if((pointer+1) % width == 0) {
-                if (layerIndex == 0) str[layerIndex] += "1825,1825,1825,1825,1825,"; //background
-                else if (Math.floor(pointer / width) == height*2-1) str[layerIndex] += "1826,1826,1826,1826,1826,"; //ground
-                else str[layerIndex] += "0,0,0,0,0,"; //remaining empty graphic layer
-            }
-
             if(pointer != 0 && pointer % ((width/length)*height) == 0) { //enkoodauksen pätkiminen
                 progress++;
                 pointer++;
@@ -214,19 +204,7 @@ public class MapEncoder {
                         Integer.parseInt((currentmap).getAttribute("tilewidth"));
         }
 
-        //todo Winzone object
-        Element winzone = dom.createElement("object");
-        winzone.setAttribute("id", String.valueOf(index++));
-        winzone.setAttribute("x", String.valueOf(xIndex));
-        winzone.setAttribute("y", String.valueOf(32*(height-1)));
-        winzone.setAttribute("width", String.valueOf(160));
-        winzone.setAttribute("height", String.valueOf(32));
-        Element property = (Element) winzone.appendChild(dom.createElement("properties")).appendChild(dom.createElement("property"));
-        property.setAttribute("name", "win");
-        objects.item(0).appendChild(winzone);
-
         map.setAttribute("nextobjectid", String.valueOf(index));
-        array = null;
 
         try { //tiedoston tallentamisen kannalta oleellinen jargoni
             TransformerFactory transfac = TransformerFactory.newInstance();
@@ -246,17 +224,13 @@ public class MapEncoder {
         } catch (Exception e) { System.out.println("ERROR ENCODING"); return; }
     }
 
-    public int getProgress() {
-        int result = progress;
-        progress = (result == length*2) ? 0 : progress;
-        return result;
-    }
+    public int getProgress() { return progress; }
 
     public void setWidth(int w) {
         width = w;
         map.setAttribute("width", String.valueOf(w));
-        ((Element) layers.item(0)).setAttribute("width", String.valueOf(w+5));
-        ((Element) layers.item(1)).setAttribute("width", String.valueOf(w+5));
+        ((Element) layers.item(0)).setAttribute("width", String.valueOf(w));
+        ((Element) layers.item(1)).setAttribute("width", String.valueOf(w));
     }
 
     public void setHeight(int h) {
