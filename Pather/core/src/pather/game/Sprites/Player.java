@@ -169,7 +169,7 @@ public class Player extends Sprite {
     }
 
     public void useItem(){
-        screen.setGravity(-10);
+        world.setGravity(new Vector2(0, -10));
     }
 
 
