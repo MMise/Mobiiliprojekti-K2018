@@ -78,7 +78,7 @@ public class PlayScreen implements Screen {
         Gdx.files.internal("sheet1.png").copyTo(Gdx.files.local("sheet1.png"));
         Gdx.files.internal("winzone_tileset.png").copyTo(Gdx.files.local("winzone_tileset.png"));
 
-        atlas = new TextureAtlas("packed_gfx.pack"); //Pack all of our sprites into a single file
+        atlas = new TextureAtlas("packed_gfx.atlas"); //Pack all of our sprites into a single file
         this.game = game;
 
         w = (float) Gdx.graphics.getWidth();
