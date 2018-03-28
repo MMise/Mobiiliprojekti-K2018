@@ -36,7 +36,12 @@ public class WorldContactListener implements ContactListener {
          */
         switch(cDef){
             case Pather.PLAYER_BIT | Pather.WIN_BIT:
-                System.out.println("Winner is you!");
+                System.out.println("Winner is you!"); //DEBUG
+                if(fixA.getFilterData().categoryBits == Pather.PLAYER_BIT) {
+                    ((Player) fixA.getUserData()).win();
+                }else{
+                    ((Player) fixB.getUserData()).win();
+                }
                 break;
             case Pather.PLAYER_BIT | Pather.DANGERZONE_BIT:
                 if(fixA.getFilterData().categoryBits == Pather.PLAYER_BIT) {

@@ -33,7 +33,6 @@ public class Player extends Sprite {
         RUNNING,
         DEAD
     }
-
     public State currentState;
     public State previousState;
 
@@ -63,20 +62,20 @@ public class Player extends Sprite {
         //get run animation frames
         //All of our Texture Region definitions must be changed to reflect our character regions and sizes
         Array<TextureRegion> frames = new Array<TextureRegion>();
-        for(int i = 1; i < 13; i++){
+        for(int i = 1; i < 12; i++){
             // i * x, where i equals the amount of our run frames and x equals the width of a single run frame
-            frames.add(new TextureRegion(screen.getAtlas().findRegion("pather_still_1-13_onecanvas"), i * 64, 0, 64, 64));
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("character_running"), i * 64, 0, 64, 64));
         }
         characterRun = new Animation<TextureRegion>(0.1f, frames);
 
-        characterJump = new TextureRegion(screen.getAtlas().findRegion("pather_still_1-13_onecanvas"), 448, 0, 64, 64);
-        characterDead = new TextureRegion(screen.getAtlas().findRegion("pather_still_1-13_onecanvas"), 448, 0, 64, 64);
+        characterJump = new TextureRegion(screen.getAtlas().findRegion("character_running"), 320, 0, 64, 64);
+        characterDead = new TextureRegion(screen.getAtlas().findRegion("character_running"), 384, 0, 64, 64);
         //create texture regions for Player standing
-        characterStand = new TextureRegion(screen.getAtlas().findRegion("pather_still_1-13_onecanvas"), 0,0, 64, 64);
+        characterStand = new TextureRegion(screen.getAtlas().findRegion("character_standing"), 0,0, 64, 64);
 
         //define player in box2d
         definePlayer();
-        //set initial values for player's location, width and height
+        //set initial values for mario's location, width and height
         setBounds(0, 0, 64 / Pather.PPM, 64 / Pather.PPM);
         setRegion(characterStand);
     }
@@ -98,13 +97,13 @@ public class Player extends Sprite {
             case DEAD:
                 region = characterDead;
                 break;
+            case FALLING:
             case JUMPING:
                 region = characterJump;
                 break;
             case RUNNING:
                 region = characterRun.getKeyFrame(stateTimer, true);
                 break;
-            case FALLING:
             case STANDING:
             default:
                 region = characterStand;
@@ -153,7 +152,7 @@ public class Player extends Sprite {
         if(enemy instanceof Turtle && ((Turtle) enemy).getCurrentState() == Turtle.State.STANDING_SHELL){
             ((Turtle) enemy).kick(this.getX() <= enemy.getX() ? Turtle.KICK_RIGHT_SPEED : Turtle.KICK_LEFT_SPEED);
         }else{
-	        kill();
+	    kill();
         }
     }
 
@@ -169,8 +168,12 @@ public class Player extends Sprite {
         b2body.applyLinearImpulse(new Vector2(b2body.getLinearVelocity().x, 10f), b2body.getWorldCenter(), true);
     }
 
+    public void win() {
+        screen.win();
+    }
+
     public void useItem(){
-        screen.setGravity(-10);
+        world.setGravity(new Vector2(0, -10));
     }
 
 
@@ -192,12 +195,12 @@ public class Player extends Sprite {
 
         fdef.filter.categoryBits = Pather.PLAYER_BIT;
         fdef.filter.maskBits =  Pather.GROUND_BIT |
-                                Pather.DANGERZONE_BIT |
-                                Pather.WIN_BIT |
-                                Pather.ENEMY_BIT |
-                                Pather.OBJECT_BIT |
-                                Pather.ENEMY_HEAD_BIT |
-                                Pather.ITEM_BIT;
+                Pather.DANGERZONE_BIT |
+                Pather.WIN_BIT |
+                Pather.ENEMY_BIT |
+                Pather.OBJECT_BIT |
+                Pather.ENEMY_HEAD_BIT |
+                Pather.ITEM_BIT;
 		
         fdef.shape = shape;
         fdef.friction = 0.05f;
@@ -205,19 +208,19 @@ public class Player extends Sprite {
         shape.setPosition(new Vector2(0, 16 / Pather.PPM));
         b2body.createFixture(fdef).setUserData(this);
 
-        //Give the player feet
-        EdgeShape feet = new EdgeShape();
-        feet.set(new Vector2(-14 / Pather.PPM, -30 / Pather.PPM), new Vector2(14 / Pather.PPM, -30 / Pather.PPM));
-        fdef.filter.categoryBits = Pather.PLAYER_BIT;
-        fdef.filter.maskBits =  Pather.GROUND_BIT |
-                                Pather.WIN_BIT |
-                                Pather.OBJECT_BIT |
-                                Pather.ITEM_BIT;
+            //Give the player feet
+            EdgeShape feet = new EdgeShape();
+            feet.set(new Vector2(-14 / Pather.PPM, -30 / Pather.PPM), new Vector2(14 / Pather.PPM, -30 / Pather.PPM));
+            fdef.filter.categoryBits = Pather.PLAYER_BIT;
+        fdef.filter.maskBits = Pather.GROUND_BIT |
+                Pather.WIN_BIT |
+                Pather.OBJECT_BIT |
+                Pather.ITEM_BIT;
 
-        fdef.shape = feet;
+            fdef.shape = feet;
         fdef.friction = 0.1f;
 
-        b2body.createFixture(fdef).setUserData(this);
+            b2body.createFixture(fdef).setUserData(this);
 
         //Our character has a small line above head so that it can hit objects with its head
         EdgeShape head = new EdgeShape();

@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Path;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -78,7 +79,7 @@ public class PlayScreen implements Screen {
         Gdx.files.internal("sheet1.png").copyTo(Gdx.files.local("sheet1.png"));
         Gdx.files.internal("winzone_tileset.png").copyTo(Gdx.files.local("winzone_tileset.png"));
 
-        atlas = new TextureAtlas("packed_gfx.atlas"); //Pack all of our sprites into a single file
+        atlas = new TextureAtlas("packed_gfx.pack"); //Pack all of our sprites into a single file
         this.game = game;
 
         w = (float) Gdx.graphics.getWidth();
@@ -254,6 +255,10 @@ public class PlayScreen implements Screen {
             return true;
         }
         return false;
+    }
+
+    public void win() {
+        game.setScreen(new WinScreen(game, hud.getTime()));
     }
 
     public void setGravity(float value){
