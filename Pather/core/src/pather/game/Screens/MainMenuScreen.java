@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -22,7 +23,7 @@ public class MainMenuScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
     private Game game;
-    private final float scale = 0.42f;
+    private final float scale = 1f;
     private final float padX = 60;
 
     private final Image playButton;
@@ -32,26 +33,31 @@ public class MainMenuScreen implements Screen {
     private LoadingScreen loadingScreen;
 
     public MainMenuScreen(final Game game){
-        this.game = game;
 
+        this.game = game;
+        Table table = new Table();
+        table.top();
+        table.setFillParent(true);
         viewport = new FitViewport(Pather.V_WIDTH, Pather.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((Pather) game).batch);
         Gdx.input.setInputProcessor(stage);
 
         //Initialize button images
-        playButton = new Image(new Texture(Gdx.files.internal("play_button.png")));
-        shopButton = new Image(new Texture(Gdx.files.internal("shop_button.png")));
-        exitButton = new Image(new Texture(Gdx.files.internal("exit_button.png")));
+        playButton = new Image(new Texture(Gdx.files.internal("pather_menu_play.png")));
+        shopButton = new Image(new Texture(Gdx.files.internal("pather_menu_shop.png")));
+        exitButton = new Image(new Texture(Gdx.files.internal("pather_menu_exit.png")));
 
         //Set button scale
+        /*
         playButton.setScale(scale);
         shopButton.setScale(scale);
         exitButton.setScale(scale);
+        */
 
         //Set positions
-        playButton.setPosition(padX, Pather.V_HEIGHT - playButton.getHeight() / 2 - (Pather.PPM / 2));
-        shopButton.setPosition(padX, Pather.V_HEIGHT - shopButton.getHeight() - (Pather.PPM / 4));
-        exitButton.setPosition(padX, Pather.V_HEIGHT - exitButton.getHeight() * 1.5f);
+        playButton.setPosition(padX, Pather.V_HEIGHT - playButton.getHeight());
+        shopButton.setPosition(padX, Pather.V_HEIGHT - (playButton.getHeight() * 2));
+        exitButton.setPosition(padX, Pather.V_HEIGHT - (playButton.getHeight() * 3));
 
 
         playButton.addListener(new InputListener() {
@@ -92,8 +98,9 @@ public class MainMenuScreen implements Screen {
         });
 
         stage.addActor(playButton);
-        stage.addActor(exitButton);
         stage.addActor(shopButton);
+        stage.addActor(exitButton);
+
     }
 
     public void play(){
