@@ -33,7 +33,6 @@ public class Player extends Sprite {
         RUNNING,
         DEAD
     }
-
     public State currentState;
     public State previousState;
 
@@ -98,13 +97,13 @@ public class Player extends Sprite {
             case DEAD:
                 region = characterDead;
                 break;
+            case FALLING:
             case JUMPING:
                 region = characterJump;
                 break;
             case RUNNING:
                 region = characterRun.getKeyFrame(stateTimer, true);
                 break;
-            case FALLING:
             case STANDING:
             default:
                 region = characterStand;
@@ -169,8 +168,12 @@ public class Player extends Sprite {
         b2body.applyLinearImpulse(new Vector2(b2body.getLinearVelocity().x, 10f), b2body.getWorldCenter(), true);
     }
 
+    public void win() {
+        screen.win();
+    }
+
     public void useItem(){
-        screen.setGravity(-10);
+        world.setGravity(new Vector2(0, -10));
     }
 
 

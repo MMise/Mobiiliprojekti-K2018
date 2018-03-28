@@ -22,12 +22,12 @@ public class Controller {
     public Controller(float screenWidth, float screenHeight){
         camera = new OrthographicCamera();
 
-        scale = screenWidth / 480;
-
         viewport = new FitViewport(screenWidth, screenHeight, camera);
         stage = new Stage(viewport);
         input.setInputProcessor(stage);
         input.setCatchBackKey(true);
+
+        scale = screenWidth / 480;
 
         final Image input_jump = new Image(new Texture(Gdx.files.internal("jump.png")));
         final Image input_arrows = new Image(new Texture(Gdx.files.internal("arrows.png")));

@@ -70,6 +70,8 @@ public class Hud implements Disposable {
         countdownLabel.setText(new DecimalFormat("000.00").format(time));
     }
 
+    public float getTime() { return time; }
+
     public static void addScore(int value){
         score += value;
         //scoreLabel.setText(String.format("%06d", score));

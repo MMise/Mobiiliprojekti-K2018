@@ -256,6 +256,10 @@ public class PlayScreen implements Screen {
         return false;
     }
 
+    public void win() {
+        game.setScreen(new WinScreen(game, hud.getTime()));
+    }
+
     public void setGravity(float value){
         gravity = value;
     }
