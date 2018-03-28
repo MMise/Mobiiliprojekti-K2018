@@ -17,10 +17,12 @@ public class Controller {
     private Stage stage;
     private boolean leftPressed = false, rightPressed = false, upPressed = false, upHeld = false;
     private OrthographicCamera camera;
-    private final float scale = 2f;
+    private float scale;
 
     public Controller(float screenWidth, float screenHeight){
         camera = new OrthographicCamera();
+
+        scale = screenWidth / 480;
 
         viewport = new FitViewport(screenWidth, screenHeight, camera);
         stage = new Stage(viewport);
