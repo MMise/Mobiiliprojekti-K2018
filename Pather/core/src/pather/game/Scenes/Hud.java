@@ -20,9 +20,12 @@ import pather.game.Pather;
 public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewport;
+    public static final float TIME_TO_CLEAR_LEVEL = 120;
 
     private float time;
     private static Integer score;
+
+    private boolean timerIsRunning;
 
     //TODO: Change these to reflect our game's HUD
     Label countdownLabel;
@@ -33,9 +36,9 @@ public class Hud implements Disposable {
     //Label marioLabel;
 
     public Hud(SpriteBatch sb){
-        time = 0;
+        time = TIME_TO_CLEAR_LEVEL;
         score = 0;
-
+        timerIsRunning = true;
         viewport = new FitViewport(Pather.V_WIDTH, Pather.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
@@ -46,6 +49,7 @@ public class Hud implements Disposable {
         //Labels with dynamic numeric information
         countdownLabel = new Label(String.format("%.2f", time), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         //scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+
         //Labels with pure text information
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         //levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -66,11 +70,19 @@ public class Hud implements Disposable {
     }
 
     public void update(float dt){
-        time += dt;
+        if(timerIsRunning) {
+            time -= dt;
+        }else{
+            time = 0;
+        }
         countdownLabel.setText(new DecimalFormat("000.00").format(time));
     }
 
     public float getTime() { return time; }
+
+    public void stopTimer(){
+        timerIsRunning = false;
+    }
 
     public static void addScore(int value){
         score += value;

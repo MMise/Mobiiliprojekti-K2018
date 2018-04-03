@@ -203,6 +203,10 @@ public class PlayScreen implements Screen {
             item.update(dt);
         }
         hud.update(dt);
+        if(hud.getTime() < 0 && player.currentState != Player.State.DEAD ){
+            player.kill();
+            hud.stopTimer();
+        }
 
         //update camera location
         if(player.currentState != Player.State.DEAD){
@@ -257,7 +261,14 @@ public class PlayScreen implements Screen {
     }
 
     public void win() {
-        game.setScreen(new WinScreen(game, hud.getTime()));
+        /*
+            Tr + Te = Ts <=> Tr - Ts = -Te
+            Tr = Time Remaining
+            Te = Time elapsed
+            Ts = Time remaining at start
+        */
+        float elapsedTime = -(hud.getTime() - hud.TIME_TO_CLEAR_LEVEL);
+        game.setScreen(new WinScreen(game, elapsedTime));
     }
 
     public void setGravity(float value){
