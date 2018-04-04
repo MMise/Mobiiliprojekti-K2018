@@ -152,7 +152,6 @@ public class PlayScreen implements Screen {
         //This can lead to exploits, implement a method to check for ground in the future
         if(Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
             game.setScreen(new MainMenuScreen(game));
-            Gdx.app.log("PlayScreen", "BACK PRESSED");
         }
 
         if(player.currentState != Player.State.DEAD){
@@ -269,10 +268,6 @@ public class PlayScreen implements Screen {
         */
         float elapsedTime = -(hud.getTime() - hud.TIME_TO_CLEAR_LEVEL);
         game.setScreen(new WinScreen(game, elapsedTime));
-    }
-
-    public void setGravity(float value){
-        gravity = value;
     }
 
     @Override

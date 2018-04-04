@@ -101,7 +101,7 @@ public class MapEncoder {
 
         FileHandle file;
         try { //etsi tiedostoa ensin internalista
-            file = Gdx.files.internal(mapName + ".tmx"); //Luetaan tiedosto
+            file = Gdx.files.internal("maps/" + mapName); //Luetaan tiedosto
         } catch (RuntimeException e) { file = Gdx.files.local(mapName + ".tmx");}
 
         String str = file.readString();

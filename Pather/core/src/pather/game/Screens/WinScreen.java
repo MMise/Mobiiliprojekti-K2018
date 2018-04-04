@@ -26,7 +26,6 @@ public class WinScreen implements Screen {
     private Stage stage;
     private final Game game;
     private float timer;
-	private int kek;
 
     public WinScreen(Game game, float time){
         this.game = game;

@@ -13,11 +13,6 @@ import com.badlogic.gdx.utils.Array;
 import pather.game.Pather;
 import pather.game.Screens.PlayScreen;
 
-
-/**
- * Created by OMISTAJ on 17.3.2018.
- */
-
 //This is an example on the Goomba enemy in Super Mario Brothers, originally by Brent Aureli
 
 public class Goomba extends Enemy {
