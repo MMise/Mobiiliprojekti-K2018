@@ -31,9 +31,6 @@ public class Hud implements Disposable {
     Label countdownLabel;
     //static Label scoreLabel;
     Label timeLabel;
-    //Label levelLabel;
-    //Label worldLabel;
-    //Label marioLabel;
 
     public Hud(SpriteBatch sb){
         time = TIME_TO_CLEAR_LEVEL;
@@ -48,22 +45,13 @@ public class Hud implements Disposable {
 
         //Labels with dynamic numeric information
         countdownLabel = new Label(String.format("%.2f", time), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        //scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         //Labels with pure text information
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        //levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        //worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        //marioLabel = new Label("SCORE", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
-        //First row
-        //table.add(marioLabel).expandX().padTop(10);
-        //table.add(worldLabel).expandX().padTop(10);
         table.add(timeLabel).expandX().padTop(10);
         //Add a second row
         table.row();
-        //table.add(scoreLabel).expandX();
-        //table.add(levelLabel).expandX();
         table.add(countdownLabel).expandX();
 
         stage.addActor(table);

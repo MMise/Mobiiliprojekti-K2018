@@ -102,7 +102,7 @@ public class MapEncoder {
         FileHandle file;
         try { //etsi tiedostoa ensin internalista
             file = Gdx.files.internal("maps/" + mapName); //Luetaan tiedosto
-        } catch (RuntimeException e) { file = Gdx.files.local(mapName + ".tmx");}
+        } catch (RuntimeException e) { file = Gdx.files.local("maps/" + mapName);}
 
         String str = file.readString();
         Document ddom;
@@ -154,7 +154,7 @@ public class MapEncoder {
             //tiili lisätään merkkijonoon
             str[layerIndex] += String.valueOf(tile)+",";
 
-            //todo winzone
+            //winzone
             if((pointer+1) % width == 0) {
                 if (layerIndex == 0) str[layerIndex] += "1825,1825,1825,1825,1825,"; //background
                 else if (Math.floor(pointer / width) == height*2-1) str[layerIndex] += "1826,1826,1826,1826,1826,"; //ground
@@ -214,15 +214,14 @@ public class MapEncoder {
                         Integer.parseInt((currentmap).getAttribute("tilewidth"));
         }
 
-        //todo Winzone object
+        //Winzone object
         Element winzone = dom.createElement("object");
         winzone.setAttribute("id", String.valueOf(index++));
         winzone.setAttribute("x", String.valueOf(xIndex));
         winzone.setAttribute("y", String.valueOf(32*(height-1)));
         winzone.setAttribute("width", String.valueOf(160));
         winzone.setAttribute("height", String.valueOf(32));
-        Element property = (Element) winzone.appendChild(dom.createElement("properties")).appendChild(dom.createElement("property"));
-        property.setAttribute("name", "win");
+        ((Element) winzone.appendChild(dom.createElement("properties")).appendChild(dom.createElement("property"))).setAttribute("name", "win");
         objects.item(0).appendChild(winzone);
 
         map.setAttribute("nextobjectid", String.valueOf(index));

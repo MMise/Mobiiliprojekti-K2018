@@ -2,7 +2,9 @@ package pather.game.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -103,7 +105,11 @@ public class MainMenuScreen implements Screen {
     }
 
     public void play(){
-        loadingScreen = new LoadingScreen((Pather) game, new String[] {"module1", "module2", "module3"});
+        FileHandle dir = Gdx.files.internal("maps/");
+        String[] maps = new String[dir.list().length];
+        for(int i = 0; i < dir.list().length; i++)
+            maps[i] = dir.list()[i].name();
+        loadingScreen = new LoadingScreen((Pather) game, maps);
         game.setScreen(loadingScreen);
     }
 
@@ -114,6 +120,9 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
+            Gdx.app.exit();
+        }
         Gdx.gl.glClearColor(0,0.5f,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();

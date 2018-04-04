@@ -72,11 +72,9 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(Pather game) {
         //Tilesetit on oltava saatavilla lokaalissa
-        //Gdx.files.internal("tileset_gutter.png").copyTo(Gdx.files.local("tileset_gutter.png"));
-        Gdx.files.internal("sci-fi-platformer-tiles-32x32-extension.png").copyTo(Gdx.files.local("sci-fi-platformer-tiles-32x32-extension.png"));
-        //Gdx.files.internal("steampunk_tiles.png").copyTo(Gdx.files.local("steampunk_tiles.png"));
-        Gdx.files.internal("sheet1.png").copyTo(Gdx.files.local("sheet1.png"));
-        Gdx.files.internal("winzone_tileset.png").copyTo(Gdx.files.local("winzone_tileset.png"));
+        copyToLocal("sci-fi-platformer-tiles-32x32-extension.png");
+        copyToLocal("sheet1.png");
+        copyToLocal("winzone_tileset.png");
 
         atlas = new TextureAtlas("packed_gfx.atlas"); //Pack all of our sprites into a single file
         this.game = game;
@@ -121,6 +119,12 @@ public class PlayScreen implements Screen {
         itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
 
         controller = new Controller(w, h); //Create touchscreen controls
+    }
+
+    public void copyToLocal(String name) { //safer method for copying files to local memory
+        if(!Gdx.files.local(name).exists() && Gdx.files.internal(name).exists()) {
+            Gdx.files.internal(name).copyTo(Gdx.files.local(name));
+        } else if(!Gdx.files.internal(name).exists()) Gdx.app.error("Error", "Unable to find file: " + name);
     }
 
     public void spawnItem(ItemDef idef){
@@ -186,7 +190,7 @@ public class PlayScreen implements Screen {
         //Handle user input first
         handleInput(dt);
         handleSpawningItems();
-        //takes 1 step in the physics simulation
+        //take 1 step in the physics simulation
         world.step(1/60f, 6, 2);
 
         player.update(dt);

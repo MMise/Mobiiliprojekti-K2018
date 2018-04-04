@@ -2,6 +2,7 @@ package pather.game.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -24,6 +25,7 @@ public class WinScreen implements Screen {
 
     private Viewport viewport;
     private Stage stage;
+    private Label playAgain;
     private final Game game;
     private float timer;
 
@@ -40,7 +42,8 @@ public class WinScreen implements Screen {
         table.setFillParent(true);
 
         Label gameOverLabel = new Label("YOU WIN! Time: "+ String.format("%.2f", time), font);
-        Label playAgain = new Label("TAP TO PLAY AGAIN", font);
+        playAgain = new Label("TAP TO PLAY AGAIN", font);
+        playAgain.setVisible(false);
         table.add(gameOverLabel).expandX();
         table.row();
         table.add(playAgain).expandX().padTop(10);
@@ -56,9 +59,15 @@ public class WinScreen implements Screen {
     @Override
     public void render(float delta) {
         timer+=delta;
-        if(Gdx.input.isTouched() && timer >= 3f){
-            game.setScreen(new PlayScreen((Pather) game));
-            dispose();
+        if(timer >= 3f) { //wait three seconds to prevent player from accidentally tapping out
+            playAgain.setVisible(true);
+            if(Gdx.input.isTouched()){
+                game.setScreen(new PlayScreen((Pather) game));
+                dispose();
+            }
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
+            game.setScreen(new MainMenuScreen(game));
         }
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
