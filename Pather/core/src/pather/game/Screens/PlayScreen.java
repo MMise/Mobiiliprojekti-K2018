@@ -72,9 +72,9 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(Pather game) {
         //Tilesetit on oltava saatavilla lokaalissa
-        Gdx.files.internal("tileset_gutter.png").copyTo(Gdx.files.local("tileset_gutter.png"));
+        //Gdx.files.internal("tileset_gutter.png").copyTo(Gdx.files.local("tileset_gutter.png"));
         Gdx.files.internal("sci-fi-platformer-tiles-32x32-extension.png").copyTo(Gdx.files.local("sci-fi-platformer-tiles-32x32-extension.png"));
-        Gdx.files.internal("steampunk_tiles.png").copyTo(Gdx.files.local("steampunk_tiles.png"));
+        //Gdx.files.internal("steampunk_tiles.png").copyTo(Gdx.files.local("steampunk_tiles.png"));
         Gdx.files.internal("sheet1.png").copyTo(Gdx.files.local("sheet1.png"));
         Gdx.files.internal("winzone_tileset.png").copyTo(Gdx.files.local("winzone_tileset.png"));
 
