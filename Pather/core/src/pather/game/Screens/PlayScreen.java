@@ -1,10 +1,7 @@
 package pather.game.Screens;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
@@ -32,7 +29,6 @@ import pather.game.Scenes.Hud;
 import pather.game.Sprites.Enemy;
 import pather.game.Sprites.Player;
 import pather.game.Tools.B2WorldCreator;
-import pather.game.Tools.MapEncoder;
 import pather.game.Tools.WorldContactListener;
 
 
@@ -67,6 +63,7 @@ public class PlayScreen implements Screen {
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
     private float w, h;
     private float gravity = -20;
+    private float elapsedTime = 0;
 
     private Controller controller;
 
@@ -250,7 +247,13 @@ public class PlayScreen implements Screen {
 
         controller.draw();
         if(gameOver()){
-            game.setScreen(new GameOverScreen(game));
+            calculateElapsedTime();
+            game.setScreen(new LabelScreen(game, "GAME OVER!", elapsedTime));
+            dispose();
+        }
+        if(gameWon()){
+            calculateElapsedTime();
+            game.setScreen(new LabelScreen(game, "YOU WIN!", elapsedTime));
             dispose();
         }
     }
@@ -263,15 +266,16 @@ public class PlayScreen implements Screen {
         return false;
     }
 
-    public void win() {
-        /*
-            Tr + Te = Ts <=> Tr - Ts = -Te
-            Tr = Time Remaining
-            Te = Time elapsed
-            Ts = Time remaining at start
-        */
-        float elapsedTime = -(hud.getTime() - hud.TIME_TO_CLEAR_LEVEL);
-        game.setScreen(new WinScreen(game, elapsedTime));
+    public boolean gameWon(){
+        if(player.currentState == Player.State.WINNING){
+            return true;
+        }
+        return false;
+    }
+
+
+    public void calculateElapsedTime(){
+        elapsedTime = -(hud.getTime() - hud.TIME_TO_CLEAR_LEVEL);
     }
 
     @Override

@@ -31,7 +31,8 @@ public class Player extends Sprite {
         JUMPING,
         STANDING,
         RUNNING,
-        DEAD
+        DEAD,
+        WINNING
     }
     public State currentState;
     public State previousState;
@@ -47,6 +48,7 @@ public class Player extends Sprite {
 
     private boolean runningRight;
     private boolean playerIsDead;
+    private boolean gameWon;
 
     private float stateTimer;
     private PlayScreen screen;
@@ -58,6 +60,7 @@ public class Player extends Sprite {
         previousState = State.STANDING;
         stateTimer = 0;
         runningRight = true;
+        gameWon = false;
 
         //get run animation frames
         //All of our Texture Region definitions must be changed to reflect our character regions and sizes
@@ -127,12 +130,13 @@ public class Player extends Sprite {
     public State getState(){
         if(playerIsDead){
             return State.DEAD;
-        }
-        else if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)){
+        }else if(gameWon){
+            return State.WINNING;
+        }else if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)){
             return State.JUMPING;
         }else if(b2body.getLinearVelocity().y < 0){
             return State.FALLING;
-        }else if(b2body.getLinearVelocity().x != 0){
+        }else if(b2body.getLinearVelocity().x != 0) {
             return State.RUNNING;
         }else{
             return State.STANDING;
@@ -169,7 +173,7 @@ public class Player extends Sprite {
     }
 
     public void win() {
-        screen.win();
+        gameWon = true;
     }
 
     public void useItem(){

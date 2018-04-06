@@ -1,4 +1,4 @@
-package pather.game.Tools;
+﻿package pather.game.Tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -157,7 +157,7 @@ public class MapEncoder {
             //tiili lisätään merkkijonoon
             str[layerIndex] += String.valueOf(tile)+",";
 
-            //winzone
+            //todo winzone
             if((pointer+1) % width == 0) {
                 if (layerIndex == 0) str[layerIndex] += "1825,1825,1825,1825,1825,"; //background
                 else if (Math.floor(pointer / width) == height*2-1) str[layerIndex] += "1826,1826,1826,1826,1826,"; //ground
@@ -217,14 +217,15 @@ public class MapEncoder {
                         Integer.parseInt((currentmap).getAttribute("tilewidth"));
         }
 
-        //Winzone object
+        //todo Winzone object
         Element winzone = dom.createElement("object");
         winzone.setAttribute("id", String.valueOf(index++));
         winzone.setAttribute("x", String.valueOf(xIndex));
         winzone.setAttribute("y", String.valueOf(32*(height-1)));
         winzone.setAttribute("width", String.valueOf(160));
         winzone.setAttribute("height", String.valueOf(32));
-        ((Element) winzone.appendChild(dom.createElement("properties")).appendChild(dom.createElement("property"))).setAttribute("name", "win");
+        Element property = (Element) winzone.appendChild(dom.createElement("properties")).appendChild(dom.createElement("property"));
+        property.setAttribute("name", "win");
         objects.item(0).appendChild(winzone);
 
         map.setAttribute("nextobjectid", String.valueOf(index));
