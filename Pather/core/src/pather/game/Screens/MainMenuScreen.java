@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import pather.game.Pather;
 
 
@@ -32,7 +35,7 @@ public class MainMenuScreen implements Screen {
     private final Image shopButton;
     private final Image exitButton;
 
-    private LoadingScreen loadingScreen;
+    private Screen loadingScreen;
 
     public MainMenuScreen(final Game game){
 
@@ -104,12 +107,18 @@ public class MainMenuScreen implements Screen {
 
     }
 
-    public void play(){
-        FileHandle dir = Gdx.files.internal("maps/");
-        String[] maps = new String[dir.list().length];
-        for(int i = 0; i < dir.list().length; i++)
-            maps[i] = dir.list()[i].name();
-        loadingScreen = new LoadingScreen((Pather) game, maps);
+    public void play(){ //Generate a random stage
+        FileHandle[] dir = Gdx.files.internal("maps/").list();
+        ArrayList<String> maps = new ArrayList<String>();
+        int length = dir.length;
+        String[] result = new String[Math.min(3, length)];
+        for(FileHandle item : dir)
+            maps.add(item.name());
+        Collections.shuffle(maps);
+        for(int i = 0; i < result.length; i++) {
+            result[i] = maps.get(i).substring(0, maps.get(i).length() - 4);
+        }
+        loadingScreen = new LoadingScreen((Pather) game, result);
         game.setScreen(loadingScreen);
     }
 

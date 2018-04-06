@@ -93,7 +93,7 @@ public class PlayScreen implements Screen {
 
         //load the map and setup map renderer.
         maploader = new TmxMapLoader(new LocalFileHandleResolver()); //Levels are generated in local memory
-        map = maploader.load("temp.tmx");
+        map = maploader.load("generated.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Pather.PPM);
 
         //Box2D variables

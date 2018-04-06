@@ -37,7 +37,7 @@ public class Pather extends Game {
 
 	@Override
 	public void create () {
-		if(Gdx.files.local("temp.tmx").exists()) Gdx.files.local("temp.tmx").delete();
+		if(Gdx.files.local("generated.tmx").exists()) Gdx.files.local("generated.tmx").delete();
 
 		batch = new SpriteBatch();
 		manager = new AssetManager();

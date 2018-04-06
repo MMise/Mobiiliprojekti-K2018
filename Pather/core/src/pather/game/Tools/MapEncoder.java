@@ -11,6 +11,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -100,9 +101,11 @@ public class MapEncoder {
     public void decode(String mapName) { //lue kentän tiedot levyltä ja tallenna ne taulukkoon
 
         FileHandle file;
-        try { //etsi tiedostoa ensin internalista
-            file = Gdx.files.internal("maps/" + mapName); //Luetaan tiedosto
-        } catch (RuntimeException e) { file = Gdx.files.local("maps/" + mapName);}
+
+        if(Gdx.files.internal("maps/" + mapName + ".tmx").exists())
+            file = Gdx.files.internal("maps/" + mapName + ".tmx"); //Luetaan tiedosto
+        else
+            file = Gdx.files.local(mapName + ".tmx");
 
         String str = file.readString();
         Document ddom;
@@ -240,7 +243,7 @@ public class MapEncoder {
             String xmlString = sw.toString();
             // /jargon
 
-            FileHandle file = Gdx.files.local("temp.tmx");
+            FileHandle file = Gdx.files.local("generated.tmx");
             file.writeString(xmlString, false); //kenttä tallennetaan lokaaliin
         } catch (Exception e) { System.out.println("ERROR ENCODING"); return; }
     }

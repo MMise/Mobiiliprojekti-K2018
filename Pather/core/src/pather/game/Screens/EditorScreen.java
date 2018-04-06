@@ -34,7 +34,7 @@ public class EditorScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
     private final Game game;
-    private float timer;
+    //private float timer;
 
     private SelectBox selectBox1, selectBox2, selectBox3;
 
@@ -49,14 +49,14 @@ public class EditorScreen implements Screen {
         FileHandle dir = Gdx.files.internal("maps/");
         String[] mapList = new String[dir.list().length];
         for(int i = 0; i<dir.list().length; i++){
-            mapList[i] = dir.list()[i].name();
+            mapList[i] = dir.list()[i].name().substring(0, dir.list()[i].name().length()-4); //hide redundant .tmx
         }
 
         viewport = new FitViewport(Pather.V_WIDTH / 2, Pather.V_HEIGHT / 2, new OrthographicCamera());
         stage = new Stage(viewport, ((Pather) game).batch);
         Gdx.input.setInputProcessor(stage);
 
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), com.badlogic.gdx.graphics.Color.WHITE);
+        //Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), com.badlogic.gdx.graphics.Color.WHITE);
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         playButton = new Image(new Texture(Gdx.files.internal("pather_menu_play.png")));
@@ -86,7 +86,7 @@ public class EditorScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 module1 = (String) selectBox1.getSelected();
-                System.out.println(module1);
+                //System.out.println(module1);
             }
         });
 
@@ -94,7 +94,7 @@ public class EditorScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 module2 = (String) selectBox2.getSelected();
-                System.out.println(module2);
+                //System.out.println(module2);
             }
         });
 
@@ -102,7 +102,7 @@ public class EditorScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 module3 = (String) selectBox3.getSelected();
-                System.out.println(module3);
+                //System.out.println(module3);
             }
         });
 
@@ -123,8 +123,8 @@ public class EditorScreen implements Screen {
         stage.addActor(selectBox3);
         stage.addActor(playButton);
 
-        Gdx.app.log("Editor", String.valueOf(selectBox3.getX()));
-        Gdx.app.log("Editor", String.valueOf(selectBox3.getWidth()));
+        //Gdx.app.log("Editor", String.valueOf(selectBox3.getX()));
+        //Gdx.app.log("Editor", String.valueOf(selectBox3.getWidth()));
     }
 
     public void play(){
@@ -139,7 +139,7 @@ public class EditorScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        timer+=delta;
+        //timer+=delta;
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
