@@ -1,5 +1,6 @@
 package pather.game.Sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -49,8 +50,10 @@ public class Player extends Sprite {
     private boolean runningRight;
     private boolean playerIsDead;
     private boolean gameWon;
+    private boolean poweredUp = false;
 
     private float stateTimer;
+    private float powerUpDelta;
     private PlayScreen screen;
 
     public Player(PlayScreen screen){
@@ -86,6 +89,14 @@ public class Player extends Sprite {
     public void update(float dt){
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + 2 / Pather.PPM);
         setRegion(getFrame(dt));
+        if(poweredUp){
+            powerUpDelta += dt;
+            world.setGravity(new Vector2(0, -10));
+            if(powerUpDelta > 4f){
+                poweredUp = false;
+                world.setGravity(new Vector2(0, -20));
+            }
+        }
         if(b2body.getPosition().y < 0 && !playerIsDead) { //You die if you fall off the map
             b2body.setLinearVelocity(b2body.getLinearVelocity().x, 0);
             kill();
@@ -177,6 +188,7 @@ public class Player extends Sprite {
     }
 
     public void useItem(){
+        poweredUp = true;
         world.setGravity(new Vector2(0, -10));
     }
 

@@ -1,4 +1,3 @@
-
 packed_gfx.png
 format: RGBA8888
 filter: Nearest,Nearest
@@ -10,3 +9,4 @@ pather_still_1-13_onecanvas
   orig: 832, 64
   offset: 0, 0
   index: -1
+

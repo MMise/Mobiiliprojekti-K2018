@@ -72,6 +72,7 @@ public class PlayScreen implements Screen {
         copyToLocal("sci-fi-platformer-tiles-32x32-extension.png");
         copyToLocal("sheet1.png");
         copyToLocal("winzone_tileset.png");
+        copyToLocal("pather_tilesets_334x6400");
 
         atlas = new TextureAtlas("packed_gfx.atlas"); //Pack all of our sprites into a single file
         this.game = game;
