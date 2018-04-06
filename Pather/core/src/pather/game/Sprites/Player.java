@@ -74,7 +74,7 @@ public class Player extends Sprite {
         }
         characterRun = new Animation<TextureRegion>(0.1f, frames);
 
-        characterJump = new TextureRegion(screen.getAtlas().findRegion("pather_still_1-13_onecanvas"), 448, 0, 64, 64);
+        characterJump = new TextureRegion(screen.getAtlas().findRegion("pather_still_1-13_onecanvas"), 384, 0, 64, 64);
         characterDead = new TextureRegion(screen.getAtlas().findRegion("pather_still_1-13_onecanvas"), 448, 0, 64, 64);
         //create texture regions for Player standing
         characterStand = new TextureRegion(screen.getAtlas().findRegion("pather_still_1-13_onecanvas"), 0,0, 64, 64);
