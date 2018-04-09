@@ -1,4 +1,4 @@
-﻿package pather.game.Tools;
+package pather.game.Tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

@@ -8,45 +8,36 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pather.game.Pather;
 
-/**
- * Created by Mikko on 3.4.2018.
- */
-
 public class EditorScreen implements Screen {
 
-    private Viewport viewport;
     private Stage stage;
     private final Game game;
-    //private float timer;
 
     private SelectBox selectBox1, selectBox2, selectBox3;
-
-    private Skin skin;
     private String module1, module2, module3;
-    private final Image playButton;
-    private LoadingScreen loadingScreen;
+    private final Viewport viewport;
+    private Image thumbnail;
+    private Array<Image> position1List, position2List, position3List;
 
     public EditorScreen(Game game){
         this.game = game;
 
+
+        //Retrieve maps from /maps/ folder
         FileHandle dir = Gdx.files.internal("maps/");
         String[] mapList = new String[dir.list().length];
         for(int i = 0; i<dir.list().length; i++){
@@ -57,15 +48,15 @@ public class EditorScreen implements Screen {
         stage = new Stage(viewport, ((Pather) game).batch);
         Gdx.input.setInputProcessor(stage);
 
-        //Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), com.badlogic.gdx.graphics.Color.WHITE);
-
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
-        playButton = new Image(new Texture(Gdx.files.internal("pather_menu_play.png")));
+        //default libgdx skin texture
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        Image playButton = new Image(new Texture(Gdx.files.internal("pather_menu_play.png")));
         playButton.setScale(0.5f);
         playButton.setPosition(viewport.getWorldWidth() / 2 - playButton.getWidth() / 4, viewport.getWorldHeight() * 0.01f);
 
+        //Initialize drop down menus
         selectBox1 = new SelectBox(skin);
-        selectBox1.setItems(mapList);
+        selectBox1.setItems(mapList); //Set the map names as the menu's content
         selectBox1.setPosition(viewport.getWorldWidth() * 0.078125f, viewport.getWorldHeight() * 0.3f);
         selectBox1.setWidth(80f);
 
@@ -79,15 +70,25 @@ public class EditorScreen implements Screen {
         selectBox3.setPosition(viewport.getWorldWidth() / 1.4f, viewport.getWorldHeight() * 0.3f);
         selectBox3.setWidth(80f);
 
+        //Initialize arrays used in memory clearing
+        position1List = new Array<Image>();
+        position2List = new Array<Image>();
+        position3List = new Array<Image>();
+
+
+        //Set default values to selected map string to prevent crashing
+        //in the case of pressing play button immediately
         module1 = (String) selectBox1.getSelected();
         module2 = (String) selectBox2.getSelected();
         module3 = (String) selectBox3.getSelected();
 
+
+        //create listeners for the drop down menus
         selectBox1.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 module1 = (String) selectBox1.getSelected();
-                //System.out.println(module1);
+                setThumbnail(module1,1); //parameters are the name of the module + position on the screen
             }
         });
 
@@ -95,7 +96,7 @@ public class EditorScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 module2 = (String) selectBox2.getSelected();
-                //System.out.println(module2);
+                setThumbnail(module2,2);
             }
         });
 
@@ -103,7 +104,7 @@ public class EditorScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 module3 = (String) selectBox3.getSelected();
-                //System.out.println(module3);
+                setThumbnail(module3,3);
             }
         });
 
@@ -119,18 +120,64 @@ public class EditorScreen implements Screen {
             }
         });
 
+
+        //add menus to the stage object
         stage.addActor(selectBox1);
         stage.addActor(selectBox2);
         stage.addActor(selectBox3);
         stage.addActor(playButton);
 
-        //Gdx.app.log("Editor", String.valueOf(selectBox3.getX()));
-        //Gdx.app.log("Editor", String.valueOf(selectBox3.getWidth()));
     }
 
     public void play(){
-        loadingScreen = new LoadingScreen((Pather) game, new String[] { module1, module2, module3 });
+        //initialize the game
+        LoadingScreen loadingScreen = new LoadingScreen((Pather) game, new String[]{module1, module2, module3});
         game.setScreen(loadingScreen);
+    }
+
+    private void setThumbnail(String moduleName, int position){
+        try{
+            thumbnail = new Image(new Texture(Gdx.files.internal(moduleName + ".png"))); //retrieve the correct thumbnail image
+            if(position == 1){
+                if(position1List.size >= 1) {
+                    for (Image image : position1List) {
+                        //used to remove redundant thumbnails from memory
+                        image.remove();
+                    }
+                    position1List.clear();
+                }
+                thumbnail.setPosition(viewport.getWorldWidth() * 0.078125f, viewport.getWorldHeight() * 0.6f);
+                position1List.add(thumbnail);
+            }
+            else if(position == 2){
+                if(position2List.size >= 1) {
+                    for (Image image : position2List) {
+                        image.remove();
+                    }
+                    position2List.clear();
+                }
+                thumbnail.setPosition(viewport.getWorldWidth() / 2 - selectBox2.getWidth() / 2, viewport.getWorldHeight() * 0.6f);
+                position2List.add(thumbnail);
+            }
+            else if(position == 3){
+                if(position3List.size >= 1) {
+                    for (Image image : position3List) {
+                        image.remove();
+                    }
+                    position3List.clear();
+                }
+                thumbnail.setPosition(viewport.getWorldWidth() / 1.4f, viewport.getWorldHeight() * 0.6f);
+                position3List.add(thumbnail);
+            }
+            thumbnail.setWidth(selectBox1.getWidth());
+            thumbnail.setHeight(35f);
+            if(thumbnail != null){
+                stage.addActor(thumbnail);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -140,7 +187,6 @@ public class EditorScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        //timer+=delta;
         if(Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
             game.setScreen(new MainMenuScreen(game));
         }
@@ -172,6 +218,8 @@ public class EditorScreen implements Screen {
 
     @Override
     public void dispose() {
+        thumbnail.remove();
+        game.dispose();
         stage.dispose();
     }
 }
