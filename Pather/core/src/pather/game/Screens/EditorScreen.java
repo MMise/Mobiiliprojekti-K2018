@@ -8,6 +8,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -15,7 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -35,8 +38,10 @@ public class EditorScreen implements Screen {
 
     public EditorScreen(Game game){
         this.game = game;
-
-
+        Table table = new Table();
+        table.top();
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("menu_art.png")))));
+        table.setFillParent(true);
         //Retrieve maps from /maps/ folder
         FileHandle dir = Gdx.files.internal("maps/");
         String[] mapList = new String[dir.list().length];
@@ -122,6 +127,7 @@ public class EditorScreen implements Screen {
 
 
         //add menus to the stage object
+        stage.addActor(table);
         stage.addActor(selectBox1);
         stage.addActor(selectBox2);
         stage.addActor(selectBox3);
