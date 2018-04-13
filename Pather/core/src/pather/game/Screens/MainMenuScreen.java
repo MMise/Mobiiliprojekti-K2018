@@ -8,11 +8,15 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -32,7 +36,7 @@ public class MainMenuScreen implements Screen {
     private final float padX = 60;
 
     private final Image playButton;
-    private final Image shopButton;
+    private final Image editButton;
     private final Image exitButton;
 
     private Screen loadingScreen;
@@ -42,6 +46,7 @@ public class MainMenuScreen implements Screen {
         this.game = game;
         Table table = new Table();
         table.top();
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("menu_art.png")))));
         table.setFillParent(true);
         viewport = new FitViewport(Pather.V_WIDTH, Pather.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((Pather) game).batch);
@@ -49,19 +54,18 @@ public class MainMenuScreen implements Screen {
 
         //Initialize button images
         playButton = new Image(new Texture(Gdx.files.internal("pather_menu_play.png")));
-        shopButton = new Image(new Texture(Gdx.files.internal("pather_menu_shop.png")));
+        editButton = new Image(new Texture(Gdx.files.internal("pather_menu_edit.png")));
         exitButton = new Image(new Texture(Gdx.files.internal("pather_menu_exit.png")));
-
         //Set button scale
         /*
         playButton.setScale(scale);
-        shopButton.setScale(scale);
+        editButton.setScale(scale);
         exitButton.setScale(scale);
         */
 
         //Set positions
         playButton.setPosition(padX, Pather.V_HEIGHT - playButton.getHeight());
-        shopButton.setPosition(padX, Pather.V_HEIGHT - (playButton.getHeight() * 2));
+        editButton.setPosition(padX, Pather.V_HEIGHT - (playButton.getHeight() * 2));
         exitButton.setPosition(padX, Pather.V_HEIGHT - (playButton.getHeight() * 3));
 
 
@@ -89,7 +93,7 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        shopButton.addListener(new InputListener() {
+        editButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 return true;
@@ -102,11 +106,13 @@ public class MainMenuScreen implements Screen {
             }
         });
 
+        stage.addActor(table);
         stage.addActor(playButton);
-        stage.addActor(shopButton);
+        stage.addActor(editButton);
         stage.addActor(exitButton);
 
     }
+
 
     public void play(){ //Generate a random stage
         FileHandle[] dir = Gdx.files.internal("maps/").list();
@@ -133,31 +139,13 @@ public class MainMenuScreen implements Screen {
         if(Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
             Gdx.app.exit();
         }
+
         Gdx.gl.glClearColor(0,0.5f,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
     }
 
-    public void showShop(){
-        final Image shopWindow = new Image(new Texture(Gdx.files.internal("1cc.png")));
-        shopWindow.setScale(0.5f);
-        shopWindow.setPosition((Pather.V_WIDTH - shopWindow.getWidth() * 0.5f) / 2, 0);
-
-        shopWindow.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-                hideShop();
-                shopButton.setVisible(true);
-            }
-        });
-        stage.addActor(shopWindow);
-    }
 
     public void hideShop(){
         stage.getActors().removeIndex(3);
