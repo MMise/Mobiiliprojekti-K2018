@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import pather.game.Items.Item;
 import pather.game.Pather;
 import pather.game.Sprites.Enemy;
+import pather.game.Sprites.Hopper;
 import pather.game.Sprites.InteractiveTileObject;
 import pather.game.Sprites.PickableTileObject;
 import pather.game.Sprites.Player;
@@ -85,7 +86,17 @@ public class WorldContactListener implements ContactListener {
                 if(fixA.getFilterData().categoryBits == Pather.ITEM_BIT){
                     ((PickableTileObject)fixA.getUserData()).onHit((Player) fixB.getUserData());
                 }else{
-                    ((PickableTileObject)fixB.getUserData()).onHit((Player) fixA.getUserData());                }
+                    ((PickableTileObject)fixB.getUserData()).onHit((Player) fixA.getUserData());
+                }
+                break;
+            case Pather.ENEMY_BIT | Pather.DANGERZONE_BIT:
+                if(fixA.getUserData() instanceof Hopper || fixB.getUserData() instanceof Hopper){
+                    if(fixA.getFilterData().categoryBits == Pather.ENEMY_BIT){
+                        ((Hopper)fixA.getUserData()).setToDestroy();
+                    }else{
+                        ((Hopper)fixB.getUserData()).setToDestroy();
+                    }
+                }
                 break;
         }
     }

@@ -13,12 +13,10 @@ import com.badlogic.gdx.utils.Array;
 
 import pather.game.Pather;
 import pather.game.Screens.PlayScreen;
-import pather.game.Sprites.Brick;
 import pather.game.Sprites.Coin;
 import pather.game.Sprites.Enemy;
-import pather.game.Sprites.Goomba;
 import pather.game.Sprites.GroundTile;
-import pather.game.Sprites.NotGoomba;
+import pather.game.Sprites.Hopper;
 import pather.game.Sprites.PickableTileObject;
 import pather.game.Sprites.Turtle;
 
@@ -29,7 +27,7 @@ import static pather.game.Pather.PPM;
 
 public class B2WorldCreator {
 
-    private Array<NotGoomba> goombas;
+    private Array<Hopper> goombas;
     private Array<Turtle> turtles;
 
     public B2WorldCreator(PlayScreen screen){
@@ -68,10 +66,10 @@ public class B2WorldCreator {
         }
 
         //create all goombas
-        goombas = new Array<NotGoomba>();
+        goombas = new Array<Hopper>();
         for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            goombas.add(new NotGoomba(screen, rect.getX() / PPM, rect.getY() / Pather.PPM));
+            goombas.add(new Hopper(screen, rect.getX() / PPM, rect.getY() / Pather.PPM));
         }
     }
 

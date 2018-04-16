@@ -28,9 +28,9 @@ public class Hopper extends Enemy {
         super(screen, x, y);
         frames = new Array<TextureRegion>();
 
-        //Our enemy doesn't have a walk cycle animation. However
+        //Our enemy doesn't have a walk animation, this is just how we set it's texture
         frames.add(new TextureRegion(screen.getAtlas().findRegion("hopper"), 0, 0, 32, 32));
-        walkAnimation = new Animation<TextureRegion>(0.4f, frames); //each frame appears for 0.4 seconds
+        walkAnimation = new Animation<TextureRegion>(0.4f, frames);
         stateTime = 0;
         setBounds(getX(), getY(), 32 / Pather.PPM, 32 / Pather.PPM);
         setToDestroy = false;
@@ -41,7 +41,7 @@ public class Hopper extends Enemy {
     public void update(float dt){
         stateTime += dt;
         if(setToDestroy && !destroyed){
-            //If the enemy has been stomped on we change it's sprite to flat goomba
+
             world.destroyBody(b2body);
             destroyed = true;
             stateTime = 0;
@@ -58,13 +58,6 @@ public class Hopper extends Enemy {
     public void draw(Batch batch){
         if(!destroyed || stateTime < 1){
             super.draw(batch);
-        }
-    }
-
-    public void jump(){
-        if(stateTime > 5) {
-            this.b2body.applyLinearImpulse(new Vector2(0, 50f), this.b2body.getWorldCenter(), true);
-            stateTime = 1;
         }
     }
 
@@ -95,12 +88,16 @@ public class Hopper extends Enemy {
         b2body.createFixture(fdef).setUserData(this);
     }
 
+    public void setToDestroy(){
+        setToDestroy = true;
+    }
+
     @Override
     public void hitOnHead(Player player) {
 
     }
 
     public void onEnemyHit(Enemy enemy){
-
+        reverseVelocity(true, false);
     }
 }
