@@ -65,14 +65,14 @@ public class Player extends Sprite {
         Array<TextureRegion> frames = new Array<TextureRegion>();
         for(int i = 1; i < 13; i++){
             // i * x, where i equals the amount of our run frames and x equals the width of a single run frame
-            frames.add(new TextureRegion(screen.getAtlas().findRegion("pather_still_1-13_onecanvas"), i * 64, 0, 64, 64));
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("character"), i * 64, 0, 64, 64));
         }
         characterRun = new Animation<TextureRegion>(0.1f, frames);
 
-        characterJump = new TextureRegion(screen.getAtlas().findRegion("pather_still_1-13_onecanvas"), 384, 0, 64, 64);
-        characterDead = new TextureRegion(screen.getAtlas().findRegion("pather_still_1-13_onecanvas"), 448, 0, 64, 64);
+        characterJump = new TextureRegion(screen.getAtlas().findRegion("character"), 384, 0, 64, 64);
+        characterDead = new TextureRegion(screen.getAtlas().findRegion("character"), 448, 0, 64, 64);
         //create texture regions for Player standing
-        characterStand = new TextureRegion(screen.getAtlas().findRegion("pather_still_1-13_onecanvas"), 0,0, 64, 64);
+        characterStand = new TextureRegion(screen.getAtlas().findRegion("character"), 0,0, 64, 64);
 
         //define player in box2d
         definePlayer();

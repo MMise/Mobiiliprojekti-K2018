@@ -1,11 +1,19 @@
+
 packed_gfx.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-pather_still_1-13_onecanvas
+character
   rotate: false
-  xy: 1, 1
+  xy: 1, 35
   size: 832, 64
   orig: 832, 64
   offset: 0, 0
-index: -1
+  index: -1
+hopper
+  rotate: false
+  xy: 1, 1
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
