@@ -229,7 +229,7 @@ public class Player extends Sprite {
 
         //Our character has a small line above head so that it can hit objects with its head
         EdgeShape head = new EdgeShape();
-        head.set(new Vector2(-2 / Pather.PPM, 6 / Pather.PPM), new Vector2(2 / Pather.PPM, 6 / Pather.PPM));
+        head.set(new Vector2(-2 / Pather.PPM, 32 / Pather.PPM), new Vector2(2 / Pather.PPM, 32 / Pather.PPM));
         fdef.filter.categoryBits = Pather.PLAYER_HEAD_BIT;
         fdef.shape = head;
         fdef.isSensor = true;
