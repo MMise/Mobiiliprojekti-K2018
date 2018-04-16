@@ -178,6 +178,8 @@ public class Player extends Sprite {
     }
 
     public void useItem(){
+        if(Pather.toggleSound)
+            Pather.manager.get("audio/sounds/powerup.wav", Sound.class).play();
         poweredUp = true;
         world.setGravity(new Vector2(0, -10));
     }
@@ -231,6 +233,8 @@ public class Player extends Sprite {
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-2 / Pather.PPM, 32 / Pather.PPM), new Vector2(2 / Pather.PPM, 32 / Pather.PPM));
         fdef.filter.categoryBits = Pather.PLAYER_HEAD_BIT;
+        fdef.filter.maskBits =  Pather.GROUND_BIT |
+                                Pather.OBJECT_BIT;
         fdef.shape = head;
         fdef.isSensor = true;
 

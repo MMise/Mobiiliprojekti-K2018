@@ -1,5 +1,7 @@
+
 package pather.game.Tools;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -69,12 +71,13 @@ public class WorldContactListener implements ContactListener {
                 ((Enemy)fixA.getUserData()).onEnemyHit((Enemy)fixB.getUserData());
                 ((Enemy)fixB.getUserData()).onEnemyHit((Enemy)fixA.getUserData());
                 break;
-	    case Pather.PLAYER_HEAD_BIT | Pather.OBJECT_BIT:
+            case Pather.PLAYER_HEAD_BIT | Pather.OBJECT_BIT:
             case Pather.PLAYER_HEAD_BIT | Pather.GROUND_BIT:
-                //TODO: Play a sound whenever the player's head bumps into object or ground layer
+                if(Pather.toggleSound)
+                    Pather.manager.get("audio/sounds/bump.wav", Sound.class).play();
+
                 break;
             /*
-
             case Pather.ITEM_BIT | Pather.OBJECT_BIT:
                 if(fixA.getFilterData().categoryBits == Pather.ITEM_BIT){
                     ((Item)fixA.getUserData()).reverseVelocity(true, false);
@@ -82,19 +85,15 @@ public class WorldContactListener implements ContactListener {
                     ((Item)fixB.getUserData()).reverseVelocity(true, false);
                 }
                 break;
-
             */
-
             case Pather.ITEM_BIT | Pather.PLAYER_BIT:
                 if(fixA.getFilterData().categoryBits == Pather.ITEM_BIT){
                     ((PickableTileObject)fixA.getUserData()).onHit((Player) fixB.getUserData());
                 }else{
                     ((PickableTileObject)fixB.getUserData()).onHit((Player) fixA.getUserData());
-				}
+                }
                 break;
-
-
-			case Pather.ENEMY_BIT | Pather.DANGERZONE_BIT:
+            case Pather.ENEMY_BIT | Pather.DANGERZONE_BIT:
                 if(fixA.getUserData() instanceof Hopper || fixB.getUserData() instanceof Hopper){
                     if(fixA.getFilterData().categoryBits == Pather.ENEMY_BIT){
                         ((Hopper)fixA.getUserData()).setToDestroy();
@@ -102,7 +101,7 @@ public class WorldContactListener implements ContactListener {
                         ((Hopper)fixB.getUserData()).setToDestroy();
                     }
                 }
-                 break;
+                break;
         }
     }
 

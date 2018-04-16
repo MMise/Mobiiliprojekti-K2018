@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -103,15 +104,11 @@ public class PlayScreen implements Screen {
         gamecam.position.set(player.b2body.getPosition().x, gamePort.getWorldHeight() / 2, 0);
 
         world.setContactListener(new WorldContactListener());
-
-        /*TODO: Uncomment this to bless the rains
-
-        music = Pather.manager.get("audio/music/africa.wav", Music.class);
-        music.setLooping(true);
-        music.play();
-
-        */
-
+        if(Pather.toggleSound){
+            music = Pather.manager.get("audio/music/background_music.wav", Music.class);
+            music.setLooping(true);
+            music.play();
+        }
         items = new Array<Item>();
         itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
 
@@ -163,6 +160,9 @@ public class PlayScreen implements Screen {
             if (    Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.b2body.getLinearVelocity().y == 0 ||
                     controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 ) {
                 player.b2body.setLinearVelocity(new Vector2(player.b2body.getLinearVelocity().x, 12f));
+                if(Pather.toggleSound){
+                    Pather.manager.get("audio/sounds/jump.wav", Sound.class).play();
+                }
             }
             if (    Gdx.input.isKeyPressed(Input.Keys.RIGHT) ||
                     controller.isRightPressed() ) {
@@ -208,6 +208,8 @@ public class PlayScreen implements Screen {
         }
         hud.update(dt);
         if(hud.getTime() < 0 && player.currentState != Player.State.DEAD ){
+            if(Pather.toggleSound)
+                music.stop();
             player.kill();
             hud.stopTimer();
         }
@@ -234,7 +236,7 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         //Uncomment to render debug lines
-        //b2dr.render(world, gamecam.combined);
+        b2dr.render(world, gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
@@ -265,6 +267,8 @@ public class PlayScreen implements Screen {
     //The game over screen appears after three seconds of dying
     public boolean gameOver(){
         if(player.currentState == Player.State.DEAD && player.getStateTimer() > 3){
+            if(Pather.toggleSound)
+                music.stop();
             return true;
         }
         return false;
@@ -272,6 +276,8 @@ public class PlayScreen implements Screen {
 
     public boolean gameWon(){
         if(player.currentState == Player.State.WINNING){
+            if(Pather.toggleSound)
+                music.stop();
             return true;
         }
         return false;
