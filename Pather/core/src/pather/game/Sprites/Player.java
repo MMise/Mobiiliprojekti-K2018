@@ -93,7 +93,10 @@ public class Player extends Sprite {
             powerUpDelta += dt;
             world.setGravity(new Vector2(0, -10));
             if(powerUpDelta > 4f){
+                Gdx.app.log("PLAYER", "ITEM EXPIRED");
                 poweredUp = false;
+                powerUpDelta = 0;
+                Gdx.app.log("PLAYER", "POWERED UP = " + String.valueOf(poweredUp));
                 world.setGravity(new Vector2(0, -20));
             }
         }
@@ -188,7 +191,9 @@ public class Player extends Sprite {
     }
 
     public void useItem(){
+        Gdx.app.log("PLAYER", "ITEM USED");
         poweredUp = true;
+        Gdx.app.log("PLAYER", String.valueOf(poweredUp));
         world.setGravity(new Vector2(0, -10));
     }
 

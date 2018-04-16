@@ -25,6 +25,7 @@ public class PickableTileObject extends InteractiveTileObject {
     @Override
     public void onHit(Player player) {
         getCell().setTile(null);
+        setCategoryFilter(Pather.NOTHING_BIT);
         player.useItem();
     }
 }
