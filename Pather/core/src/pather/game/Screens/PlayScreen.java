@@ -36,7 +36,6 @@ import pather.game.Tools.WorldContactListener;
 
 public class PlayScreen implements Screen {
 
-    //TODO: pressing the back button should take you back to the menu
 
     private Pather game;
     private TextureAtlas atlas; //this contains all of our game sprites
@@ -95,7 +94,7 @@ public class PlayScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Pather.PPM);
 
         //Box2D variables
-        world = new World(new Vector2(0, gravity), true); //This creates a world where gravity works like on Earth
+        world = new World(new Vector2(0, gravity), true);
         b2dr = new Box2DDebugRenderer();
         creator = new B2WorldCreator(this);
         player = new Player(this);
@@ -130,7 +129,11 @@ public class PlayScreen implements Screen {
     }
 
     public void handleSpawningItems(){
-        //Set items to spawn inside specific locations. Locations must be defined in Tiled
+        /*
+            Set items to spawn inside specific locations. Locations must be defined in Tiled.
+            This method is practically useless in the final version, but was left to demonstrate
+            removed functionality
+         */
         if(!itemsToSpawn.isEmpty()){
             ItemDef idef = itemsToSpawn.poll();
             if(idef.type == GenericItemExample.class){
@@ -150,7 +153,7 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float dt) {
 
-        //TODO: Jumping is now allowed when vertical velocity is 0.
+        //Jumping is now allowed when vertical velocity is 0.
         //This can lead to exploits, implement a method to check for ground in the future
         if(Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
             game.setScreen(new MainMenuScreen(game));
@@ -230,7 +233,7 @@ public class PlayScreen implements Screen {
         //render the game map
         renderer.render();
 
-        //TODO render our debug lines
+        //Uncomment to render debug lines
         //b2dr.render(world, gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);

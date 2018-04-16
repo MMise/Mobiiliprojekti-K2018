@@ -1,22 +1,17 @@
 package pather.game.Sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Ellipse;
-import com.badlogic.gdx.math.Path;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
@@ -93,10 +88,8 @@ public class Player extends Sprite {
             powerUpDelta += dt;
             world.setGravity(new Vector2(0, -10));
             if(powerUpDelta > 4f){
-                Gdx.app.log("PLAYER", "ITEM EXPIRED");
                 poweredUp = false;
                 powerUpDelta = 0;
-                Gdx.app.log("PLAYER", "POWERED UP = " + String.valueOf(poweredUp));
                 world.setGravity(new Vector2(0, -20));
             }
         }
@@ -157,25 +150,19 @@ public class Player extends Sprite {
         }
     }
 
-    public boolean isDead(){
-        return playerIsDead;
-    }
-
     public float getStateTimer(){
         return stateTimer;
     }
 
     //Define what happens when our character hits an enemy
-    public void hit(Enemy enemy){
-        if(enemy instanceof Turtle && ((Turtle) enemy).getCurrentState() == Turtle.State.STANDING_SHELL){
-            ((Turtle) enemy).kick(this.getX() <= enemy.getX() ? Turtle.KICK_RIGHT_SPEED : Turtle.KICK_LEFT_SPEED);
-        }else{
-	        kill();
-        }
+    public void hit(){
+        kill();
     }
 
     public void kill() {
-        Pather.manager.get("audio/sounds/playerIsKill.wav", Sound.class).play();
+        if(Pather.toggleSound){
+            Pather.manager.get("audio/sounds/playerIsKill.wav", Sound.class).play();
+        }
         playerIsDead = true;
         Filter filter = new Filter();
         filter.maskBits = Pather.NOTHING_BIT;
@@ -191,14 +178,12 @@ public class Player extends Sprite {
     }
 
     public void useItem(){
-        Gdx.app.log("PLAYER", "ITEM USED");
         poweredUp = true;
-        Gdx.app.log("PLAYER", String.valueOf(poweredUp));
         world.setGravity(new Vector2(0, -10));
     }
 
 
-    //This is needed
+    //Player definitions
     public void definePlayer(){
         //body definitions
         BodyDef bdef = new BodyDef();
@@ -220,7 +205,6 @@ public class Player extends Sprite {
                                 Pather.WIN_BIT |
                                 Pather.ENEMY_BIT |
                                 Pather.OBJECT_BIT |
-                                Pather.ENEMY_HEAD_BIT |
                                 Pather.ITEM_BIT;
 		
         fdef.shape = shape;
@@ -246,7 +230,7 @@ public class Player extends Sprite {
         //Our character has a small line above head so that it can hit objects with its head
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-2 / Pather.PPM, 6 / Pather.PPM), new Vector2(2 / Pather.PPM, 6 / Pather.PPM));
-        fdef.filter.categoryBits = Pather.MARIO_HEAD_BIT;
+        fdef.filter.categoryBits = Pather.PLAYER_HEAD_BIT;
         fdef.shape = head;
         fdef.isSensor = true;
 

@@ -23,18 +23,15 @@ public class Hud implements Disposable {
     public static final float TIME_TO_CLEAR_LEVEL = 120;
 
     private float time;
-    private static Integer score;
 
     private boolean timerIsRunning;
 
-    //TODO: Change these to reflect our game's HUD
+
     Label countdownLabel;
-    //static Label scoreLabel;
     Label timeLabel;
 
     public Hud(SpriteBatch sb){
         time = TIME_TO_CLEAR_LEVEL;
-        score = 0;
         timerIsRunning = true;
         viewport = new FitViewport(Pather.V_WIDTH, Pather.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
@@ -72,13 +69,9 @@ public class Hud implements Disposable {
         timerIsRunning = false;
     }
 
-    public static void addScore(int value){
-        score += value;
-        //scoreLabel.setText(String.format("%06d", score));
-    }
-
     @Override
     public void dispose() {
         stage.dispose();
     }
-}
+
+    }

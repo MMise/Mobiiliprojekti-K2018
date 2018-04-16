@@ -8,7 +8,10 @@ import pather.game.Pather;
 import pather.game.Screens.PlayScreen;
 import pather.game.Sprites.Player;
 
-//This is in example based on the Mushroom in Super Mario Brothers by Brent Aureli.
+/*  This is in example based on the Mushroom in Super Mario Brothers by Brent Aureli.
+    This class is not used in the final product because our pickable items don't need to move
+    The class PickableTileObject implements the power up logic
+    */
 
 public class GenericItemExample extends Item {
 

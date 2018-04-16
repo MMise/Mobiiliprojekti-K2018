@@ -14,7 +14,10 @@ import pather.game.Pather;
 import pather.game.Screens.PlayScreen;
 
 
-//This is an example based on the Goomba enemy in Super Mario Brothers, originally by Brent Aureli
+/*
+    This is an example based on the Goomba enemy in Super Mario Brothers, originally by Brent Aureli
+    Our enemy can't be stomped on, instead touching it instantly kills the player
+ */
 
 public class Hopper extends Enemy {
 
@@ -41,7 +44,6 @@ public class Hopper extends Enemy {
     public void update(float dt){
         stateTime += dt;
         if(setToDestroy && !destroyed){
-
             world.destroyBody(b2body);
             destroyed = true;
             stateTime = 0;

@@ -5,9 +5,6 @@ import com.badlogic.gdx.maps.MapObject;
 import pather.game.Pather;
 import pather.game.Screens.PlayScreen;
 
-/**
- * Created by OMISTAJ on 22.3.2018.
- */
 
 public class GroundTile extends InteractiveTileObject {
 

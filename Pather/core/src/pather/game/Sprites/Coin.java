@@ -7,11 +7,14 @@ import com.badlogic.gdx.math.Vector2;
 import pather.game.Items.GenericItemExample;
 import pather.game.Items.ItemDef;
 import pather.game.Pather;
-import pather.game.Scenes.Hud;
 import pather.game.Screens.PlayScreen;
 
 
-//This is an example on the ?-bricks in Super Mario Brothers, originally by Brent Aureli
+/*
+    This is an example on the ?-bricks in Super Mario Brothers, originally by Brent Aureli
+    Not used in the final product, we use the layer where these objects used to reside
+    as the danger zone layer. Left as future reference on how to spawn items from specific tiles
+*/
 
 public class Coin extends InteractiveTileObject {
 
@@ -41,7 +44,7 @@ public class Coin extends InteractiveTileObject {
                 //Pather.manager.get("audio/sounds/coin.wav", Sound.class).play();
             }
             getCell().setTile(tileSet.getTile(BLANK_COIN));
-            Hud.addScore(100);
+            //Hud.addScore(100);
         }
     }
 }

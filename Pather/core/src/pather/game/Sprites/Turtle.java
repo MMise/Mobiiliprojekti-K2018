@@ -15,8 +15,10 @@ import com.badlogic.gdx.utils.Array;
 import pather.game.Pather;
 import pather.game.Screens.PlayScreen;
 
-//Another enemy example this time with more functionality, based on the Koopa from Super Mario Brothers by Brent Aureli
-//Delete if unused, see the Goomba class for more detailed comments
+/*
+    Another enemy example this time with more functionality, based on the Koopa from Super Mario Brothers by Brent Aureli
+    Never used in the final product, but left as an example of enemies with more complex functionality
+*/
 
 public class Turtle extends Enemy {
     public static final int KICK_LEFT_SPEED = -2;
@@ -71,7 +73,7 @@ public class Turtle extends Enemy {
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
 
-        //Create the HEad here:
+        //Create the Head here:
         PolygonShape head = new PolygonShape();
         Vector2[] vertice = new Vector2[4];
         vertice[0] = new Vector2(-5, 8).scl(1 / Pather.PPM);

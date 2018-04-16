@@ -13,24 +13,19 @@ import com.badlogic.gdx.utils.Array;
 
 import pather.game.Pather;
 import pather.game.Screens.PlayScreen;
-import pather.game.Sprites.Brick;
-import pather.game.Sprites.Coin;
 import pather.game.Sprites.Enemy;
-import pather.game.Sprites.Goomba;
 import pather.game.Sprites.GroundTile;
 import pather.game.Sprites.Hopper;
+import pather.game.Sprites.LethalTile;
 import pather.game.Sprites.PickableTileObject;
-import pather.game.Sprites.Turtle;
 
 import static pather.game.Pather.PPM;
 
 //This is a tool to create our levels from Tiled files, built open Brent Aureli's example
-//TODO: Integrate Jylkkä's dynamic world builder
 
 public class B2WorldCreator {
 
-    private Array<Hopper> goombas;
-    private Array<Turtle> turtles;
+    private Array<Hopper> hoppers;
 
     public B2WorldCreator(PlayScreen screen){
         World world = screen.getWorld();
@@ -44,7 +39,7 @@ public class B2WorldCreator {
         for(MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
             new GroundTile(screen, object);
         }
-        //create pipe bodies/fixtures
+        //create object bodies/fixtures. Enemies colliding with these are supposed to reverse their x-velocity
         for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             bdef.type = BodyDef.BodyType.StaticBody;
@@ -62,22 +57,22 @@ public class B2WorldCreator {
         for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
             new PickableTileObject(screen, object);
         }
-        //create coin bodies/fixtures
+        //create danger zone objects
         for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
-            new Coin(screen, object);
+            new LethalTile(screen, object);
         }
 
-        //create all goombas
-        goombas = new Array<Hopper>();
+        //create all enemies
+        hoppers = new Array<Hopper>();
         for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            goombas.add(new Hopper(screen, rect.getX() / PPM, rect.getY() / Pather.PPM));
+            hoppers.add(new Hopper(screen, rect.getX() / PPM, rect.getY() / Pather.PPM));
         }
     }
 
     public Array<Enemy> getEnemies(){
         Array<Enemy> enemies = new Array<Enemy>();
-        enemies.addAll(goombas);
+        enemies.addAll(hoppers);
         return enemies;
     }
 }

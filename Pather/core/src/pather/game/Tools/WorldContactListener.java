@@ -50,13 +50,7 @@ public class WorldContactListener implements ContactListener {
                     ((Player) fixB.getUserData()).kill();
                 }
                 break;
-            case Pather.ENEMY_HEAD_BIT | Pather.PLAYER_BIT:
-                if(fixA.getFilterData().categoryBits == Pather.ENEMY_HEAD_BIT){
-                    ((Enemy)fixA.getUserData()).hitOnHead((Player) fixB.getUserData());
-                }else if(fixB.getFilterData().categoryBits == Pather.ENEMY_HEAD_BIT){
-                    ((Enemy)fixB.getUserData()).hitOnHead((Player) fixA.getUserData());
-                }
-                break;
+
             case Pather.ENEMY_BIT | Pather.OBJECT_BIT:
                 if(fixA.getFilterData().categoryBits == Pather.ENEMY_BIT){
                     ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
@@ -66,15 +60,17 @@ public class WorldContactListener implements ContactListener {
                 break;
             case Pather.PLAYER_BIT | Pather.ENEMY_BIT:
                 if(fixA.getFilterData().categoryBits == Pather.PLAYER_BIT) {
-                    ((Player) fixA.getUserData()).hit((Enemy)fixB.getUserData());
+                    ((Player) fixA.getUserData()).kill();
                 }else {
-                    ((Player) fixB.getUserData()).hit((Enemy)fixA.getUserData());
+                    ((Player) fixB.getUserData()).kill();
                 }
                 break;
             case Pather.ENEMY_BIT | Pather.ENEMY_BIT:
                 ((Enemy)fixA.getUserData()).onEnemyHit((Enemy)fixB.getUserData());
                 ((Enemy)fixB.getUserData()).onEnemyHit((Enemy)fixA.getUserData());
                 break;
+            /*
+
             case Pather.ITEM_BIT | Pather.OBJECT_BIT:
                 if(fixA.getFilterData().categoryBits == Pather.ITEM_BIT){
                     ((Item)fixA.getUserData()).reverseVelocity(true, false);
@@ -82,6 +78,9 @@ public class WorldContactListener implements ContactListener {
                     ((Item)fixB.getUserData()).reverseVelocity(true, false);
                 }
                 break;
+
+            */
+
             case Pather.ITEM_BIT | Pather.PLAYER_BIT:
                 if(fixA.getFilterData().categoryBits == Pather.ITEM_BIT){
                     ((PickableTileObject)fixA.getUserData()).onHit((Player) fixB.getUserData());
@@ -89,14 +88,16 @@ public class WorldContactListener implements ContactListener {
                     ((PickableTileObject)fixB.getUserData()).onHit((Player) fixA.getUserData());
 				}
                 break;
+
+
 			case Pather.ENEMY_BIT | Pather.DANGERZONE_BIT:
-+                if(fixA.getUserData() instanceof Hopper || fixB.getUserData() instanceof Hopper){
-+                    if(fixA.getFilterData().categoryBits == Pather.ENEMY_BIT){
-+                        ((Hopper)fixA.getUserData()).setToDestroy();
-+                    }else{
-+                        ((Hopper)fixB.getUserData()).setToDestroy();
-+                    }
-+                }
+                if(fixA.getUserData() instanceof Hopper || fixB.getUserData() instanceof Hopper){
+                    if(fixA.getFilterData().categoryBits == Pather.ENEMY_BIT){
+                        ((Hopper)fixA.getUserData()).setToDestroy();
+                    }else{
+                        ((Hopper)fixB.getUserData()).setToDestroy();
+                    }
+                }
                  break;
         }
     }

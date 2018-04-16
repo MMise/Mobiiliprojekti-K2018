@@ -7,10 +7,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import pather.game.Screens.PlayScreen;
 
-/**
- * Created by OMISTAJ on 17.3.2018.
- */
-
 //Abstract enemy class that implements all the basic functionality of enemies
 
 public abstract class Enemy extends Sprite {
@@ -34,11 +30,11 @@ public abstract class Enemy extends Sprite {
     public abstract void onEnemyHit(Enemy enemy);
 
     public void reverseVelocity(boolean x, boolean y){
-        /*if(x){
+        if(x){
             velocity.x = -velocity.x;
         }
         if(y){
             velocity.y = -velocity.y;
-        }*/
+        }
     }
 }

@@ -8,8 +8,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -31,7 +29,6 @@ public class MainMenuScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
     private Game game;
-    private final float scale = 1f;
     private final float padX = 20;
     private final float padY = 10f;
 
@@ -65,13 +62,6 @@ public class MainMenuScreen implements Screen {
 
         soundOnButton = new Image(new Texture(Gdx.files.internal("sound_on.png")));
         soundOffButton = new Image(new Texture(Gdx.files.internal("sound_off.png")));
-
-        //Set button scale
-        /*
-        playButton.setScale(scale);
-        editButton.setScale(scale);
-        exitButton.setScale(scale);
-        */
 
         //Set positions
         playButton.setPosition(padX, Pather.V_HEIGHT - playButton.getHeight());

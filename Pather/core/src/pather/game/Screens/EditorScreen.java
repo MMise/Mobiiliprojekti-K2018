@@ -22,7 +22,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 import pather.game.Pather;
 
 public class EditorScreen implements Screen {
@@ -52,6 +51,7 @@ public class EditorScreen implements Screen {
         viewport = new FitViewport(Pather.V_WIDTH / 2, Pather.V_HEIGHT / 2, new OrthographicCamera());
         stage = new Stage(viewport, ((Pather) game).batch);
         Gdx.input.setInputProcessor(stage);
+        Gdx.input.setCatchBackKey(true);
 
         //default libgdx skin texture
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
