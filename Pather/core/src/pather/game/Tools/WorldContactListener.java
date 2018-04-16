@@ -87,17 +87,17 @@ public class WorldContactListener implements ContactListener {
                     ((PickableTileObject)fixA.getUserData()).onHit((Player) fixB.getUserData());
                 }else{
                     ((PickableTileObject)fixB.getUserData()).onHit((Player) fixA.getUserData());
-                }
+				}
                 break;
-            case Pather.ENEMY_BIT | Pather.DANGERZONE_BIT:
-                if(fixA.getUserData() instanceof Hopper || fixB.getUserData() instanceof Hopper){
-                    if(fixA.getFilterData().categoryBits == Pather.ENEMY_BIT){
-                        ((Hopper)fixA.getUserData()).setToDestroy();
-                    }else{
-                        ((Hopper)fixB.getUserData()).setToDestroy();
-                    }
-                }
-                break;
+			case Pather.ENEMY_BIT | Pather.DANGERZONE_BIT:
++                if(fixA.getUserData() instanceof Hopper || fixB.getUserData() instanceof Hopper){
++                    if(fixA.getFilterData().categoryBits == Pather.ENEMY_BIT){
++                        ((Hopper)fixA.getUserData()).setToDestroy();
++                    }else{
++                        ((Hopper)fixB.getUserData()).setToDestroy();
++                    }
++                }
+                 break;
         }
     }
 

@@ -34,6 +34,7 @@ public class Pather extends Game {
 	public SpriteBatch batch;
 	public static AssetManager manager;
 	public MainMenuScreen mainMenuScreen;
+	public static boolean toggleSound = true;
 
 	@Override
 	public void create () {

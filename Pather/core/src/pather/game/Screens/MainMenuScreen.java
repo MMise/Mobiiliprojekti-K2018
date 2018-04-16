@@ -8,6 +8,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -17,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,10 +33,15 @@ public class MainMenuScreen implements Screen {
     private Game game;
     private final float scale = 1f;
     private final float padX = 60;
+    private final float padY = 10f;
 
     private final Image playButton;
     private final Image editButton;
     private final Image exitButton;
+
+    private final Image soundOnButton;
+    private final Image soundOffButton;
+    public boolean soundIsOn = true;
 
     private Screen loadingScreen;
 
@@ -54,6 +60,10 @@ public class MainMenuScreen implements Screen {
         playButton = new Image(new Texture(Gdx.files.internal("pather_menu_play.png")));
         editButton = new Image(new Texture(Gdx.files.internal("pather_menu_edit.png")));
         exitButton = new Image(new Texture(Gdx.files.internal("pather_menu_exit.png")));
+
+        soundOnButton = new Image(new Texture(Gdx.files.internal("sound_on.png")));
+        soundOffButton = new Image(new Texture(Gdx.files.internal("sound_off.png")));
+
         //Set button scale
         /*
         playButton.setScale(scale);
@@ -65,6 +75,18 @@ public class MainMenuScreen implements Screen {
         playButton.setPosition(padX, Pather.V_HEIGHT - playButton.getHeight());
         editButton.setPosition(padX, Pather.V_HEIGHT - (playButton.getHeight() * 2));
         exitButton.setPosition(padX, Pather.V_HEIGHT - (playButton.getHeight() * 3));
+        soundOnButton.setPosition(Pather.V_WIDTH - soundOnButton.getWidth(), padY);
+        soundOffButton.setPosition(soundOnButton.getX(), soundOnButton.getY());
+        soundOffButton.setVisible(false);
+
+        if(Pather.toggleSound){
+            soundOnButton.setVisible(true);
+            soundOffButton.setVisible(false);
+        }
+        else{
+            soundOnButton.setVisible(false);
+            soundOffButton.setVisible(true);
+        }
 
 
         playButton.addListener(new InputListener() {
@@ -104,11 +126,44 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        stage.addActor(table);
+        
+        soundOnButton.addListener(new InputListener() {
+           @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+               return true;
+           }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                soundOnButton.setVisible(false);
+                soundOffButton.setVisible(true);
+                soundIsOn = false;
+                Pather.toggleSound = !Pather.toggleSound;
+            }
+        });
+
+        soundOffButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                soundOnButton.setVisible(true);
+                soundOffButton.setVisible(false);
+                //soundIsOn = true;
+                Pather.toggleSound = !Pather.toggleSound;
+
+            }
+        });
+
+		stage.addActor(table);
         stage.addActor(playButton);
         stage.addActor(editButton);
         stage.addActor(exitButton);
-
+        stage.addActor(soundOnButton);
+        stage.addActor(soundOffButton);
     }
 
 

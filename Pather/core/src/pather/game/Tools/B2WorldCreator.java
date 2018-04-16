@@ -13,8 +13,10 @@ import com.badlogic.gdx.utils.Array;
 
 import pather.game.Pather;
 import pather.game.Screens.PlayScreen;
+import pather.game.Sprites.Brick;
 import pather.game.Sprites.Coin;
 import pather.game.Sprites.Enemy;
+import pather.game.Sprites.Goomba;
 import pather.game.Sprites.GroundTile;
 import pather.game.Sprites.Hopper;
 import pather.game.Sprites.PickableTileObject;
