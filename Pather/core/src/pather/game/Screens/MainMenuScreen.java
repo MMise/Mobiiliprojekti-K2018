@@ -32,12 +32,13 @@ public class MainMenuScreen implements Screen {
     private Stage stage;
     private Game game;
     private final float scale = 1f;
-    private final float padX = 60;
+    private final float padX = 20;
     private final float padY = 10f;
 
     private final Image playButton;
     private final Image editButton;
     private final Image exitButton;
+    private final Image shopButton;
 
     private final Image soundOnButton;
     private final Image soundOffButton;
@@ -60,6 +61,7 @@ public class MainMenuScreen implements Screen {
         playButton = new Image(new Texture(Gdx.files.internal("pather_menu_play.png")));
         editButton = new Image(new Texture(Gdx.files.internal("pather_menu_edit.png")));
         exitButton = new Image(new Texture(Gdx.files.internal("pather_menu_exit.png")));
+        shopButton = new Image(new Texture(Gdx.files.internal("pather_menu_shop.png")));
 
         soundOnButton = new Image(new Texture(Gdx.files.internal("sound_on.png")));
         soundOffButton = new Image(new Texture(Gdx.files.internal("sound_off.png")));
@@ -73,8 +75,9 @@ public class MainMenuScreen implements Screen {
 
         //Set positions
         playButton.setPosition(padX, Pather.V_HEIGHT - playButton.getHeight());
-        editButton.setPosition(padX, Pather.V_HEIGHT - (playButton.getHeight() * 2));
-        exitButton.setPosition(padX, Pather.V_HEIGHT - (playButton.getHeight() * 3));
+        editButton.setPosition(padX, Pather.V_HEIGHT - (playButton.getHeight() * 1.8f));
+        shopButton.setPosition(padX, Pather.V_HEIGHT - (playButton.getHeight() * 2.6f));
+        exitButton.setPosition(padX, Pather.V_HEIGHT - (playButton.getHeight() * 3.4f));
         soundOnButton.setPosition(Pather.V_WIDTH - soundOnButton.getWidth(), padY);
         soundOffButton.setPosition(soundOnButton.getX(), soundOnButton.getY());
         soundOffButton.setVisible(false);
@@ -126,7 +129,18 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        
+        shopButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return super.touchDown(event, x, y, pointer, button);
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //TODO IMPLEMENT NEW SHOP SCREEN
+            }
+        });
+
         soundOnButton.addListener(new InputListener() {
            @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -162,6 +176,7 @@ public class MainMenuScreen implements Screen {
         stage.addActor(playButton);
         stage.addActor(editButton);
         stage.addActor(exitButton);
+        stage.addActor(shopButton);
         stage.addActor(soundOnButton);
         stage.addActor(soundOffButton);
     }
