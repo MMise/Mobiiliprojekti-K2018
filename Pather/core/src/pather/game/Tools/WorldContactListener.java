@@ -69,6 +69,10 @@ public class WorldContactListener implements ContactListener {
                 ((Enemy)fixA.getUserData()).onEnemyHit((Enemy)fixB.getUserData());
                 ((Enemy)fixB.getUserData()).onEnemyHit((Enemy)fixA.getUserData());
                 break;
+	    case Pather.PLAYER_HEAD_BIT | Pather.OBJECT_BIT:
+            case Pather.PLAYER_HEAD_BIT | Pather.GROUND_BIT:
+                //TODO: Play a sound whenever the player's head bumps into object or ground layer
+                break;
             /*
 
             case Pather.ITEM_BIT | Pather.OBJECT_BIT:
