@@ -109,7 +109,7 @@ public class EditorScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 module3 = (String) selectBox3.getSelected();
-                setThumbnail(module2,3);
+                setThumbnail(module3,3);
             }
         });
 
@@ -178,7 +178,7 @@ public class EditorScreen implements Screen {
             thumbnail.setWidth(selectBox1.getWidth());
             thumbnail.setHeight(35f);
             if(thumbnail != null){
-            stage.addActor(thumbnail);
+                stage.addActor(thumbnail);
             }
         }
         catch (Exception e){
