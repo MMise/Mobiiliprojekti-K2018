@@ -74,4 +74,4 @@ public class Hud implements Disposable {
         stage.dispose();
     }
 
-    }
+}

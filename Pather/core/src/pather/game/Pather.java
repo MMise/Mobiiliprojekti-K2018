@@ -15,6 +15,7 @@ public class Pather extends Game {
 	public static final int V_WIDTH = 768;
 	public static final int V_HEIGHT = 432;
 	public static final float PPM = 32f;
+	public static final float SCALE = 2f;
 
 	//Bits to detect collisions, delete and add new ones as needed. The bits need to be n^2 numbers
 	public static final short NOTHING_BIT = 0;

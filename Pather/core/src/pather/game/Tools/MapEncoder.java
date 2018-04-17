@@ -32,15 +32,12 @@ public class MapEncoder {
 
     private final String skeleton =     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                         "<map version=\"1.0\" tiledversion=\"1.1.3\" orientation=\"orthogonal\" renderorder=\"right-down\" width=\"50\" height=\"20\" tilewidth=\"32\" tileheight=\"32\" infinite=\"0\" nextobjectid=\"1\">\n" +
-                                            "<tileset firstgid=\"1\" name=\"sheet1\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"64\" columns=\"8\">\n" +
-                                                "<image source=\"sheet1.png\" width=\"256\" height=\"256\"/>\n" +
+                                            "<tileset firstgid=\"1\" name=\"pather_tilesets_334x6400\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"1008\" columns=\"14\">\n" +
+                                                "<image source=\"pather_tilesets_334x6400.png\" width=\"448\" height=\"2304\"/>\n" +
                                             "</tileset>\n" +
-                                            "<tileset firstgid=\"65\" name=\"sci-fi-platformer-tiles-32x32-extension\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"1760\" columns=\"16\">\n" +
-                                                "<image source=\"sci-fi-platformer-tiles-32x32-extension.png\" width=\"512\" height=\"3520\"/>\n" +
-                                            "</tileset>" +
-                                            "<tileset firstgid=\"1825\" name=\"winzone_tileset\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"2\" columns=\"2\">\n" +
+                                            "<tileset firstgid=\"1009\" name=\"winzone_tileset\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"2\" columns=\"2\">\n" +
                                                 "<image source=\"winzone_tileset.png\" width=\"64\" height=\"32\"/>\n" +
-                                            "</tileset>" +
+                                            "</tileset>\n" +
                                             "<layer name=\"Background Layer\" width=\"50\" height=\"20\">\n" +
                                                 "<data encoding=\"csv\">\n" +
                                                 "</data>\n" +
@@ -48,17 +45,17 @@ public class MapEncoder {
                                             "<layer name=\"Graphic Layer\" width=\"50\" height=\"20\">\n" +
                                                 "<data encoding=\"csv\">\n" +
                                                 "</data>\n" +
-                                            "</layer>" +
-                                            "<objectgroup name=\"Ground Layer\">" +
-                                            "</objectgroup>" +
-                                            "<objectgroup name=\"Object Layer\">" +
-                                            "</objectgroup>" +
-                                            "<objectgroup name=\"Danger Zone Layer\">" +
-                                            "</objectgroup>" +
-                                            "<objectgroup name=\"Powerup Layer\">" +
-                                            "</objectgroup>" +
-                                            "<objectgroup name=\"EnemyType1 Layer\">" +
-                                            "</objectgroup>" +
+                                            "</layer>\n" +
+                                            "<objectgroup name=\"Ground Layer\">\n" +
+                                            "</objectgroup>\n" +
+                                            "<objectgroup name=\"Object Layer\">\n" +
+                                            "</objectgroup>\n" +
+                                            "<objectgroup name=\"Danger Zone Layer\">\n" +
+                                            "</objectgroup>\n" +
+                                            "<objectgroup name=\"Powerup Layer\">\n" +
+                                            "</objectgroup>\n" +
+                                            "<objectgroup name=\"EnemyType1 Layer\">\n" +
+                                            "</objectgroup>\n" +
                                         "</map>";
 
     private long[] array;
@@ -159,8 +156,8 @@ public class MapEncoder {
 
             //todo winzone
             if((pointer+1) % width == 0) {
-                if (layerIndex == 0) str[layerIndex] += "1825,1825,1825,1825,1825,"; //background
-                else if (Math.floor(pointer / width) == height*2-1) str[layerIndex] += "1826,1826,1826,1826,1826,"; //ground
+                if (layerIndex == 0) str[layerIndex] += "1009,1009,1009,1009,1009,"; //background
+                else if (Math.floor(pointer / width) == height*2-1) str[layerIndex] += "1010,1010,1010,1010,1010,"; //ground
                 else str[layerIndex] += "0,0,0,0,0,"; //remaining empty graphic layer
             }
 

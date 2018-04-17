@@ -72,7 +72,7 @@ public class PlayScreen implements Screen {
         copyToLocal("sci-fi-platformer-tiles-32x32-extension.png");
         copyToLocal("sheet1.png");
         copyToLocal("winzone_tileset.png");
-        copyToLocal("pather_tilesets_334x6400");
+        copyToLocal("pather_tilesets_334x6400.png");
 
         atlas = new TextureAtlas("packed_gfx.atlas"); //Pack all of our sprites into a single file
         this.game = game;
@@ -116,7 +116,7 @@ public class PlayScreen implements Screen {
     }
 
     public void copyToLocal(String name) { //safer method for copying files to local memory
-        if(!Gdx.files.local(name).exists() && Gdx.files.internal(name).exists()) {
+        if(Gdx.files.internal(name).exists()) {
             Gdx.files.internal(name).copyTo(Gdx.files.local(name));
         } else if(!Gdx.files.internal(name).exists()) Gdx.app.error("Error", "Unable to find file: " + name);
     }
