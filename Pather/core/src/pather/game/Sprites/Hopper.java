@@ -1,14 +1,11 @@
 package pather.game.Sprites;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.utils.Array;
 
 import pather.game.Pather;
 import pather.game.Screens.PlayScreen;
@@ -22,18 +19,14 @@ import pather.game.Screens.PlayScreen;
 public class Hopper extends Enemy {
 
     private float stateTime;
-    private Animation<TextureRegion> walkAnimation;
-    private Array<TextureRegion> frames;
+    private TextureRegion hopperTexture;
     private boolean setToDestroy;
     private boolean destroyed;
 
     public Hopper(PlayScreen screen, float x, float y) {
         super(screen, x, y);
-        frames = new Array<TextureRegion>();
-
         //Our enemy doesn't have a walk animation, this is just how we set it's texture
-        frames.add(new TextureRegion(screen.getAtlas().findRegion("hopper"), 0, 0, 32, 32));
-        walkAnimation = new Animation<TextureRegion>(0.4f, frames);
+        hopperTexture = new TextureRegion(screen.getAtlas().findRegion("hopper"), 0, 0, 32, 32);
         stateTime = 0;
         setBounds(getX(), getY(), 32 / Pather.PPM, 32 / Pather.PPM);
         setToDestroy = false;
@@ -53,7 +46,7 @@ public class Hopper extends Enemy {
                 stateTime = 0;
             }
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-            setRegion(walkAnimation.getKeyFrame(stateTime, true));
+            setRegion(hopperTexture);
         }
     }
 

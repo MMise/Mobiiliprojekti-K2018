@@ -42,6 +42,11 @@ public class Player extends Sprite {
     private TextureRegion characterJump;
     private TextureRegion characterDead;
 
+    private TextureRegion characterStandPowerup;
+    private Animation<TextureRegion> characterRunPowerup;
+    private TextureRegion characterJumpPowerup;
+    private TextureRegion characterDeadPowerup;
+
     private boolean runningRight;
     private boolean playerIsDead;
     private boolean gameWon;
@@ -68,11 +73,23 @@ public class Player extends Sprite {
             frames.add(new TextureRegion(screen.getAtlas().findRegion("character"), i * 64, 0, 64, 64));
         }
         characterRun = new Animation<TextureRegion>(0.1f, frames);
+        frames.clear();
+
+        for(int i = 1; i < 13; i++){
+            // i * x, where i equals the amount of our run frames and x equals the width of a single run frame
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("character_powerup"), i * 64, 0, 64, 64));
+        }
+        characterRunPowerup = new Animation<TextureRegion>(0.1f, frames);
 
         characterJump = new TextureRegion(screen.getAtlas().findRegion("character"), 384, 0, 64, 64);
         characterDead = new TextureRegion(screen.getAtlas().findRegion("character"), 448, 0, 64, 64);
         //create texture regions for Player standing
         characterStand = new TextureRegion(screen.getAtlas().findRegion("character"), 0,0, 64, 64);
+
+        characterJumpPowerup = new TextureRegion(screen.getAtlas().findRegion("character_powerup"), 384, 0, 64, 64);
+        characterDeadPowerup = new TextureRegion(screen.getAtlas().findRegion("character_powerup"), 448, 0, 64, 64);
+        //create texture regions for Player standing
+        characterStandPowerup = new TextureRegion(screen.getAtlas().findRegion("character_powerup"), 0,0, 64, 64);
 
         //define player in box2d
         definePlayer();
@@ -105,18 +122,18 @@ public class Player extends Sprite {
         TextureRegion region;
         switch(currentState){
             case DEAD:
-                region = characterDead;
+                region = poweredUp ? characterDeadPowerup : characterDead;
                 break;
             case FALLING:
             case JUMPING:
-                region = characterJump;
+                region = poweredUp ? characterJumpPowerup : characterJump;
                 break;
             case RUNNING:
-                region = characterRun.getKeyFrame(stateTimer, true);
+                region = poweredUp ? characterRunPowerup.getKeyFrame(stateTimer, true) : characterRun.getKeyFrame(stateTimer, true);
                 break;
             case STANDING:
             default:
-                region = characterStand;
+                region = poweredUp ? characterStandPowerup : characterStand;
                 break;
         }
 
@@ -154,10 +171,6 @@ public class Player extends Sprite {
         return stateTimer;
     }
 
-    //Define what happens when our character hits an enemy
-    public void hit(){
-        kill();
-    }
 
     public void kill() {
         if(Pather.toggleSound){
