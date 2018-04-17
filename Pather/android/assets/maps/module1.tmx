@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="87">
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="90">
  <tileset firstgid="1" name="pather_tilesets_334x6400" tilewidth="32" tileheight="32" tilecount="2800" columns="14">
   <image source="../pather_tilesets_334x6400.png" width="448" height="6400"/>
  </tileset>
@@ -86,5 +86,9 @@
  <objectgroup name="Powerup Layer">
   <object id="83" x="1312" y="160" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="EnemyType1 Layer"/>
+ <objectgroup name="EnemyType1 Layer">
+  <object id="87" x="960" y="192" width="32" height="32"/>
+  <object id="88" x="448" y="192" width="32" height="32"/>
+  <object id="89" x="1344" y="352" width="32" height="32"/>
+ </objectgroup>
 </map>
