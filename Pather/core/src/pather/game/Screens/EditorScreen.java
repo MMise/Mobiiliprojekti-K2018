@@ -63,17 +63,17 @@ public class EditorScreen implements Screen {
         selectBox1 = new SelectBox(skin);
         selectBox1.setItems(mapList); //Set the map names as the menu's content
         selectBox1.setPosition(viewport.getWorldWidth() * 0.078125f, viewport.getWorldHeight() * 0.3f);
-        selectBox1.setWidth(80f);
+        selectBox1.setWidth(90f);
 
         selectBox2 = new SelectBox(skin);
         selectBox2.setItems(mapList);
-        selectBox2.setWidth(80f);
+        selectBox2.setWidth(90f);
         selectBox2.setPosition(viewport.getWorldWidth() / 2 - selectBox2.getWidth() / 2, viewport.getWorldHeight() * 0.3f);
 
         selectBox3 = new SelectBox(skin);
         selectBox3.setItems(mapList);
         selectBox3.setPosition(viewport.getWorldWidth() / 1.4f, viewport.getWorldHeight() * 0.3f);
-        selectBox3.setWidth(80f);
+        selectBox3.setWidth(90f);
 
         //Initialize arrays used in memory clearing
         position1List = new Array<Image>();
@@ -86,6 +86,7 @@ public class EditorScreen implements Screen {
         module1 = (String) selectBox1.getSelected();
         module2 = (String) selectBox2.getSelected();
         module3 = (String) selectBox3.getSelected();
+
 
 
         //create listeners for the drop down menus
@@ -132,6 +133,9 @@ public class EditorScreen implements Screen {
         stage.addActor(selectBox2);
         stage.addActor(selectBox3);
         stage.addActor(playButton);
+        setThumbnail(module1,1);
+        setThumbnail(module2,2);
+        setThumbnail(module3,3);
 
     }
 
