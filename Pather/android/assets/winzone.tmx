@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="3" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="3">
- <tileset firstgid="1" name="winzone_tileset" tilewidth="32" tileheight="32" tilecount="2" columns="2">
-  <image source="winzone_tileset.png" width="64" height="32"/>
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="9" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="7">
+ <tileset firstgid="1" name="pather_tilesets_334x6400" tilewidth="32" tileheight="32" tilecount="2800" columns="14">
+  <image source="pather_tilesets_334x6400.png" width="448" height="6400"/>
  </tileset>
- <tileset firstgid="3" name="sci-fi-platformer-tiles-32x32-extension" tilewidth="32" tileheight="32" tilecount="1760" columns="16">
-  <image source="sci-fi-platformer-tiles-32x32-extension.png" width="512" height="3520"/>
- </tileset>
- <layer name="Background Layer" width="3" height="20">
+ <layer name="Background Layer" width="9" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYBxBGAAdiAA9
+   eJzTZWBg0B3FOLE1EdiTCBxOJZw6ivFiAMU1M9M=
   </data>
  </layer>
- <layer name="Tile Layer 2" width="3" height="20">
+ <layer name="Graphic Layer" width="9" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBj+gAkJAwABIAAH
+   eJztyTkSQEAAAMF9KA9AhHVFrsW39Qtksp2qjiaEXO6fCsqPX1HT0NLRExkYmZhZWNnYOThJXNw8vPkrCrA=
   </data>
  </layer>
  <objectgroup name="Ground Layer">
-  <object id="1" x="0" y="608" width="96" height="32">
+  <object id="4" x="0" y="576" width="192" height="64"/>
+  <object id="5" x="224" y="512" width="64" height="128"/>
+  <object id="6" x="192" y="576" width="32" height="64">
    <properties>
     <property name="win" value=""/>
    </properties>
