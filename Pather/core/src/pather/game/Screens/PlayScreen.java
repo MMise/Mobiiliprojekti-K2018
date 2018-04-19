@@ -157,6 +157,7 @@ public class PlayScreen implements Screen {
                 music.stop();
             }
             game.setScreen(new MainMenuScreen(game));
+            dispose();
         }
 
         if(player.currentState != Player.State.DEAD){
