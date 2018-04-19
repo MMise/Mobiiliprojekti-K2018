@@ -194,6 +194,7 @@ public class Player extends Sprite {
         if(Pather.toggleSound)
             Pather.manager.get("audio/sounds/powerup.wav", Sound.class).play();
         poweredUp = true;
+        powerUpDelta = 0;
         world.setGravity(new Vector2(0, -10));
     }
 
