@@ -37,7 +37,7 @@ public class Controller {
         final Image input_exit = new Image(new Texture(Gdx.files.internal("pather_menu_exit_scaled.png")));
         input_arrows.setScale(scale);
         input_jump.setScale(scale);
-        input_exit.setScale(scale * .5f);
+        input_exit.setScale(scale);
 
         input_arrows.setPosition(screenWidth * 0.05f, screenHeight * 0.05f);
         input_jump.setPosition(screenWidth - input_jump.getWidth() * scale - screenWidth * 0.05f, screenHeight * 0.05f);
