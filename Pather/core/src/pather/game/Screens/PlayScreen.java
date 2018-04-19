@@ -69,8 +69,6 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(Pather game) {
         //Tilesetit on oltava saatavilla lokaalissa
-        copyToLocal("sci-fi-platformer-tiles-32x32-extension.png");
-        copyToLocal("sheet1.png");
         copyToLocal("winzone_tileset.png");
         copyToLocal("pather_tilesets_334x6400.png");
 
@@ -157,7 +155,6 @@ public class PlayScreen implements Screen {
                 music.stop();
             }
             game.setScreen(new MainMenuScreen(game));
-            dispose();
         }
 
         if(player.currentState != Player.State.DEAD){
@@ -202,9 +199,10 @@ public class PlayScreen implements Screen {
         //Set enemies active only if we come near enough
         for(Enemy enemy : creator.getEnemies()){
             enemy.update(dt);
-            if(enemy.getX() < player.getX() + 576 / Pather.PPM){
-                enemy.b2body.setActive(true);
-            }
+            if(enemy.getX() < player.getX() + 576 / Pather.PPM)
+                enemy.setActive(true);
+            else
+                enemy.setActive(false);
         }
 
         for(Item item : items){

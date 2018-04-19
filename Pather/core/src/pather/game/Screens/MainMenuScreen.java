@@ -54,6 +54,8 @@ public class MainMenuScreen implements Screen {
         stage = new Stage(viewport, ((Pather) game).batch);
         Gdx.input.setInputProcessor(stage);
 
+        Pather.stages = ""; //Initialize maplist
+
         //Initialize button images
         playButton = new Image(new Texture(Gdx.files.internal("pather_menu_play.png")));
         editButton = new Image(new Texture(Gdx.files.internal("pather_menu_edit.png")));
@@ -122,13 +124,12 @@ public class MainMenuScreen implements Screen {
         shopButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
+                return super.touchDown(event, x, y, pointer, button);
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new ShopScreen((Pather) game));
-                dispose();
+                //TODO IMPLEMENT NEW SHOP SCREEN
             }
         });
 

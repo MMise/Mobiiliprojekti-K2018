@@ -38,9 +38,12 @@ public class LabelScreen implements Screen {
         table.center();
         table.setFillParent(true);
 
+        Label stages = new Label(Pather.stages, font);
         Label gameOverLabel = new Label(labelText + " Time: "+ String.format("%.2f", time), font);
         playAgain = new Label("TAP TO PLAY AGAIN", font);
         playAgain.setVisible(false);
+        table.add(stages).expandX();
+        table.row();
         table.add(gameOverLabel).expandX();
         table.row();
         table.add(playAgain).expandX().padTop(10);

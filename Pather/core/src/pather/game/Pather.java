@@ -7,7 +7,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import pather.game.Screens.MainMenuScreen;
 import pather.game.Screens.SplashScreen;
 
 
@@ -33,6 +32,7 @@ public class Pather extends Game {
 	public static AssetManager manager;
 	public SplashScreen splashScreen;
 	public static boolean toggleSound = true;
+	public static String stages = "";
 
 	@Override
 	public void create () {
