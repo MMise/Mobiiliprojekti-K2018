@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import pather.game.Screens.MainMenuScreen;
+import pather.game.Screens.SplashScreen;
 
 
 public class Pather extends Game {
@@ -30,7 +31,7 @@ public class Pather extends Game {
 
 	public SpriteBatch batch;
 	public static AssetManager manager;
-	public MainMenuScreen mainMenuScreen;
+	public SplashScreen splashScreen;
 	public static boolean toggleSound = true;
 
 	@Override
@@ -46,8 +47,8 @@ public class Pather extends Game {
 		manager.load("audio/music/background_music.wav", Music.class);
 
 		manager.finishLoading();
-		mainMenuScreen = new MainMenuScreen(this);
-		setScreen(mainMenuScreen);
+		splashScreen = new SplashScreen(this);
+		setScreen(splashScreen);
 	}
 
 	@Override
