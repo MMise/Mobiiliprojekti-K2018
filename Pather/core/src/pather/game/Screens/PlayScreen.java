@@ -152,7 +152,7 @@ public class PlayScreen implements Screen {
 
         //Jumping is now allowed when vertical velocity is 0.
         //This can lead to exploits, implement a method to check for ground in the future
-        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK) || controller.isExitPressed()){
             if(Pather.toggleSound){
                 music.stop();
             }

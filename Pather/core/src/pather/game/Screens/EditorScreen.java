@@ -35,7 +35,7 @@ public class EditorScreen implements Screen {
     private Image thumbnail;
     private Array<Image> position1List, position2List, position3List;
 
-    public EditorScreen(Game game){
+    public EditorScreen(final Game game){
         this.game = game;
         Table table = new Table();
         table.top();
@@ -57,7 +57,10 @@ public class EditorScreen implements Screen {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Image playButton = new Image(new Texture(Gdx.files.internal("pather_menu_play.png")));
         playButton.setScale(0.5f);
-        playButton.setPosition(viewport.getWorldWidth() / 2 - playButton.getWidth() / 4, viewport.getWorldHeight() * 0.01f);
+        playButton.setPosition(viewport.getWorldWidth() / 1.4f - 18, viewport.getWorldHeight() * 0.01f);
+        Image exitButton = new Image(new Texture(Gdx.files.internal("pather_menu_exit.png")));
+        exitButton.setScale(0.5f);
+        exitButton.setPosition(viewport.getWorldWidth() * 0.078125f - 18, viewport.getWorldHeight() * 0.01f);
 
         //Initialize drop down menus
         selectBox1 = new SelectBox(skin);
@@ -126,6 +129,18 @@ public class EditorScreen implements Screen {
             }
         });
 
+        exitButton.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                game.setScreen(new MainMenuScreen(game));
+            }
+        });
+
 
         //add menus to the stage object
         stage.addActor(table);
@@ -133,6 +148,7 @@ public class EditorScreen implements Screen {
         stage.addActor(selectBox2);
         stage.addActor(selectBox3);
         stage.addActor(playButton);
+        stage.addActor(exitButton);
         setThumbnail(module1,1);
         setThumbnail(module2,2);
         setThumbnail(module3,3);
