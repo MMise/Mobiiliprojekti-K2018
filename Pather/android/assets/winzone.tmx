@@ -1,17 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="9" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="7">
- <tileset firstgid="1" name="pather_tilesets_334x6400" tilewidth="32" tileheight="32" tilecount="2800" columns="14">
-  <image source="pather_tilesets_334x6400.png" width="448" height="6400"/>
+ <tileset firstgid="1" name="pather_tilesets_334x6400" tilewidth="32" tileheight="32" tilecount="1008" columns="14">
+  <image source="pather_tilesets_334x6400.png" width="448" height="2304"/>
  </tileset>
  <layer name="Background Layer" width="9" height="20">
-  <data encoding="base64" compression="zlib">
-   eJzTZWBg0B3FOLE1EdiTCBxOJZw6ivFiAMU1M9M=
-  </data>
+  <data encoding="csv">
+45,45,45,45,45,45,45,45,45,
+45,45,45,45,45,45,45,45,45,
+45,45,45,45,45,45,45,45,45,
+45,45,45,45,45,45,45,45,45,
+45,45,45,45,45,45,45,45,45,
+45,45,45,45,45,45,45,45,45,
+45,45,45,45,45,45,45,45,45,
+45,45,45,45,45,45,45,45,45,
+59,59,59,59,59,59,59,59,59,
+73,73,73,73,73,73,73,73,73,
+87,87,87,87,87,87,87,87,87,
+87,87,87,87,87,87,87,87,87,
+101,101,101,101,101,101,101,101,101,
+101,101,101,101,101,101,101,101,101,
+101,101,101,101,101,101,101,101,101,
+101,101,101,101,101,101,101,101,101,
+101,101,101,101,101,101,101,101,101,
+101,101,101,101,101,101,101,101,101,
+101,101,101,101,101,101,101,101,101,
+101,101,101,101,101,101,101,101,101
+</data>
  </layer>
  <layer name="Graphic Layer" width="9" height="20">
-  <data encoding="base64" compression="zlib">
-   eJztyTkSQEAAAMF9KA9AhHVFrsW39Qtksp2qjiaEXO6fCsqPX1HT0NLRExkYmZhZWNnYOThJXNw8vPkrCrA=
-  </data>
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,92,93,
+0,0,0,0,0,0,105,106,107,
+113,114,115,116,117,118,119,120,121,
+127,128,129,130,131,132,133,134,135
+</data>
  </layer>
  <objectgroup name="Ground Layer">
   <object id="4" x="0" y="576" width="192" height="64"/>
