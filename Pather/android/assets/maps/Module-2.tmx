@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="56">
- <tileset firstgid="1" name="pather_tilesets_334x6400" tilewidth="32" tileheight="32" tilecount="2800" columns="14">
-  <image source="../pather_tilesets_334x6400.png" width="448" height="6400"/>
+<map version="1.0" tiledversion="1.1.4" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="57">
+ <tileset firstgid="1" name="pather_tilesets_334x6400" tilewidth="32" tileheight="32" tilecount="1008" columns="14">
+  <image source="../pather_tilesets_334x6400.png" width="448" height="2304"/>
  </tileset>
  <layer name="Background Layer" width="50" height="20">
   <data encoding="csv">
@@ -75,7 +75,9 @@
  </objectgroup>
  <objectgroup name="Object Layer"/>
  <objectgroup name="Danger Zone Layer"/>
- <objectgroup name="Powerup Layer"/>
+ <objectgroup name="Powerup Layer">
+  <object id="56" x="928" y="64" width="32" height="32"/>
+ </objectgroup>
  <objectgroup name="EnemyType1 Layer">
   <object id="48" x="352" y="512" width="32" height="32"/>
   <object id="49" x="96" y="128" width="32" height="32"/>
@@ -83,6 +85,5 @@
   <object id="51" x="736" y="96" width="32" height="32"/>
   <object id="52" x="864" y="96" width="32" height="32"/>
   <object id="53" x="1504" y="544" width="32" height="32"/>
-  <object id="54" x="928" y="64" width="32" height="32"/>
  </objectgroup>
 </map>
