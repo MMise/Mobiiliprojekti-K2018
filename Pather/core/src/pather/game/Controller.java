@@ -34,14 +34,14 @@ public class Controller {
 
         final Image input_jump = new Image(new Texture(Gdx.files.internal("jump.png")));
         final Image input_arrows = new Image(new Texture(Gdx.files.internal("arrows.png")));
-        final Image input_exit = new Image(new Texture(Gdx.files.internal("pather_menu_exit.png")));
+        final Image input_exit = new Image(new Texture(Gdx.files.internal("pather_menu_exit_scaled.png")));
         input_arrows.setScale(scale);
         input_jump.setScale(scale);
         input_exit.setScale(scale * .5f);
 
         input_arrows.setPosition(screenWidth * 0.05f, screenHeight * 0.05f);
         input_jump.setPosition(screenWidth - input_jump.getWidth() * scale - screenWidth * 0.05f, screenHeight * 0.05f);
-        input_exit.setPosition(screenWidth - input_exit.getWidth() - 240, screenHeight - input_exit.getWidth());
+        input_exit.setPosition(screenWidth - input_exit.getWidth() * scale - screenWidth * 0.02f, screenHeight * 0.8f);
 
         input_jump.addListener(new InputListener() {
            @Override
