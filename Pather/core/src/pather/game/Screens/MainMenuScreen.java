@@ -54,6 +54,8 @@ public class MainMenuScreen implements Screen {
         stage = new Stage(viewport, ((Pather) game).batch);
         Gdx.input.setInputProcessor(stage);
 
+        Pather.stages = ""; //Initialize maplist
+
         //Initialize button images
         playButton = new Image(new Texture(Gdx.files.internal("pather_menu_play.png")));
         editButton = new Image(new Texture(Gdx.files.internal("pather_menu_edit.png")));
@@ -186,6 +188,7 @@ public class MainMenuScreen implements Screen {
         }
         loadingScreen = new LoadingScreen((Pather) game, result);
         game.setScreen(loadingScreen);
+        dispose();
     }
 
     @Override

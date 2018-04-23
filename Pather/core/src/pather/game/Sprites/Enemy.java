@@ -12,6 +12,7 @@ import pather.game.Screens.PlayScreen;
 public abstract class Enemy extends Sprite {
     protected World world;
     protected PlayScreen screen;
+    protected boolean destroyed;
     public Body b2body;
     public Vector2 velocity;
 
@@ -28,6 +29,10 @@ public abstract class Enemy extends Sprite {
     public abstract void hitOnHead(Player player);
     public abstract void update(float dt);
     public abstract void onEnemyHit(Enemy enemy);
+    public void setActive(Boolean state) {
+        if( !destroyed )
+            b2body.setActive(state);
+    }
 
     public void reverseVelocity(boolean x, boolean y){
         if(x){

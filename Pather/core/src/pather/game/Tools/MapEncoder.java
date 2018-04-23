@@ -3,15 +3,12 @@ package pather.game.Tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -23,6 +20,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import pather.game.Pather;
 
 /**
  * Created by Miquel on 19.3.2018.
@@ -73,6 +72,16 @@ public class MapEncoder {
     private int mapIndex, tileIndex, layerIndex, length;
     private long tile;
     private int progress = 0, pointer = 0;
+    private final String[] winZoneFG = {    "0,0,0,0,0,0,0,92,93,",
+                                            "0,0,0,0,0,0,105,106,107,",
+                                            "113,114,115,116,117,118,119,120,121,",
+                                            "127,128,129,130,131,132,133,134,135," };
+    private final String[] winZoneBG = {    "45,45,45,45,45,45,45,45,45,",
+                                            "59,59,59,59,59,59,59,59,59,",
+                                            "73,73,73,73,73,73,73,73,73,",
+                                            "87,87,87,87,87,87,87,87,87,",
+                                            "87,87,87,87,87,87,87,87,87,",
+                                            "101,101,101,101,101,101,101,101,101," };
 
     public MapEncoder() {
         try { //rungon kääntäminen XML muotoon
@@ -103,6 +112,8 @@ public class MapEncoder {
             file = Gdx.files.internal("maps/" + mapName + ".tmx"); //Luetaan tiedosto
         else
             file = Gdx.files.local(mapName + ".tmx");
+
+        Pather.stages += mapName + " "; //Kenttien nimien lisääminen kenttälistaan
 
         String str = file.readString();
         Document ddom;
@@ -154,11 +165,17 @@ public class MapEncoder {
             //tiili lisätään merkkijonoon
             str[layerIndex] += String.valueOf(tile)+",";
 
-            //todo winzone
+            //winzone
             if((pointer+1) % width == 0) {
-                if (layerIndex == 0) str[layerIndex] += "1009,1009,1009,1009,1009,"; //background
-                else if (Math.floor(pointer / width) == height*2-1) str[layerIndex] += "1010,1010,1010,1010,1010,"; //ground
-                else str[layerIndex] += "0,0,0,0,0,"; //remaining empty graphic layer
+                if (layerIndex == 0)
+                    str[layerIndex] += winZoneBG[(int) Math.min(Math.max(Math.floor((pointer) / width)-7, 0), 5)]; //background
+                else {
+                    Double row = Math.floor((pointer - width*height) / width);
+                    if (row < 16)
+                        str[layerIndex] += "0,0,0,0,0,0,0,0,0,";
+                    else
+                        str[layerIndex] += winZoneFG[(int) (row - 16)];
+                }
             }
 
             if(pointer != 0 && pointer % ((width/length)*height) == 0) { //enkoodauksen pätkiminen
@@ -214,16 +231,23 @@ public class MapEncoder {
                         Integer.parseInt((currentmap).getAttribute("tilewidth"));
         }
 
-        //todo Winzone object
-        Element winzone = dom.createElement("object");
-        winzone.setAttribute("id", String.valueOf(index++));
-        winzone.setAttribute("x", String.valueOf(xIndex));
-        winzone.setAttribute("y", String.valueOf(32*(height-1)));
-        winzone.setAttribute("width", String.valueOf(160));
-        winzone.setAttribute("height", String.valueOf(32));
+        //Winzone object
+        String[][] vals = new String[][] {  { String.valueOf(xIndex), String.valueOf(32*(height-2)), String.valueOf(192), String.valueOf(64) },
+                                            { String.valueOf(xIndex+224), String.valueOf(32*(height-4)), String.valueOf(64), String.valueOf(128) },
+                                            { String.valueOf(xIndex+192), String.valueOf(32*(height-2)), String.valueOf(32), String.valueOf(64) }};
+        Element winzone = dom.createElement("object");;
+        for(int i = 0; i < 3; i++) {
+            if (i != 0) winzone = dom.createElement("object");
+            winzone.setAttribute("id", String.valueOf(index++));
+            winzone.setAttribute("x", vals[i][0]);
+            winzone.setAttribute("y", vals[i][1]);
+            winzone.setAttribute("width", vals[i][2]);
+            winzone.setAttribute("height", vals[i][3]);
+            objects.item(0).appendChild(winzone);
+        }
         Element property = (Element) winzone.appendChild(dom.createElement("properties")).appendChild(dom.createElement("property"));
         property.setAttribute("name", "win");
-        objects.item(0).appendChild(winzone);
+
 
         map.setAttribute("nextobjectid", String.valueOf(index));
         array = null;
@@ -255,8 +279,8 @@ public class MapEncoder {
     public void setWidth(int w) {
         width = w;
         map.setAttribute("width", String.valueOf(w));
-        ((Element) layers.item(0)).setAttribute("width", String.valueOf(w+5));
-        ((Element) layers.item(1)).setAttribute("width", String.valueOf(w+5));
+        ((Element) layers.item(0)).setAttribute("width", String.valueOf(w+9));
+        ((Element) layers.item(1)).setAttribute("width", String.valueOf(w+9));
     }
 
     public void setHeight(int h) {

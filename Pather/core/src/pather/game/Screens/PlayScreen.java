@@ -65,13 +65,12 @@ public class PlayScreen implements Screen {
     private float gravity = -20;
     private float elapsedTime = 0;
 
+    private boolean closing = false;
+
     private Controller controller;
 
     public PlayScreen(Pather game) {
         //Tilesetit on oltava saatavilla lokaalissa
-        copyToLocal("sci-fi-platformer-tiles-32x32-extension.png");
-        copyToLocal("sheet1.png");
-        copyToLocal("winzone_tileset.png");
         copyToLocal("pather_tilesets_334x6400.png");
 
         atlas = new TextureAtlas("packed_gfx.atlas"); //Pack all of our sprites into a single file
@@ -155,9 +154,11 @@ public class PlayScreen implements Screen {
         if(Gdx.input.isKeyJustPressed(Input.Keys.BACK) || controller.isExitPressed()){
             if(Pather.toggleSound){
                 music.stop();
+                music.dispose();
             }
             game.setScreen(new MainMenuScreen(game));
-            dispose();
+            closing = true;
+            //dispose(); //crash
         }
 
         if(player.currentState != Player.State.DEAD){
@@ -202,9 +203,10 @@ public class PlayScreen implements Screen {
         //Set enemies active only if we come near enough
         for(Enemy enemy : creator.getEnemies()){
             enemy.update(dt);
-            if(enemy.getX() < player.getX() + 576 / Pather.PPM){
-                enemy.b2body.setActive(true);
-            }
+            if(enemy.getX() < player.getX() + 576 / Pather.PPM)
+                enemy.setActive(true);
+            else
+                enemy.setActive(false);
         }
 
         for(Item item : items){
@@ -266,6 +268,7 @@ public class PlayScreen implements Screen {
             game.setScreen(new LabelScreen(game, "YOU WIN!", elapsedTime));
             dispose();
         }
+        if(closing) dispose();
     }
 
     //The game over screen appears after three seconds of dying
@@ -322,10 +325,10 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-        map.dispose();
+        hud.dispose();
         renderer.dispose();
         world.dispose();
         b2dr.dispose();
-        hud.dispose();
+        map.dispose();
     }
 }

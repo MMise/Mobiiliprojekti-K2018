@@ -21,11 +21,10 @@ public class Hopper extends Enemy {
     private float stateTime;
     private TextureRegion hopperTexture;
     private boolean setToDestroy;
-    private boolean destroyed;
 
     public Hopper(PlayScreen screen, float x, float y) {
         super(screen, x, y);
-        //Our enemy doesn't have a walk animation, this is just how we set it's texture
+        //Our enemy doesn't have a walk animation, this is just how we set its texture
         hopperTexture = new TextureRegion(screen.getAtlas().findRegion("hopper"), 0, 0, 32, 32);
         stateTime = 0;
         setBounds(getX(), getY(), 32 / Pather.PPM, 32 / Pather.PPM);
