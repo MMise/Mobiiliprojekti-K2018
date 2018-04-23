@@ -124,12 +124,13 @@ public class MainMenuScreen implements Screen {
         shopButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return super.touchDown(event, x, y, pointer, button);
+                return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //TODO IMPLEMENT NEW SHOP SCREEN
+                game.setScreen(new ShopScreen((Pather) game));
+                dispose();
             }
         });
 
@@ -187,6 +188,7 @@ public class MainMenuScreen implements Screen {
         }
         loadingScreen = new LoadingScreen((Pather) game, result);
         game.setScreen(loadingScreen);
+        dispose();
     }
 
     @Override
