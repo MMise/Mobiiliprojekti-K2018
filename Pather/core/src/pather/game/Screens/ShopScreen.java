@@ -26,6 +26,7 @@ public class ShopScreen implements Screen {
 
         this.game = game;
         Table table = new Table();
+        Gdx.input.setCatchBackKey(true);
         table.top();
         table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop_VALMIS.png")))));
         table.setFillParent(true);
